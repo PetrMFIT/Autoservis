@@ -10,6 +10,10 @@ namespace Autoservis.Data
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -19,7 +23,10 @@ namespace Autoservis.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlite("Data Source=Data/autoservis.db");
+            if (!options.IsConfigured)
+            {
+                options.UseSqlite("Data Source=Data/autoservis.db");
+            }
         }
     }
 }
