@@ -7,7 +7,7 @@ using Autoservis.Models;
 
 namespace Autoservis.Repositories
 {
-    internal class ICustomerRepository
+    public interface ICustomerRepository
     {
         void Add(Customer customer);
         Customer? GetById(int id);
