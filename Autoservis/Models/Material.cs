@@ -26,7 +26,6 @@ namespace Autoservis.Models
     public enum MeasureUnit
     {
         ks,
-        h,
         l
     }
 }
