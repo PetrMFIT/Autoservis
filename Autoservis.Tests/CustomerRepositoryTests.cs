@@ -135,6 +135,52 @@ namespace Autoservis.Tests
             var result = repo.GetById(456);
             Assert.NotNull(result);
         }
+
+        /*** Entity relations ***/
+
+        // Cars
+        [Fact]
+        public void CustomerWithCars()
+        {
+            var context = GetDbContext();
+            var repo = new CustomerRepository(context);
+
+            var customer = new Customer { Name = "Jan Novak", Phone = "123456789", Email = "novak@email.com" };
+            repo.Add(customer);
+
+            var car1 = new Car { BrandModel = "Skoda Octavia", SPZ = "123ABC", VIN = "VIN123", CustomerId = customer.Id };
+            var car2 = new Car { BrandModel = "Ford Focus", SPZ = "456DEF", VIN = "VIN456", CustomerId = customer.Id };
+            context.Cars.AddRange(car1, car2);
+            context.SaveChanges();
+
+            var result = context.Customers.Include(c => c.Cars).FirstOrDefault(c => c.Id == customer.Id);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Cars);
+            Assert.Equal(2,result.Cars.Count());
+            Assert.Contains(result.Cars, c => c.BrandModel == "Skoda Octavia");
+            Assert.Contains(result.Cars, c => c.BrandModel == "Ford Focus");
+        }
+
+        [Fact]
+        public void CascadeDelete()
+        {
+            var context = GetDbContext();
+
+            var customer = new Customer { Name = "Jan Novak" };
+            context.Customers.Add(customer);
+            context.SaveChanges();
+
+            var car = new Car { BrandModel = "Toyota", SPZ = "ABC123", VIN = "VIN001", CustomerId = customer.Id };
+            context.Cars.Add(car);
+            context.SaveChanges();
+
+            context.Customers.Remove(customer);
+            context.SaveChanges();
+
+            var result = context.Cars.FirstOrDefault(c => c.Id == car.Id);
+            Assert.Null(result);
+        }
     }
 
 }
