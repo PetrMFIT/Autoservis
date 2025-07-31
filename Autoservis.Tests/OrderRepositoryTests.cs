@@ -191,8 +191,8 @@ namespace Autoservis.Tests
             context.Orders.Add(order);
             context.SaveChanges();
 
-            var material1 = new Material { Code = "abc123", OrderId = order.Id };
-            context.Materials.Add(material1);
+            var material = new Material { Code = "abc123", OrderId = order.Id };
+            context.Materials.Add(material);
             context.SaveChanges();
 
             context.Orders.Remove(order);
@@ -201,6 +201,50 @@ namespace Autoservis.Tests
             var result = context.Materials.FirstOrDefault(o => o.Id == order.Id);
             Assert.Null(result);
         }
-    }
 
+        // Work
+        [Fact]
+        public void OrderWithWorks()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var work1 = new Work { Hours = 20, OrderId = order.Id };
+            var work2 = new Work { Hours = 15, OrderId = order.Id };
+            context.Works.AddRange(work1, work2);
+            context.SaveChanges();
+
+            var result = context.Orders.Include(m => m.Works).FirstOrDefault(o => o.Id == order.Id);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Works);
+            Assert.Equal(2, result.Works.Count);
+            Assert.Contains(result.Works, m => m.Hours == 20);
+            Assert.Contains(result.Works, m => m.Hours == 15);
+        }
+
+        [Fact]
+        public void CascadeDeleteWork()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var work = new Work { Hours = 20, OrderId = order.Id };
+            context.Works.Add(work);
+            context.SaveChanges();
+
+            context.Orders.Remove(order);
+            context.SaveChanges();
+
+            var result = context.Works.FirstOrDefault(o => o.Id == order.Id);
+            Assert.Null(result);
+        }
+
+    }
 }
