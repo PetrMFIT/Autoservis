@@ -144,7 +144,6 @@ namespace Autoservis.Tests
         {
             var context = GetDbContext();
 
-
             var customer = new Customer { Name = "Jan Novak" };
             context.Customers.Add(customer);
             context.SaveChanges();

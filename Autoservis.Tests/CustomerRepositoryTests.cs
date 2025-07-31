@@ -163,7 +163,7 @@ namespace Autoservis.Tests
         }
 
         [Fact]
-        public void CascadeDelete()
+        public void CascadeDeleteCars()
         {
             var context = GetDbContext();
 
@@ -179,6 +179,51 @@ namespace Autoservis.Tests
             context.SaveChanges();
 
             var result = context.Cars.FirstOrDefault(c => c.Id == car.Id);
+            Assert.Null(result);
+        }
+
+        // Orders
+        [Fact]
+        public void CustomerWithOrders()
+        {
+            var context = GetDbContext();
+            var repo = new CustomerRepository(context);
+
+            var customer = new Customer { Name = "Jan Novak", Phone = "123456789", Email = "novak@email.com" };
+            repo.Add(customer);
+
+            var order1 = new Order { Date = 2025, Name = "zakazka1", CustomerId = customer.Id };
+            var order2 = new Order { Date = 2024, Name = "zakazka2", CustomerId = customer.Id };
+            context.Orders.AddRange(order1, order2);
+            context.SaveChanges();
+
+            var result = context.Customers.Include(o => o.Orders).FirstOrDefault(c => c.Id == customer.Id);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Orders);
+            Assert.Equal(2, result.Orders.Count());
+            Assert.Contains(result.Orders, o => o.Name == "zakazka1");
+            Assert.Contains(result.Orders, o => o.Name == "zakazka2");
+
+        }
+
+        [Fact]
+        public void CascadeDeleteOrder()
+        {
+            var context = GetDbContext();
+
+            var customer = new Customer { Name = "Jan Novak" };
+            context.Customers.Add(customer);
+            context.SaveChanges();
+
+            var order = new Order { Name = "zakazka", CustomerId = customer.Id };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            context.Customers.Remove(customer);
+            context.SaveChanges();
+
+            var result = context.Orders.FirstOrDefault(o => o.Id == order.Id);
             Assert.Null(result);
         }
     }
