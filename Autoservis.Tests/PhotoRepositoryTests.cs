@@ -135,6 +135,29 @@ namespace Autoservis.Tests
             var result = repo.GetById(456);
             Assert.NotNull(result);
         }
+
+        /*** Entity relations ***/
+
+        // Order
+        [Fact]
+        public void PhotoWithOrder()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var photo = new Photo { Name = "photo", OrderId = order.Id };
+            context.Photos.Add(photo);
+            context.SaveChanges();
+
+            var result = context.Photos.Include(o => o.Order).FirstOrDefault(c => c.Id == photo.Id);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Order);
+            Assert.Equal("zakazka", result.Order.Name);
+        }
     }
 
 }

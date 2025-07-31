@@ -198,7 +198,7 @@ namespace Autoservis.Tests
             context.Orders.Remove(order);
             context.SaveChanges();
 
-            var result = context.Materials.FirstOrDefault(o => o.Id == order.Id);
+            var result = context.Materials.FirstOrDefault(o => o.Id == material.Id);
             Assert.Null(result);
         }
 
@@ -242,7 +242,51 @@ namespace Autoservis.Tests
             context.Orders.Remove(order);
             context.SaveChanges();
 
-            var result = context.Works.FirstOrDefault(o => o.Id == order.Id);
+            var result = context.Works.FirstOrDefault(o => o.Id == work.Id);
+            Assert.Null(result);
+        }
+
+        // Photo
+        [Fact]
+        public void OrderWithPhotos()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var photo1 = new Photo { Name = "photo1", OrderId = order.Id };
+            var photo2 = new Photo { Name = "photo2", OrderId = order.Id };
+            context.Photos.AddRange(photo1, photo2);
+            context.SaveChanges();
+
+            var result = context.Orders.Include(m => m.Photos).FirstOrDefault(o => o.Id == order.Id);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Photos);
+            Assert.Equal(2, result.Photos.Count);
+            Assert.Contains(result.Photos, m => m.Name == "photo1");
+            Assert.Contains(result.Photos, m => m.Name == "photo2");
+        }
+
+        [Fact]
+        public void CascadeDeletePhoto()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var photo = new Photo { Name = "photo", OrderId = order.Id };
+            context.Photos.Add(photo);
+            context.SaveChanges();
+
+            context.Orders.Remove(order);
+            context.SaveChanges();
+
+            var result = context.Photos.FirstOrDefault(o => o.Id == photo.Id);
             Assert.Null(result);
         }
 
