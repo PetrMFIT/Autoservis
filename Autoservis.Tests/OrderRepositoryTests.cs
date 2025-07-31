@@ -157,6 +157,50 @@ namespace Autoservis.Tests
             Assert.NotNull(result.Customer);
             Assert.Equal("Jan Novak", result.Customer.Name);
         }
+
+        // Material
+        [Fact]
+        public void OrderWithMaterials()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var material1 = new Material { Code = "abc123", OrderId = order.Id };
+            var material2 = new Material { Code = "def456", OrderId = order.Id };
+            context.Materials.AddRange(material1, material2);
+            context.SaveChanges();
+
+            var result = context.Orders.Include(m => m.Materials).FirstOrDefault(o => o.Id == order.Id);
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Materials);
+            Assert.Equal(2, result.Materials.Count);
+            Assert.Contains(result.Materials, m => m.Code == "abc123");
+            Assert.Contains(result.Materials, m => m.Code == "def456");
+        }
+
+        [Fact]
+        public void CascadeDeleteMaterial()
+        {
+            var context = GetDbContext();
+
+            var order = new Order { Name = "zakazka" };
+            context.Orders.Add(order);
+            context.SaveChanges();
+
+            var material1 = new Material { Code = "abc123", OrderId = order.Id };
+            context.Materials.Add(material1);
+            context.SaveChanges();
+
+            context.Orders.Remove(order);
+            context.SaveChanges();
+
+            var result = context.Materials.FirstOrDefault(o => o.Id == order.Id);
+            Assert.Null(result);
+        }
     }
 
 }
