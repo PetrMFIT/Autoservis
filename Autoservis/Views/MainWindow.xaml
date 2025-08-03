@@ -5,25 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis"
         mc:Ignorable="d"
-        Title="Autoservis" Height="450" Width="800">
+        Title="Autoservis"
+        WindowState="Maximized"
+        ResizeMode="CanResize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" >
-            <Image x:Name="Logo" Source="/Images/Logo.png" Height="400"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,50,0">
+        <DockPanel Grid.Row="0">
+            <Image x:Name="Logo" 
+                    Source="/Images/Logo.png" 
+                    Height="300" 
+                    HorizontalAlignment="Left" 
+                    Margin="-60"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBox x:Name="SearchBox"
-                    Height="30" 
+                    Height="40" 
                     Width="200" 
                     TextAlignment="Left" 
                     VerticalContentAlignment="Center"
                     Padding="5,0,0,0"></TextBox>
-                <Button Height="30" Width="50">Hledat</Button>
+                <Button Height="40" Width="50">Hledat</Button>
             </StackPanel>
         </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Background="Aqua">
+                <Button x:Name="CustomersButton" Click="CustomersButton_Click" Height="60" Margin="0,0,0,10">Zákazníci</Button>
+                <Button x:Name="CarsButton" Click="CarsButton_Click" Height="60" Margin="0,0,0,10">Auta</Button>
+                <Button x:Name="OrdersButton" Height="60">Zakázky</Button>
+            </StackPanel>
+
+            <DataGrid Grid.Column="1" x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+            </DataGrid>
+        </Grid>
             
     </Grid>
 </Window>
