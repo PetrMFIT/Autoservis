@@ -11,7 +11,7 @@ namespace Autoservis.Repositories
     {
         void Add(Order order);
         Order? GetById(int id);
-        List<Order> GetAll();
+        IEnumerable<Order> GetAll();
         void Update(Order order);
         void Delete(int id);
     }

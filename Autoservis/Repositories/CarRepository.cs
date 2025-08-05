@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Autoservis.Repositories
 {
@@ -28,9 +29,9 @@ namespace Autoservis.Repositories
             return _context.Cars.Find(id);
         }
 
-        public List<Car> GetAll()
+        public IEnumerable<Car> GetAll()
         {
-            return _context.Cars.ToList();
+            return _context.Cars.Include(c => c.Customer).ToList();
         }
 
         public void Update(Car car)

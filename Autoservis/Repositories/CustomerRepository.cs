@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Autoservis.Models;
 using Autoservis.Data;
 
@@ -28,9 +29,9 @@ namespace Autoservis.Repositories
             return _context.Customers.Find(id);
         }
 
-        public List<Customer> GetAll()
+        public IEnumerable<Customer> GetAll()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.Include(c => c.Cars).Include(o => o.Orders).ToList();
         }
 
         public void Update(Customer customer)

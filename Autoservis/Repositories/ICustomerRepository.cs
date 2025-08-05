@@ -11,7 +11,7 @@ namespace Autoservis.Repositories
     {
         void Add(Customer customer);
         Customer? GetById(int id);
-        List<Customer> GetAll();
+        IEnumerable<Customer> GetAll();
         void Update(Customer customer);
         void Delete(int id);
     }
