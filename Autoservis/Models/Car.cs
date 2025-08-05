@@ -29,14 +29,14 @@ namespace Autoservis.Models
 
     public enum CarType
     {
-        Car,
-        Truck,
-        Van,
-        Motorbike
+        Osobní,
+        Nákladní,
+        Užitkové,
+        Motorka
     }
     public enum FuelType
     {
-        Gasoline,
-        Diesel
+        Benzín,
+        Nafta
     }
 }
