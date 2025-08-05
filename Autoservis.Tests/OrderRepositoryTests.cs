@@ -29,12 +29,12 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            var order = new Order { Date = 2025, Name = "Vymena oleje" };
+            var order = new Order { Date = new DateTime(2025, 1, 1), Name = "Vymena oleje" };
             repo.Add(order);
 
             var result = repo.GetById(order.Id);
             Assert.NotNull(result);
-            Assert.Equal(2025, result.Date);
+            Assert.Equal(order.Date, result.Date);
         }
 
         //Get by ID
@@ -54,7 +54,7 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            var order = new Order { Id = 999, Date = 2025, Name = "Vymena oleje" };
+            var order = new Order { Id = 999, Date = new DateTime(2025, 1, 1), Name = "Vymena oleje" };
             repo.Add(order);
 
             var result = repo.GetById(999);
@@ -80,12 +80,17 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            repo.Add(new Order { Id = 123, Date = 2025, Name = "Vymena oleje" });
-            repo.Add(new Order { Id = 456, Date = 2024, Name = "Vymena filtru" });
+            var customer = new Customer { Name = "Jan Novak" };
+            context.Customers.Add(customer);
+            context.SaveChanges();
+
+
+            repo.Add(new Order { Date = new DateTime(2025, 1, 1), Name = "Vymena oleje", CustomerId = customer.Id });
+            repo.Add(new Order { Date = new DateTime(2024, 1, 1), Name = "Vymena filtru", CustomerId = customer.Id });
 
             var result = repo.GetAll();
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count);
+            Assert.Equal(2, result.Count());
         }
 
         // Update
@@ -95,15 +100,15 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            var order = new Order { Date = 2025, Name = "Vymena oleje" };
+            var order = new Order { Date = new DateTime(2025, 1, 1), Name = "Vymena oleje" };
             repo.Add(order);
 
-            order.Date = 2024;
+            order.Date = new DateTime(2024, 1, 1);
             order.Name = "Vymena filtru";
             repo.Update(order);
 
             var updated = repo.GetById(order.Id);
-            Assert.Equal(2024, updated.Date);
+            Assert.Equal(new DateTime(2024, 1, 1), updated.Date);
             Assert.Equal("Vymena filtru", updated.Name);
         }
 
@@ -114,7 +119,7 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            var order = new Order { Date = 2025, Name = "Vymena oleje" };
+            var order = new Order { Date = new DateTime(2025, 1, 1), Name = "Vymena oleje" };
             repo.Add(order);
             repo.Delete(order.Id);
 
@@ -128,7 +133,7 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new OrderRepository(context);
 
-            var order = new Order { Id = 456, Date = 2025, Name = "Vymena oleje" };
+            var order = new Order { Id = 456, Date = new DateTime(2025, 1, 1), Name = "Vymena oleje" };
             repo.Add(order);
             repo.Delete(123);
 

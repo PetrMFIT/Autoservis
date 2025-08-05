@@ -80,12 +80,12 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new CustomerRepository(context);
 
-            repo.Add(new Customer { Id = 123, Name = "Jan Novak", Phone = "123456789", Email = "novak@email.com" });
-            repo.Add(new Customer { Id = 456, Name = "Josef Novak", Phone = "987654321", Email = "novak2@email.com" });
+            repo.Add(new Customer { Name = "Jan Novak", Phone = "123456789", Email = "novak@email.com" });
+            repo.Add(new Customer { Name = "Josef Novak", Phone = "987654321", Email = "novak2@email.com" });
 
             var result = repo.GetAll();
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count);
+            Assert.Equal(2, result.Count());
         }
 
         // Update
@@ -192,8 +192,8 @@ namespace Autoservis.Tests
             var customer = new Customer { Name = "Jan Novak", Phone = "123456789", Email = "novak@email.com" };
             repo.Add(customer);
 
-            var order1 = new Order { Date = 2025, Name = "zakazka1", CustomerId = customer.Id };
-            var order2 = new Order { Date = 2024, Name = "zakazka2", CustomerId = customer.Id };
+            var order1 = new Order { Date = new DateTime(2025, 1, 1), Name = "zakazka1", CustomerId = customer.Id };
+            var order2 = new Order { Date = new DateTime(2024, 1, 1), Name = "zakazka2", CustomerId = customer.Id };
             context.Orders.AddRange(order1, order2);
             context.SaveChanges();
 

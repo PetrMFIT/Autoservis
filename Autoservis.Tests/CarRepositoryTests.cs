@@ -80,12 +80,16 @@ namespace Autoservis.Tests
             var context = GetDbContext();
             var repo = new CarRepository(context);
 
-            repo.Add( new Car { Id = 123, BrandModel = "Mazda 6", SPZ = "DEF5678", VIN = "456VIN", Year = 2018 });
-            repo.Add( new Car { Id = 456, BrandModel = "Audi a4", SPZ = "ABC123", VIN = "999VIN", Year = 2010 });
+            var customer = new Customer { Name = "Jan Novak" };
+            context.Customers.Add(customer);
+            context.SaveChanges();
+
+            repo.Add( new Car { BrandModel = "Mazda 6", SPZ = "DEF5678", VIN = "456VIN", Year = 2018, CustomerId = customer.Id });
+            repo.Add( new Car { BrandModel = "Audi a4", SPZ = "ABC123", VIN = "999VIN", Year = 2010, CustomerId = customer.Id });
 
             var result = repo.GetAll();
             Assert.NotNull(result);
-            Assert.Equal(2, result.Count);
+            Assert.Equal(2, result.Count());
         }
 
         // Update
