@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,8 @@ namespace Autoservis.Models
         [Required]
         public string VIN { get; set; } = string.Empty;
         public int Year { get; set; }
-        public string? Fuel { get; set; } = string.Empty;
-        public CarType Type {  get; set; } 
+        public FuelType? Fuel { get; set; }
+        public CarType? Type {  get; set; } 
         public string? Notes { get; set; } = string.Empty;
 
         [Required]
@@ -28,9 +29,14 @@ namespace Autoservis.Models
 
     public enum CarType
     {
-        Osobní,
-        Nákladní,
-        Užitková,
-        Motocykl
+        Car,
+        Truck,
+        Van,
+        Motorbike
+    }
+    public enum FuelType
+    {
+        Gasoline,
+        Diesel
     }
 }

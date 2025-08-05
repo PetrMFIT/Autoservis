@@ -10,7 +10,7 @@ namespace Autoservis.Models
     public class Order
     {
         public int Id { get; set; }
-        public int Date { get; set; }
+        public DateTime Date { get; set; }
         public string Name { get; set; } = string.Empty;
         public string State { get; set; } = string.Empty;
 

@@ -14,35 +14,45 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Main header -->
         <DockPanel Grid.Row="0">
             <Image x:Name="Logo" 
-                    Source="/Images/Logo.png" 
-                    Height="300" 
-                    HorizontalAlignment="Left" 
-                    Margin="-60"/>
+                   Source="/Images/Logo.png" 
+                   Height="300" 
+                   HorizontalAlignment="Left" 
+                   Margin="-60"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox x:Name="SearchBox"
-                    Height="40" 
-                    Width="200" 
-                    TextAlignment="Left" 
-                    VerticalContentAlignment="Center"
-                    Padding="5,0,0,0"></TextBox>
-                <Button Height="40" Width="50">Hledat</Button>
+                <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"
+                         Height="40" Width="200" 
+                         TextAlignment="Left" 
+                         VerticalContentAlignment="Center"
+                         Padding="5,0,0,0"></TextBox>
+                <Button x:Name="SearchButton" Click="SearchButton_Click" 
+                        Height="40" Width="50">Hledat</Button>
             </StackPanel>
         </DockPanel>
 
+        <!-- Content -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Navigation menu -->
             <StackPanel Grid.Column="0" Background="Aqua">
-                <Button x:Name="CustomersButton" Click="CustomersButton_Click" Height="60" Margin="0,0,0,10">Zákazníci</Button>
-                <Button x:Name="CarsButton" Click="CarsButton_Click" Height="60" Margin="0,0,0,10">Auta</Button>
-                <Button x:Name="OrdersButton" Height="60">Zakázky</Button>
+                <Button x:Name="CustomersButton" Click="CustomersButton_Click" 
+                        Height="60" 
+                        Margin="0,0,0,10">Zákazníci</Button>
+                <Button x:Name="CarsButton" Click="CarsButton_Click" 
+                        Height="60" 
+                        Margin="0,0,0,10">Auta</Button>
+                <Button x:Name="OrdersButton"
+                        Height="60">Zakázky</Button>
+                
             </StackPanel>
 
+            <!-- Data -->
             <DataGrid Grid.Column="1" x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
             </DataGrid>
         </Grid>
