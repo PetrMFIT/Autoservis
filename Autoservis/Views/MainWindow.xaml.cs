@@ -11,6 +11,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Autoservis.Models;
 using Autoservis.Repositories;
+using Autoservis.Enums;
+using System.Collections.Generic;
 
 namespace Autoservis
 {
@@ -20,14 +22,7 @@ namespace Autoservis
         private readonly CarRepository car_repo;
         private readonly OrderRepository order_repo;
 
-        public enum ViewType
-        {
-            Customers,
-            Cars,
-            Orders
-        }
-
-        private ViewType currentView;
+        public ViewType currentView;
 
         public MainWindow()
         {
@@ -40,6 +35,11 @@ namespace Autoservis
             LoadCustomers();
         }
 
+        private void UpdateUI()
+        {
+            Filter.Visibility = (currentView == ViewType.Cars) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         // Load customer list
         private void CustomersButton_Click(object sender, RoutedEventArgs e)
         {
@@ -49,6 +49,7 @@ namespace Autoservis
         private void LoadCustomers()
         {
             currentView = ViewType.Customers;
+            UpdateUI();
             SetupCustomerColumns();
             DataGrid.ItemsSource = customer_repo.GetAll(); ;
         }
@@ -69,7 +70,9 @@ namespace Autoservis
         private void LoadCars()
         {
             currentView = ViewType.Cars;
+            UpdateUI();
             SetupCarColumns();
+            SetupFuelTypeComboBox();
             DataGrid.ItemsSource = car_repo.GetAll();
         }
 
@@ -81,6 +84,18 @@ namespace Autoservis
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Rok", Binding = new Binding("Year") });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Majitel", Binding = new Binding("Customer.Name") });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Typ", Binding = new Binding("Type") });
+        }
+
+        private void SetupFuelTypeComboBox()
+        {
+            var items = new List<object>();
+            items.Add("Všechny");
+
+            items.AddRange(Enum.GetValues(typeof(FuelType)).Cast<object>());
+
+            FuelTypeComboBox.ItemsSource = items;
+
+            FuelTypeComboBox.SelectedIndex = 0;
         }
 
         // SearchBar
@@ -154,5 +169,21 @@ namespace Autoservis
                 e.Handled = true;
             }
         }
+
+        // Car filters
+        private void FuelFilterSelection(object sender, SelectionChangedEventArgs e)
+        {
+            var allCars = car_repo.GetAll();
+
+            var selected = FuelTypeComboBox.SelectedItem;
+
+            if (selected is FuelType fuel)
+            {
+                DataGrid.ItemsSource = allCars.Where(c => c.Fuel == fuel);
+            } else
+            {
+                DataGrid.ItemsSource = allCars;
+            }
+        } 
     }
 }

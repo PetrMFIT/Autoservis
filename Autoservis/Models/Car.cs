@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autoservis.Enums;
 
 namespace Autoservis.Models
 {
@@ -25,18 +26,5 @@ namespace Autoservis.Models
         [Required]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-    }
-
-    public enum CarType
-    {
-        Osobní,
-        Nákladní,
-        Užitkové,
-        Motorka
-    }
-    public enum FuelType
-    {
-        Benzín,
-        Nafta
     }
 }

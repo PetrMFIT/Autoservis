@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis"
+        xmlns:enums="clr-namespace:Autoservis.Enums"
         mc:Ignorable="d"
         Title="Autoservis"
         WindowState="Maximized"
@@ -49,12 +50,19 @@
                         Margin="0,0,0,10">Auta</Button>
                 <Button x:Name="OrdersButton"
                         Height="60">Zakázky</Button>
-                
             </StackPanel>
 
-            <!-- Data -->
-            <DataGrid Grid.Column="1" x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-            </DataGrid>
+            <StackPanel Grid.Column="1">
+                <StackPanel Orientation="Horizontal" x:Name="Filter">
+                    <Label x:Name="label">Palivo</Label>
+                    <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
+
+                </StackPanel>
+
+                <!-- Data -->
+                <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                </DataGrid>
+            </StackPanel>
         </Grid>
             
     </Grid>
