@@ -54,9 +54,10 @@
 
             <StackPanel Grid.Column="1">
                 <StackPanel Orientation="Horizontal" x:Name="Filter">
-                    <Label x:Name="label">Palivo</Label>
+                    <Label>Palivo</Label>
                     <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
-
+                    <Label>Typ auta</Label>
+                    <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
                 </StackPanel>
 
                 <!-- Data -->

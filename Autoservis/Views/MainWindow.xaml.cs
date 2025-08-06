@@ -73,6 +73,7 @@ namespace Autoservis
             UpdateUI();
             SetupCarColumns();
             SetupFuelTypeComboBox();
+            SetupCarTypeComboBox();
             DataGrid.ItemsSource = car_repo.GetAll();
         }
 
@@ -90,12 +91,24 @@ namespace Autoservis
         {
             var items = new List<object>();
             items.Add("Všechny");
-
             items.AddRange(Enum.GetValues(typeof(FuelType)).Cast<object>());
+            items.Add("Ostatní");
 
             FuelTypeComboBox.ItemsSource = items;
 
             FuelTypeComboBox.SelectedIndex = 0;
+        }
+
+        private void SetupCarTypeComboBox()
+        {
+            var items = new List<object>();
+            items.Add("Všechny");
+            items.AddRange(Enum.GetValues(typeof(CarType)).Cast<object>());
+            items.Add("Ostatní");
+
+            CarTypeComboBox.ItemsSource = items;
+
+            CarTypeComboBox.SelectedIndex = 0;
         }
 
         // SearchBar
@@ -180,10 +193,33 @@ namespace Autoservis
             if (selected is FuelType fuel)
             {
                 DataGrid.ItemsSource = allCars.Where(c => c.Fuel == fuel);
+            } else if (selected.ToString() == "Všechny")
+            {
+                DataGrid.ItemsSource = allCars;
             } else
+            {
+                DataGrid.ItemsSource = allCars.Where(c => c.Fuel == null);
+            }
+        }
+
+        private void CarFilterSelection(object sender, SelectionChangedEventArgs e)
+        {
+            var allCars = car_repo.GetAll();
+
+            var selected = CarTypeComboBox.SelectedItem;
+
+            if (selected is CarType type)
+            {
+                DataGrid.ItemsSource = allCars.Where(c => c.Type == type);
+            }
+            else if (selected.ToString() == "Všechny")
             {
                 DataGrid.ItemsSource = allCars;
             }
-        } 
+            else
+            {
+                DataGrid.ItemsSource = allCars.Where(c => c.Type == null);
+            }
+        }
     }
 }
