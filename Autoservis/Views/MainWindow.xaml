@@ -10,14 +10,14 @@
         WindowState="Maximized"
         ResizeMode="CanResize">
     <Grid>
-        <Grid x:Name="MainLayout">
+        <Grid x:Name="MainLayout" Margin="10,0,10,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!-- Main header -->
-            <DockPanel Grid.Row="0">
+            <Grid Grid.Row="0">
                 <Image x:Name="Logo" 
                        Source="/Images/Logo.png" 
                        Height="300" 
@@ -32,8 +32,14 @@
                     <Button x:Name="SearchButton" Click="SearchButton_Click" 
                             Height="40" Width="50">Hledat</Button>
                 </StackPanel>
-                <Button x:Name="AddButton" Click="AddCustomerButton_Click" HorizontalAlignment="Right" Width="200" Height="50">Pridat</Button>
-            </DockPanel>
+                <Button x:Name="CreateOrderButton" Click="CreateOrderButton_Click" 
+                        HorizontalAlignment="Right" 
+                        Width="200" Height="50"
+                        Foreground="White" FontSize="20"
+                        Background="ForestGreen"
+                        Content="Vytvořit zakázku"
+                        ></Button>
+            </Grid>
 
             <!-- Content -->
             <Grid Grid.Row="1">

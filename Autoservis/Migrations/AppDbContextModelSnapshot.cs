@@ -131,6 +131,9 @@ namespace Autoservis.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CarId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
@@ -141,11 +144,12 @@ namespace Autoservis.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("CustomerId");
 
@@ -222,11 +226,19 @@ namespace Autoservis.Migrations
 
             modelBuilder.Entity("Autoservis.Models.Order", b =>
                 {
+                    b.HasOne("Autoservis.Models.Car", "Car")
+                        .WithMany("Orders")
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Autoservis.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Car");
 
                     b.Navigation("Customer");
                 });
@@ -251,6 +263,11 @@ namespace Autoservis.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Autoservis.Models.Car", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Autoservis.Models.Customer", b =>

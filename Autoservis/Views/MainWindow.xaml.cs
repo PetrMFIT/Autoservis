@@ -41,13 +41,13 @@ namespace Autoservis
             //Filter.Visibility = (currentView == ViewType.Cars) ? Visibility.Visible : Visibility.Collapsed;
             switch (currentView)
             {
-                case ViewType.Cars:
-                    CarFilters.Visibility = Visibility.Visible;
-                    DataListLabel.Content = "Seznam aut";
-                    break;
                 case ViewType.Customers:
                     CarFilters.Visibility = Visibility.Collapsed;
                     DataListLabel.Content = "Seznam zákazníků";
+                    break;
+                case ViewType.Cars:
+                    CarFilters.Visibility = Visibility.Visible;
+                    DataListLabel.Content = "Seznam aut";
                     break;
                 case ViewType.Orders:
                     CarFilters.Visibility = Visibility.Collapsed;
@@ -206,7 +206,6 @@ namespace Autoservis
             return allOrders.Where(o =>
                 o.Date.ToString().Contains(query) ||
                 o.Name.ToLower().Contains(query) ||
-                o.State.ToLower().Contains(query) ||
                 (o.Customer != null && o.Customer.Name.ToLower().Contains(query))
             );
         }
@@ -261,10 +260,10 @@ namespace Autoservis
         }
 
         // Add customer
-        private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
+        private void CreateOrderButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new AddCustomerPage());
+            MainFrame.Navigate(new CreateOrderPage());
         }
     }
 }
