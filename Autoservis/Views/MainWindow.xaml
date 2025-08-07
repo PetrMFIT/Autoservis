@@ -48,17 +48,25 @@
                 <Button x:Name="CarsButton" Click="CarsButton_Click" 
                         Height="60" 
                         Margin="0,0,0,10">Auta</Button>
-                <Button x:Name="OrdersButton"
+                <Button x:Name="OrdersButton" Click="OrdersButton_Click"
                         Height="60">Zakázky</Button>
             </StackPanel>
 
             <StackPanel Grid.Column="1">
-                <StackPanel Orientation="Horizontal" x:Name="Filter">
-                    <Label>Palivo</Label>
-                    <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
-                    <Label>Typ auta</Label>
-                    <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Label x:Name="DataListLabel" Grid.Column="0" HorizontalAlignment="Left"></Label>
+                    <StackPanel x:Name="CarFilters" Grid.Column="1" Orientation="Horizontal">
+                        <Label>Palivo</Label>
+                        <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
+                        <Label>Typ auta</Label>
+                        <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
+                    </StackPanel>
+                </Grid>
 
                 <!-- Data -->
                 <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">

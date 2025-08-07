@@ -37,7 +37,22 @@ namespace Autoservis
 
         private void UpdateUI()
         {
-            Filter.Visibility = (currentView == ViewType.Cars) ? Visibility.Visible : Visibility.Collapsed;
+            //Filter.Visibility = (currentView == ViewType.Cars) ? Visibility.Visible : Visibility.Collapsed;
+            switch (currentView)
+            {
+                case ViewType.Cars:
+                    CarFilters.Visibility = Visibility.Visible;
+                    DataListLabel.Content = "Seznam aut";
+                    break;
+                case ViewType.Customers:
+                    CarFilters.Visibility = Visibility.Collapsed;
+                    DataListLabel.Content = "Seznam zákazníků";
+                    break;
+                case ViewType.Orders:
+                    CarFilters.Visibility = Visibility.Collapsed;
+                    DataListLabel.Content = "Seznam zakázek";
+                    break;
+            }
         }
 
         // Load customer list
@@ -109,6 +124,28 @@ namespace Autoservis
             CarTypeComboBox.ItemsSource = items;
 
             CarTypeComboBox.SelectedIndex = 0;
+        }
+
+        // Load order list
+        private void OrdersButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadOrders();
+        }
+
+        private void LoadOrders()
+        {
+            currentView = ViewType.Orders;
+            UpdateUI();
+            SetupOrderColumns();
+            DataGrid.ItemsSource = order_repo.GetAll(); ;
+        }
+        private void SetupOrderColumns()
+        {
+            DataGrid.Columns.Clear();
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Název", Binding = new Binding("Name") });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Stav", Binding = new Binding("State") });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Celková částka", Binding = new Binding("TotalPrice") });
         }
 
         // SearchBar
