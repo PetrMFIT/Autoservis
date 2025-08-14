@@ -13,6 +13,7 @@ using Autoservis.Models;
 using Autoservis.Repositories;
 using Autoservis.Enums;
 using System.Collections.Generic;
+using Autoservis.Views;
 
 namespace Autoservis
 {
@@ -257,6 +258,12 @@ namespace Autoservis
             {
                 DataGrid.ItemsSource = allCars.Where(c => c.Type == null);
             }
+        }
+
+        private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addCustomerWindow = new AddCustomerWindow();
+            addCustomerWindow.ShowDialog();
         }
     }
 }

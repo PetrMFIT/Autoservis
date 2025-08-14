@@ -1,0 +1,61 @@
+﻿<Window x:Class="Autoservis.Views.AddCustomerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Autoservis.Views"
+        mc:Ignorable="d"
+        Title="AddCustomerWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="CustomerInformations" Grid.Row="0" Margin="10">
+            <TextBlock x:Name="CustomerNameText">Jmeno:</TextBlock>
+            <TextBox x:Name="CustomerNameBox"></TextBox>
+
+            <TextBlock x:Name="CustomerPhoneText">Telefoni cislo:</TextBlock>
+            <TextBox x:Name="CustomerPhoneBox"></TextBox>
+
+            <TextBlock x:Name="CustomerEmailText">E-mail:</TextBlock>
+            <TextBox x:Name="CustomerEmailBox"></TextBox>
+
+            <TextBlock x:Name="CustomerAddressText">Adresa:</TextBlock>
+            <TextBox x:Name="CustomerAddressBox"></TextBox>
+
+            <TextBlock x:Name="CustomerZIPText">PSC:</TextBlock>
+            <TextBox x:Name="CustomerZIPBox"></TextBox>
+            
+            <TextBlock x:Name="CustomerNotesText">Poznamka:</TextBlock>
+            <TextBox x:Name="CustomerNotesBox"></TextBox>
+
+        </StackPanel>
+
+        <StackPanel x:Name="CarInformations" Grid.Row="1" Margin="10">
+            <TextBlock x:Name="CarBrandModelText">Znacka/model:</TextBlock>
+            <TextBox x:Name="CarBrandModelBox"></TextBox>
+
+            <TextBlock x:Name="CarSPZText">SPZ:</TextBlock>
+            <TextBox x:Name="CarSPZBox"></TextBox>
+
+            <TextBlock x:Name="CarVINText">VIN:</TextBlock>
+            <TextBox x:Name="CarVINBox"></TextBox>
+
+            <TextBlock x:Name="CarYearText">Rok vyroby:</TextBlock>
+            <TextBox x:Name="CarYearBox"></TextBox>
+
+            <TextBlock x:Name="CarFuelText">Palivo:</TextBlock>
+            <TextBox x:Name="CarFuelBox"></TextBox>
+
+            <TextBlock x:Name="CarTypeText">Typ:</TextBlock>
+            <TextBox x:Name="CarTypeBox"></TextBox>
+
+            <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
+            <TextBox x:Name="CarDisplacementPowerBox"></TextBox>
+
+            <TextBlock x:Name="CarNotesText">Poznamka:</TextBlock>
+            <TextBox x:Name="CarNotesBox"></TextBox>
+        </StackPanel>
+    </Grid>
+</Window>
