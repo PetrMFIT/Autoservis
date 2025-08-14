@@ -263,7 +263,12 @@ namespace Autoservis
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
         {
             var addCustomerWindow = new AddCustomerWindow();
-            addCustomerWindow.ShowDialog();
+            bool? result = addCustomerWindow.ShowDialog();
+
+            if (result == true)
+            {
+                LoadCustomers();
+            }
         }
     }
 }
