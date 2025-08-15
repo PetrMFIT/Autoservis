@@ -21,6 +21,7 @@ namespace Autoservis.Models
         public int Year { get; set; }
         public FuelType? Fuel { get; set; }
         public CarType? Type {  get; set; } 
+        public string DisplacementPower { get; set; } = string.Empty;
         public string? Notes { get; set; } = string.Empty;
 
         [Required]

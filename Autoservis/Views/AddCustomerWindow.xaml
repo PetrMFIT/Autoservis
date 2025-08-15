@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis.Views"
         mc:Ignorable="d"
-        Title="AddCustomerWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="AddCustomerWindow" Height="550" Width="800">
 
     <Grid>
         <Grid x:Name="AddCustomerLayout">
@@ -60,14 +61,28 @@
                         <TextBlock x:Name="CarVINText">VIN:</TextBlock>
                         <TextBox x:Name="CarVINBox"></TextBox>
 
-                        <TextBlock x:Name="CarYearText">Rok vyroby:</TextBlock>
-                        <ComboBox x:Name="CarYearComboBox" ></ComboBox>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock x:Name="CarFuelText">Palivo:</TextBlock>
-                        <ComboBox x:Name="CarFuelComboBox"></ComboBox>
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <TextBlock x:Name="CarYearText" Margin="0,0,5,0">Rok vyroby:</TextBlock>
+                                <ComboBox x:Name="CarYearComboBox" Width="60"></ComboBox>
+                            </StackPanel>
 
-                        <TextBlock x:Name="CarTypeText">Typ:</TextBlock>
-                        <ComboBox x:Name="CarTypeComboBox"></ComboBox>
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <TextBlock x:Name="CarFuelText" Margin="0,0,5,0">Palivo:</TextBlock>
+                                <ComboBox x:Name="CarFuelComboBox" Width="70"></ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                <TextBlock x:Name="CarTypeText" Margin="0,0,5,0">Typ:</TextBlock>
+                                <ComboBox x:Name="CarTypeComboBox" Width="80"></ComboBox>
+                            </StackPanel>
+                        </Grid>
 
                         <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
                         <TextBox x:Name="CarDisplacementPowerBox"></TextBox>

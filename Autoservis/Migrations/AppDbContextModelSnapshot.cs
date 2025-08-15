@@ -30,6 +30,10 @@ namespace Autoservis.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DisplacementPower")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("Fuel")
                         .HasColumnType("INTEGER");
 

@@ -85,6 +85,9 @@ namespace Autoservis.Views
                            MessageBoxButton.OK,
                            MessageBoxImage.Warning
                        );
+                CustomerNameText.Foreground = new SolidColorBrush(Colors.Red);
+                CarBrandModelText.Foreground = new SolidColorBrush(Colors.Red);
+                CarSPZText.Foreground = new SolidColorBrush(Colors.Red);
                 return;
             }
 
@@ -108,6 +111,7 @@ namespace Autoservis.Views
                 Year = (int)CarYearComboBox.SelectedItem,
                 Fuel = (FuelType)CarFuelComboBox.SelectedItem,
                 Type = (CarType)CarTypeComboBox.SelectedItem,
+                DisplacementPower = CarDisplacementPowerBox.Text,
                 Notes = CarNotesBox.Text,
                 CustomerId = newCustomer.Id
             };
