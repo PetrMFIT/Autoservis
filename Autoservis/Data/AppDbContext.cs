@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Autoservis.Models;
+using System.Reflection;
+using System.IO;
 
 namespace Autoservis.Data
 {
@@ -21,12 +23,5 @@ namespace Autoservis.Data
         public DbSet<Work> Works { get; set; }
         public DbSet<Photo> Photos { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-        {
-            if (!options.IsConfigured)
-            {
-                options.UseSqlite("Data Source=Data/autoservis.db");
-            }
-        }
     }
 }

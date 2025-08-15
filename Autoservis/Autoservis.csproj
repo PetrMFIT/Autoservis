@@ -9,14 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\autoservis.db" />
     <None Remove="Images\Logo.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Data\autoservis.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
