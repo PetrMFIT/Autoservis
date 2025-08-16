@@ -283,6 +283,8 @@ namespace Autoservis
             switch(DataGrid.SelectedItem)
             {
                 case Customer customer:
+                    MainFrame.Visibility = Visibility.Visible;
+                    MainFrame.Navigate(new DetailCustomerPage(customer));
                     break;
                 case Car car:
                     break;
