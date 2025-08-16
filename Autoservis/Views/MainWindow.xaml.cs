@@ -1,4 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using Autoservis.Enums;
+using Autoservis.Migrations;
+using Autoservis.Models;
+using Autoservis.Repositories;
+using Autoservis.Views;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,11 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Autoservis.Models;
-using Autoservis.Repositories;
-using Autoservis.Enums;
-using System.Collections.Generic;
-using Autoservis.Views;
 
 namespace Autoservis
 {
@@ -274,6 +275,19 @@ namespace Autoservis
             if (result == true)
             {
                 LoadCustomers();
+            }
+        }
+
+        private void Datagrid_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
+        {
+            switch(DataGrid.SelectedItem)
+            {
+                case Customer customer:
+                    break;
+                case Car car:
+                    break;
+                case Order order:
+                    break;
             }
         }
     }

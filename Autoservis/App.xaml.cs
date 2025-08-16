@@ -38,7 +38,7 @@ namespace Autoservis
 
             DbContext = new AppDbContext(options);
 
-            DbContext.Database.EnsureCreated();
+            DbContext.Database.Migrate();
         }
     }
 

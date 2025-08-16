@@ -79,9 +79,12 @@
                     </Grid>
 
                     <!-- Data -->
-                    <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" 
-                              IsReadOnly="True">
-                    </DataGrid>
+                    <Grid x:Name="DataPanel">
+                        <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" 
+                                    IsReadOnly="True" MouseDoubleClick="Datagrid_MouseDoubleClick">
+                        </DataGrid>
+                    </Grid>
+                    
                 </StackPanel>
             </Grid>
         </Grid>
