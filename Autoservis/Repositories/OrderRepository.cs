@@ -31,7 +31,7 @@ namespace Autoservis.Repositories
 
         public IEnumerable<Order> GetAll()
         {
-            return _context.Orders.Include(c => c.Customer).ToList();
+            return _context.Orders.Include(c => c.Customer).Include(c => c.Car).ToList();
         }
 
         public void Update(Order order)

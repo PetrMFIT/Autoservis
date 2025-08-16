@@ -51,25 +51,23 @@ namespace Autoservis.Views
         private void SetupCarFuelComboBox()
         {
             var items = new List<object>();
-            items.Add("---");
             items.AddRange(Enum.GetValues(typeof(FuelType)).Cast<object>());
             items.Add("Ostatní");
 
             CarFuelComboBox.ItemsSource = items;
 
-            CarFuelComboBox.SelectedIndex = 0;
+            CarFuelComboBox.SelectedItem = -1;
         }
 
         private void SetupCarTypeComboBox()
         {
             var items = new List<object>();
-            items.Add("---");
             items.AddRange(Enum.GetValues(typeof(CarType)).Cast<object>());
             items.Add("Ostatní");
 
             CarTypeComboBox.ItemsSource = items;
 
-            CarTypeComboBox.SelectedIndex = 0;
+            CarTypeComboBox.SelectedItem = -1;
         }
 
         private void AddCustomerToDbButton_Click(object sender, RoutedEventArgs e)
@@ -109,8 +107,8 @@ namespace Autoservis.Views
                 SPZ = CarSPZBox.Text,
                 VIN = CarVINBox.Text,
                 Year = (int)CarYearComboBox.SelectedItem,
-                Fuel = (FuelType)CarFuelComboBox.SelectedItem,
-                Type = (CarType)CarTypeComboBox.SelectedItem,
+                Fuel = CarFuelComboBox.SelectedItem is FuelType fuel ? fuel : null,
+                Type = CarTypeComboBox.SelectedItem is CarType type ? type : null,
                 DisplacementPower = CarDisplacementPowerBox.Text,
                 Notes = CarNotesBox.Text,
                 CustomerId = newCustomer.Id
