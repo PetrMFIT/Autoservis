@@ -10,35 +10,43 @@
         WindowState="Maximized"
         ResizeMode="CanResize">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="MainLayout" Margin="10,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Main header -->
-        <DockPanel Grid.Row="0">
-            <Image x:Name="Logo" 
-                   Source="/Images/Logo.png" 
-                   Height="300" 
-                   HorizontalAlignment="Left" 
-                   Margin="-60"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"
-                         Height="40" Width="200" 
-                         TextAlignment="Left" 
-                         VerticalContentAlignment="Center"
-                         Padding="5,0,0,0"></TextBox>
-                <Button x:Name="SearchButton" Click="SearchButton_Click" 
-                        Height="40" Width="50">Hledat</Button>
-            </StackPanel>
-        </DockPanel>
+            <!-- Main header -->
+            <Grid Grid.Row="0">
+                <Image x:Name="Logo" 
+                       Source="/Images/Logo.png" 
+                       Height="300" 
+                       HorizontalAlignment="Left" 
+                       Margin="-60"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"
+                             Height="40" Width="200" 
+                             TextAlignment="Left" 
+                             VerticalContentAlignment="Center"
+                             Padding="5,0,0,0"></TextBox>
+                    <Button x:Name="SearchButton" Click="SearchButton_Click" 
+                            Height="40" Width="50">Hledat</Button>
+                </StackPanel>
+                <Button x:Name="CreateOrderButton" Click="CreateOrderButton_Click" 
+                        HorizontalAlignment="Right" 
+                        Width="200" Height="50"
+                        Foreground="White" FontSize="20"
+                        Background="ForestGreen"
+                        Content="Vytvořit zakázku"
+                        ></Button>
+            </Grid>
 
-        <!-- Content -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <!-- Content -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
             <!-- Navigation menu -->
             <StackPanel Grid.Column="0" Background="Aqua">
@@ -54,27 +62,28 @@
                 <Button x:Name="AddCustomerButton" Click="AddCustomerButton_Click">Pridat zakaznika</Button>
             </StackPanel>
 
-            <StackPanel Grid.Column="1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Label x:Name="DataListLabel" Grid.Column="0" HorizontalAlignment="Left"></Label>
-                    <StackPanel x:Name="CarFilters" Grid.Column="1" Orientation="Horizontal">
-                        <Label>Palivo</Label>
-                        <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
-                        <Label>Typ auta</Label>
-                        <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
-                    </StackPanel>
-                </Grid>
+                <StackPanel Grid.Column="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                <!-- Data -->
-                <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
-                </DataGrid>
-            </StackPanel>
+                        <Label x:Name="DataListLabel" Grid.Column="0" HorizontalAlignment="Left"></Label>
+                        <StackPanel x:Name="CarFilters" Grid.Column="1" Orientation="Horizontal">
+                            <Label>Palivo</Label>
+                            <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
+                            <Label>Typ auta</Label>
+                            <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Data -->
+                    <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    </DataGrid>
+                </StackPanel>
+            </Grid>
         </Grid>
-            
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed"></Frame>
     </Grid>
 </Window>

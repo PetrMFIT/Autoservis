@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autoservis.Enums;
 
 namespace Autoservis.Models
 {
@@ -23,9 +24,4 @@ namespace Autoservis.Models
         public Order Order { get; set; }
     }
 
-    public enum MeasureUnit
-    {
-        ks,
-        l
-    }
 }

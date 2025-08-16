@@ -1,0 +1,103 @@
+﻿<Page x:Class="Autoservis.Views.CreateOrderPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Autoservis.Views"
+      xmlns:models="clr-namespace:Autoservis.Models"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CreateOrderPage"
+      Background="White">
+
+    <Grid>
+        <Grid x:Name="CreateOrderLayout">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <Grid Grid.Row="0">
+                <TextBlock x:Name="AddOrderTitle" HorizontalAlignment="Center">Tvorba zakázky</TextBlock>
+                <Button x:Name="CloseButton" Click="CloseButton_Click" 
+                        Height="50" Width="50" 
+                        HorizontalAlignment="Right"
+                        Background="Red"
+                        Content="X" Foreground="White" FontSize="20" />
+            </Grid>
+            
+            <!-- Informations -->
+            <Grid x:Name="InformationBlocks" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Order -->
+                <Grid x:Name="OrderInformations" Grid.Row="0">
+                    <StackPanel Margin="10,0,10,40">
+                        <TextBlock x:Name="OrderNameText">Název:</TextBlock>
+                        <TextBox x:Name="OrderNameBox" Margin="0,0,0,15"></TextBox>
+
+                        <TextBlock x:Name="OrderDateText">Datum:</TextBlock>
+                        <DatePicker x:Name="OrderDatePicker" 
+                                    Width="100" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="0,0,0,15">
+                        </DatePicker>
+
+                        <TextBlock x:Name="OrderStateText">Stav:</TextBlock>
+                        <ComboBox x:Name="OrderStateComboBox" Margin="0,0,0,15"></ComboBox>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="OrderMaterialText">Materiál:</TextBlock>
+                            <Button>Pridat</Button>
+                        </StackPanel>
+                        <DataGrid x:Name="OrderMaterialDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Kód" Binding="{Binding Code}"/>
+                                <DataGridTextColumn Header="Název" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Počet" Binding="{Binding Quantity}"/>
+                                <DataGridTextColumn Header="Jednotka" Binding="{Binding Unit}"/>
+                                <DataGridTextColumn Header="Cena/jednotka" Binding="{Binding Price}"/>
+                                <DataGridTextColumn Header="Celková cena" Binding="{Binding TotalPrice}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="OrderWorkText">Práce:</TextBlock>
+                            <Button>Pridat</Button>
+                        </StackPanel>
+                        <DataGrid x:Name="OrderWorkDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Hodiny" Binding="{Binding Hours}"/>
+                                <DataGridTextColumn Header="Cena" Binding="{Binding Price}"/>
+                                <DataGridTextColumn Header="Celková cena" Binding="{Binding TotalPrice}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Customer -->
+                <StackPanel x:Name="CustomerInformations" Grid.Row="1" Margin="0,0,0,50">
+                    <TextBlock HorizontalAlignment="Center">Zákazník</TextBlock>
+                    <StackPanel x:Name="CustomerSearch" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                        <Button>Hledat</Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Car -->
+                <StackPanel x:Name="CarInformations" Grid.Row="2" HorizontalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center">Auto</TextBlock>
+                    <StackPanel x:Name="CarSearch" Orientation="Horizontal">
+                        <TextBox Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                        <Button>Hledat</Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

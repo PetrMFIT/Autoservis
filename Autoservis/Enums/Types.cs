@@ -24,4 +24,17 @@ namespace Autoservis.Enums
         Cars,
         Orders
     }
+
+    public enum MeasureUnit
+    {
+        ks,
+        l
+    }
+
+    public enum State
+    {
+        Rozpracováno,
+        Hotovo,
+        Zaplaceno
+    }
 }

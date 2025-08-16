@@ -27,5 +27,7 @@ namespace Autoservis.Models
         [Required]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
+
+        public List<Order> Orders { get; set; } = new();
     }
 }
