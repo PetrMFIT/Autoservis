@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis.Views"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Title="AddCustomerWindow" Height="550" Width="800">
 
     <Grid>
@@ -20,82 +20,81 @@
                 <TextBlock x:Name="AddCustomerTitle" HorizontalAlignment="Center">Vytvoreni zakaznika</TextBlock>
             </Grid>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                            HorizontalScrollBarVisibility="Auto" Grid.Row="1">
-                <!-- Informations -->
-                <Grid x:Name="Informations" Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <!-- Informations -->
+            <Grid x:Name="Informations" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <StackPanel x:Name="CustomerInformations" Grid.Row="0" Margin="10">
-                        <TextBlock x:Name="CustomerNameText">Jmeno:*</TextBlock>
-                        <TextBox x:Name="CustomerNameBox"></TextBox>
+                <!-- Customer -->
+                <StackPanel x:Name="CustomerInformations" Grid.Row="0" Margin="10">
+                    <TextBlock x:Name="CustomerNameText">Jmeno:*</TextBlock>
+                    <TextBox x:Name="CustomerNameBox"></TextBox>
 
-                        <TextBlock x:Name="CustomerPhoneText">Telefoni cislo:</TextBlock>
-                        <TextBox x:Name="CustomerPhoneBox"></TextBox>
+                    <TextBlock x:Name="CustomerPhoneText">Telefoni cislo:</TextBlock>
+                    <TextBox x:Name="CustomerPhoneBox"></TextBox>
 
-                        <TextBlock x:Name="CustomerEmailText">E-mail:</TextBlock>
-                        <TextBox x:Name="CustomerEmailBox"></TextBox>
+                    <TextBlock x:Name="CustomerEmailText">E-mail:</TextBlock>
+                    <TextBox x:Name="CustomerEmailBox"></TextBox>
 
-                        <TextBlock x:Name="CustomerAddressText">Adresa:</TextBlock>
-                        <TextBox x:Name="CustomerAddressBox"></TextBox>
+                    <TextBlock x:Name="CustomerAddressText">Adresa:</TextBlock>
+                    <TextBox x:Name="CustomerAddressBox"></TextBox>
 
-                        <TextBlock x:Name="CustomerZIPText">PSC:</TextBlock>
-                        <TextBox x:Name="CustomerZIPBox"></TextBox>
+                    <TextBlock x:Name="CustomerZIPText">PSC:</TextBlock>
+                    <TextBox x:Name="CustomerZIPBox"></TextBox>
 
-                        <TextBlock x:Name="CustomerNotesText">Poznamka:</TextBlock>
-                        <TextBox x:Name="CustomerNotesBox"></TextBox>
+                    <TextBlock x:Name="CustomerNotesText">Poznamka:</TextBlock>
+                    <TextBox x:Name="CustomerNotesBox"></TextBox>
+                </StackPanel>
 
-                    </StackPanel>
+                <!-- Car -->
+                <StackPanel x:Name="CarInformations" Grid.Row="1" Margin="10">
+                    <TextBlock x:Name="CarBrandModelText">Znacka/model:*</TextBlock>
+                    <TextBox x:Name="CarBrandModelBox"></TextBox>
 
-                    <StackPanel x:Name="CarInformations" Grid.Row="1" Margin="10">
-                        <TextBlock x:Name="CarBrandModelText">Znacka/model:*</TextBlock>
-                        <TextBox x:Name="CarBrandModelBox"></TextBox>
+                    <TextBlock x:Name="CarSPZText">SPZ:*</TextBlock>
+                    <TextBox x:Name="CarSPZBox"></TextBox>
 
-                        <TextBlock x:Name="CarSPZText">SPZ:*</TextBlock>
-                        <TextBox x:Name="CarSPZBox"></TextBox>
+                    <TextBlock x:Name="CarVINText">VIN:</TextBlock>
+                    <TextBox x:Name="CarVINBox"></TextBox>
 
-                        <TextBlock x:Name="CarVINText">VIN:</TextBlock>
-                        <TextBox x:Name="CarVINBox"></TextBox>
+                    <!-- Car combobox -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <TextBlock x:Name="CarYearText" Margin="0,0,5,0">Rok vyroby:</TextBlock>
+                            <ComboBox x:Name="CarYearComboBox" Width="60"></ComboBox>
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                <TextBlock x:Name="CarYearText" Margin="0,0,5,0">Rok vyroby:</TextBlock>
-                                <ComboBox x:Name="CarYearComboBox" Width="60"></ComboBox>
-                            </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <TextBlock x:Name="CarFuelText" Margin="0,0,5,0">Palivo:</TextBlock>
+                            <ComboBox x:Name="CarFuelComboBox" Width="70"></ComboBox>
+                        </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                <TextBlock x:Name="CarFuelText" Margin="0,0,5,0">Palivo:</TextBlock>
-                                <ComboBox x:Name="CarFuelComboBox" Width="70"></ComboBox>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" Grid.Column="2">
-                                <TextBlock x:Name="CarTypeText" Margin="0,0,5,0">Typ:</TextBlock>
-                                <ComboBox x:Name="CarTypeComboBox" Width="80"></ComboBox>
-                            </StackPanel>
-                        </Grid>
-
-                        <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
-                        <TextBox x:Name="CarDisplacementPowerBox"></TextBox>
-
-                        <TextBlock x:Name="CarNotesText">Poznamka:</TextBlock>
-                        <TextBox x:Name="CarNotesBox"></TextBox>
-                    </StackPanel>
-
-                    <Grid Grid.Row="2">
-                        <Button x:Name="AddCustomerToDbButton" Click="AddCustomerToDbButton_Click">Pridat</Button>
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                            <TextBlock x:Name="CarTypeText" Margin="0,0,5,0">Typ:</TextBlock>
+                            <ComboBox x:Name="CarTypeComboBox" Width="80"></ComboBox>
+                        </StackPanel>
                     </Grid>
+
+                    <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
+                    <TextBox x:Name="CarDisplacementPowerBox"></TextBox>
+
+                    <TextBlock x:Name="CarNotesText">Poznamka:</TextBlock>
+                    <TextBox x:Name="CarNotesBox"></TextBox>
+                </StackPanel>
+
+                <Grid Grid.Row="2">
+                    <Button x:Name="AddCustomerToDbButton" Click="AddCustomerToDbButton_Click">Pridat</Button>
                 </Grid>
-            </ScrollViewer>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
