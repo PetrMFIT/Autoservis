@@ -14,6 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Header -->
@@ -29,6 +30,7 @@
             <!-- Informations -->
             <Grid x:Name="Informations" Grid.Row="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -73,6 +75,15 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
+
+                <Button x:Name="ConfirmUpdateButton" Click="ConfirmUpdateButton_Click" Grid.Row="2" Visibility="Hidden">Potvrdit</Button>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <StackPanel Orientation="Horizontal">
+                    <Button Click="UpdateButton_Click">Upravit</Button>
+                    <Button Click="DeleteButton_Click">Odstranit</Button>
+                </StackPanel>
             </Grid>
         </Grid>
         

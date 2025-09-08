@@ -63,7 +63,7 @@ namespace Autoservis
             LoadCustomers();
         }
 
-        private void LoadCustomers()
+        public void LoadCustomers()
         {
             currentView = ViewType.Customers;
             UpdateUI();

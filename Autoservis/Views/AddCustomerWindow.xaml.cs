@@ -42,6 +42,7 @@ namespace Autoservis.Views
             {
                 CarYearComboBox.Items.Add(year);
             }
+            CarYearComboBox.SelectedIndex = 0;
 
             SetupCarFuelComboBox();
             SetupCarTypeComboBox();
