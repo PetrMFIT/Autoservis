@@ -180,24 +180,36 @@ namespace Autoservis.Views
 
         private void SetReadOnly(bool readOnly)
         {
-            CustomerNameBox.IsReadOnly = readOnly;
-            CustomerPhoneBox.IsReadOnly = readOnly;
-            CustomerEmailBox.IsReadOnly = readOnly;
-            CustomerAddressBox.IsReadOnly = readOnly;
-            CustomerZIPBox.IsReadOnly = readOnly;
-            CustomerNotesBox.IsReadOnly = readOnly;
+            var boxes = new[]
+            {
+                CustomerNameBox,
+                CustomerPhoneBox,
+                CustomerEmailBox,
+                CustomerAddressBox,
+                CustomerZIPBox,
+                CustomerNotesBox
+            };
+
+            foreach (var box in boxes)
+            {
+                box.IsReadOnly = readOnly;
+                if (readOnly)
+                {
+                    box.BorderThickness = new Thickness(0);
+                    box.Background = Brushes.Transparent;
+                }
+                else
+                {
+                    box.BorderThickness = new Thickness(1);
+                    box.Background = Brushes.White;
+                    box.Text = "";
+                }
+            }
         }
 
         private void ClearSelectedButton_Click(object sender, RoutedEventArgs e)
         {
             _selectedCustomer = null;
-
-            CustomerNameBox.Text = "";
-            CustomerPhoneBox.Text = "";
-            CustomerEmailBox.Text = "";
-            CustomerAddressBox.Text = "";
-            CustomerZIPBox.Text = "";
-            CustomerNotesBox.Text = "";
 
             SetReadOnly(false);
             ClearSelectedButton.Visibility = Visibility.Hidden;
