@@ -160,7 +160,8 @@ namespace Autoservis.Views
 
         private void SearchedCustomers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SearchedCustomers.Visibility = Visibility.Hidden;
+            SearchedCustomers.Visibility = Visibility.Collapsed;
+            ClearSelectedButton.Visibility = Visibility.Visible;
 
             if (SearchedCustomers.SelectedItem is Customer customer)
             {
@@ -173,6 +174,33 @@ namespace Autoservis.Views
                 CustomerNotesBox.Text = customer.Notes;
             }
 
+            SetReadOnly(true);
+
+        }
+
+        private void SetReadOnly(bool readOnly)
+        {
+            CustomerNameBox.IsReadOnly = readOnly;
+            CustomerPhoneBox.IsReadOnly = readOnly;
+            CustomerEmailBox.IsReadOnly = readOnly;
+            CustomerAddressBox.IsReadOnly = readOnly;
+            CustomerZIPBox.IsReadOnly = readOnly;
+            CustomerNotesBox.IsReadOnly = readOnly;
+        }
+
+        private void ClearSelectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedCustomer = null;
+
+            CustomerNameBox.Text = "";
+            CustomerPhoneBox.Text = "";
+            CustomerEmailBox.Text = "";
+            CustomerAddressBox.Text = "";
+            CustomerZIPBox.Text = "";
+            CustomerNotesBox.Text = "";
+
+            SetReadOnly(false);
+            ClearSelectedButton.Visibility = Visibility.Hidden;
         }
     }
 }

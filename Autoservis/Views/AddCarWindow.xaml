@@ -72,6 +72,7 @@
                 </StackPanel>
             </Grid>
 
+            <!-- Search customer -->
             <Grid x:Name="Search" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -82,6 +83,7 @@
                     <StackPanel x:Name="CustomerSearch" Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBox x:Name="SearchBox" Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
                         <Button x:Name="SearchButton" Click="SearchButton_Click">Hledat</Button>
+                        <Button x:Name="ClearSelectedButton" Click="ClearSelectedButton_Click" Visibility="Hidden">X</Button>
                     </StackPanel>
                 </StackPanel>
                 <ListBox x:Name="SearchedCustomers" Grid.Row="1" Visibility="Hidden" MouseDoubleClick="SearchedCustomers_MouseDoubleClick">
