@@ -57,7 +57,7 @@ namespace Autoservis.Views
 
             CarFuelComboBox.ItemsSource = items;
 
-            CarFuelComboBox.SelectedItem = -1;
+            CarFuelComboBox.SelectedIndex = 2;
         }
 
         private void SetupCarTypeComboBox()
@@ -68,7 +68,7 @@ namespace Autoservis.Views
 
             CarTypeComboBox.ItemsSource = items;
 
-            CarTypeComboBox.SelectedItem = -1;
+            CarTypeComboBox.SelectedIndex = 4;
         }
 
         private void AddCustomerToDbButton_Click(object sender, RoutedEventArgs e)

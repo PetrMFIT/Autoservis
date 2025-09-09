@@ -59,7 +59,8 @@
                 <Button x:Name="OrdersButton" Click="OrdersButton_Click"
                         Height="60">Zakázky</Button>
 
-                <Button x:Name="AddCustomerButton" Click="AddCustomerButton_Click">Pridat zakaznika</Button>
+                <Button x:Name="AddCustomerButton" Click="AddCustomerButton_Click">Přidat zákazníka</Button>
+                <Button x:Name="AddCarButton" Click="AddCarButton_Click">Přidat auto</Button>
             </StackPanel>
 
                 <StackPanel Grid.Column="1">

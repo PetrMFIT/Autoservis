@@ -1,0 +1,138 @@
+﻿<Window x:Class="Autoservis.Views.AddCarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Autoservis.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="AddCarWindow" Height="550" Width="800">
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Car Informations -->
+            <Grid x:Name="AddCarLayout" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Grid Grid.Row="0">
+                    <TextBlock x:Name="AddCarTitle" HorizontalAlignment="Center">Vytvoreni auta</TextBlock>
+                </Grid>
+
+                <!-- Car -->
+                <StackPanel x:Name="CarInformations" Grid.Row="1" Margin="10">
+                    <TextBlock x:Name="CarBrandModelText">Znacka/model:*</TextBlock>
+                    <TextBox x:Name="CarBrandModelBox"></TextBox>
+
+                    <TextBlock x:Name="CarSPZText">SPZ:*</TextBlock>
+                    <TextBox x:Name="CarSPZBox"></TextBox>
+
+                    <TextBlock x:Name="CarVINText">VIN:</TextBlock>
+                    <TextBox x:Name="CarVINBox"></TextBox>
+
+                    <!-- Car combobox -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <TextBlock x:Name="CarYearText" Margin="0,0,5,0">Rok vyroby:</TextBlock>
+                            <ComboBox x:Name="CarYearComboBox" Width="60"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <TextBlock x:Name="CarFuelText" Margin="0,0,5,0">Palivo:</TextBlock>
+                            <ComboBox x:Name="CarFuelComboBox" Width="70"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                            <TextBlock x:Name="CarTypeText" Margin="0,0,5,0">Typ:</TextBlock>
+                            <ComboBox x:Name="CarTypeComboBox" Width="80"></ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
+                    <TextBox x:Name="CarDisplacementPowerBox"></TextBox>
+
+                    <TextBlock x:Name="CarNotesText">Poznamka:</TextBlock>
+                    <TextBox x:Name="CarNotesBox"></TextBox>
+                </StackPanel>
+            </Grid>
+
+            <Grid x:Name="Search" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <TextBlock HorizontalAlignment="Center">Zákazník</TextBlock>
+                    <StackPanel x:Name="CustomerSearch" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBox x:Name="SearchBox" Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                        <Button x:Name="SearchButton" Click="SearchButton_Click">Hledat</Button>
+                    </StackPanel>
+                </StackPanel>
+                <ListBox x:Name="SearchedCustomers" Grid.Row="1" Visibility="Hidden" MouseDoubleClick="SearchedCustomers_MouseDoubleClick">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Name}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Phone}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <!-- Customer Informations -->
+            <Grid x:Name="AddCustomerLayout" Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="Informations" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Customer -->
+                    <StackPanel x:Name="CustomerInformations" Grid.Row="0" Margin="10">
+                        <TextBlock x:Name="CustomerNameText">Jmeno:*</TextBlock>
+                        <TextBox x:Name="CustomerNameBox"></TextBox>
+
+                        <TextBlock x:Name="CustomerPhoneText">Telefoni cislo:</TextBlock>
+                        <TextBox x:Name="CustomerPhoneBox"></TextBox>
+
+                        <TextBlock x:Name="CustomerEmailText">E-mail:</TextBlock>
+                        <TextBox x:Name="CustomerEmailBox"></TextBox>
+
+                        <TextBlock x:Name="CustomerAddressText">Adresa:</TextBlock>
+                        <TextBox x:Name="CustomerAddressBox"></TextBox>
+
+                        <TextBlock x:Name="CustomerZIPText">PSC:</TextBlock>
+                        <TextBox x:Name="CustomerZIPBox"></TextBox>
+
+                        <TextBlock x:Name="CustomerNotesText">Poznamka:</TextBlock>
+                        <TextBox x:Name="CustomerNotesBox"></TextBox>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="3">
+                <Button x:Name="AddCarToDbButton" Click="AddCarToDbButton_Click">Pridat</Button>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</Window>

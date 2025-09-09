@@ -277,6 +277,16 @@ namespace Autoservis
                 LoadCustomers();
             }
         }
+        private void AddCarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addCarWindow = new AddCarWindow();
+            bool? result = addCarWindow.ShowDialog();
+
+            if (result == true)
+            {
+                LoadCars();
+            }
+        }
 
         private void Datagrid_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
         {
