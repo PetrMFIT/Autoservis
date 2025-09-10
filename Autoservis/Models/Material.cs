@@ -15,6 +15,7 @@ namespace Autoservis.Models
         public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
+        public MaterialSupplier Supplier { get; set; } 
         public int Price { get; set; }
         public MeasureUnit Unit {  get; set; }
         public int TotalPrice => Quantity * Price;

@@ -119,6 +119,9 @@ namespace Autoservis.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Supplier")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Unit")
                         .HasColumnType("INTEGER");
 

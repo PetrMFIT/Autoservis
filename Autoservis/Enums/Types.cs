@@ -37,4 +37,13 @@ namespace Autoservis.Enums
         Hotovo,
         Zaplaceno
     }
+
+    public enum MaterialSupplier
+    {
+        LKQ,
+        JM_Autodíly,
+        Slavíček,
+        Cora,
+        Intercars
+    }
 }
