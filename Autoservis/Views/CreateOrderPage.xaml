@@ -81,21 +81,57 @@
                 </Grid>
 
                 <!-- Customer -->
-                <StackPanel x:Name="CustomerInformations" Grid.Row="1" Margin="0,0,0,50">
-                    <TextBlock HorizontalAlignment="Center">Zákazník</TextBlock>
-                    <StackPanel x:Name="CustomerSearch" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
-                        <Button>Hledat</Button>
+                <Grid Grid.Row="1" Margin="0,0,0,50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="CustomerInformations" Grid.Row="0" HorizontalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center">Zákazník</TextBlock>
+                        <StackPanel x:Name="CustomerSearch" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox x:Name="CustomerSearchBox"  Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                            <Button x:Name="CustomerSearchButton" Click="CustomerSearchButton_Click">Hledat</Button>
+                            <Button x:Name="ClearSelectedCustomerButton" Click="ClearSelectedCustomerButton_Click" Visibility="Collapsed">X</Button>
+                        </StackPanel>
+                        <ListBox x:Name="SearchedCustomers" Visibility="Hidden" MouseDoubleClick="SearchedCustomers_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding Phone}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
-                </StackPanel>
+                    <StackPanel x:Name="SelectedCustomerInfo" Grid.Row="1" HorizontalAlignment="Center">
+                        <TextBlock x:Name="CustomerNameBlock"/>
+                        <TextBlock x:Name="CustomerPhoneBlock"/>
+                        <TextBlock x:Name="CustomerEmailBlock"/>
+                        <TextBlock x:Name="CustomerAddressBlock"/>
+                        <TextBlock x:Name="CustomerZipBlock"/>
+                    </StackPanel>
+                </Grid>
+
+
 
                 <!-- Car -->
                 <StackPanel x:Name="CarInformations" Grid.Row="2" HorizontalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center">Auto</TextBlock>
                     <StackPanel x:Name="CarSearch" Orientation="Horizontal">
-                        <TextBox Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
-                        <Button>Hledat</Button>
+                        <TextBox x:Name="CarSearchBox" Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                        <Button x:Name="CarSearchButton" Click="CarSearchButton_Click">Hledat</Button>
                     </StackPanel>
+                    <ListBox x:Name="SearchedCars" Visibility="Hidden" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding BrandModel}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding SPZ}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </StackPanel>
             </Grid>
         </Grid>
