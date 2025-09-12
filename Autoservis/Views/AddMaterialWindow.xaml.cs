@@ -60,7 +60,7 @@ namespace Autoservis.Views
             MaterialSupplierComboBox.SelectedIndex = 0;
         }
 
-        private void AddAMaterialButton_Click(object sender, RoutedEventArgs e)
+        private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
         {
             material = new Material
             {

@@ -39,6 +39,6 @@
                 <TextBox x:Name="MaterialPriceBox"></TextBox>
             </StackPanel>
         </Grid>
-        <Button x:Name="AddAMaterialButton" Grid.Row="1" Click="AddAMaterialButton_Click">Pridat</Button>
+        <Button x:Name="AddMaterialButton" Grid.Row="1" Click="AddMaterialButton_Click">Pridat</Button>
     </Grid>
 </Window>

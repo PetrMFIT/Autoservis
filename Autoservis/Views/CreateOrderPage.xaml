@@ -78,6 +78,10 @@
                                 <DataGridTextColumn Header="Celková cena" Binding="{Binding TotalPrice}"/>
                             </DataGrid.Columns>
                         </DataGrid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="TotalPriceBlock">Celkova cena:</TextBlock>
+                            <TextBlock x:Name="TotalPriceFillBlock"></TextBlock>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
 

@@ -175,6 +175,7 @@ namespace Autoservis.Views
         private void LoadMaterials()
         {
             OrderMaterialDataGrid.ItemsSource = tempMaterials;
+            TotalPrice();
         }
         private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
         {
@@ -188,9 +189,38 @@ namespace Autoservis.Views
             }
         }
 
+        private void LoadWorks()
+        {
+            OrderWorkDataGrid.ItemsSource = tempWorks;
+            TotalPrice();
+        }
         private void AddWorkButton_Click(object sender, RoutedEventArgs e)
         {
+            var addWorkWindow = new AddWorkWindow(tempWorks);
+            bool? result = addWorkWindow.ShowDialog();
 
+            if (result == true && addWorkWindow.work != null)
+            {
+                tempWorks.Add(addWorkWindow.work);
+                LoadWorks();
+            }
+        }
+
+        private void TotalPrice()
+        {
+            var materialSum = 0;
+            foreach (var material in tempMaterials)
+            {
+                materialSum = materialSum + material.TotalPrice;
+            }
+
+            var workSum = 0;
+            foreach(var work in tempWorks)
+            {
+                workSum = workSum + work.TotalPrice;
+            }
+
+            TotalPriceFillBlock.Text = $"{materialSum} + {workSum} = {materialSum + workSum}";
         }
     }
 }
