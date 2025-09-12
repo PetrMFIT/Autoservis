@@ -1,0 +1,44 @@
+﻿<Window x:Class="Autoservis.Views.AddMaterialWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Autoservis.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Title="AddMaterialView" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="MaterialInfo" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" HorizontalAlignment="Center">Vytvoreni Materialu</TextBlock>
+            <StackPanel x:Name="MaterialInfoBoxes">
+                <TextBlock x:Name="MaterialNameBlock">Název:</TextBlock>
+                <TextBox x:Name="MaterialNameBox"></TextBox>
+                
+                <TextBlock x:Name="MaterialCodeBlock">Kód:</TextBlock>
+                <TextBox x:Name="MaterialCodeBox"></TextBox>
+
+                <TextBlock x:Name="MaterialQuantityBlock">Počet:</TextBlock>
+                <TextBox x:Name="MaterialQuantityBox"></TextBox>
+
+                <TextBlock x:Name="MaterialSupplierBlock">Dodavatel:</TextBlock>
+                <ComboBox x:Name="MaterialSupplierComboBox"></ComboBox>
+                
+                <TextBlock x:Name="MaterialUnitBlock">Jednotka</TextBlock>
+                <ComboBox x:Name="MaterialUnitComboBox"></ComboBox>
+
+                <TextBlock x:Name="MaterialPriceBlock">Cena/jednotka:</TextBlock>
+                <TextBox x:Name="MaterialPriceBox"></TextBox>
+            </StackPanel>
+        </Grid>
+        <Button x:Name="AddAMaterialButton" Grid.Row="1" Click="AddAMaterialButton_Click">Pridat</Button>
+    </Grid>
+</Window>

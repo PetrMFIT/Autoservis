@@ -32,9 +32,14 @@ namespace Autoservis.Views
         private Customer? _selectedCustomer;
         private Car? _selectedCar;
 
+        private ObservableCollection<Material> tempMaterials = new ObservableCollection<Material>();
+        private ObservableCollection<Work> tempWorks = new ObservableCollection<Work>();
+
         public CreateOrderPage()
         {
             InitializeComponent();
+
+            OrderMaterialDataGrid.ItemsSource = tempMaterials;
 
             material_repo = new MaterialRepository(App.DbContext);
             work_repo = new WorkRepository(App.DbContext);
@@ -166,5 +171,26 @@ namespace Autoservis.Views
             CarYearBlock.Text = "";
         }
 
+        // Material
+        private void LoadMaterials()
+        {
+            OrderMaterialDataGrid.ItemsSource = tempMaterials;
+        }
+        private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addMaterialWindow = new AddMaterialWindow(tempMaterials);
+            bool? result = addMaterialWindow.ShowDialog();
+
+            if (result == true && addMaterialWindow.material != null)
+            {
+                tempMaterials.Add(addMaterialWindow.material);
+                LoadMaterials();
+            }
+        }
+
+        private void AddWorkButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

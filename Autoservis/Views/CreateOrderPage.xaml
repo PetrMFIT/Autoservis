@@ -53,12 +53,13 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Name="OrderMaterialText">Materiál:</TextBlock>
-                            <Button>Pridat</Button>
+                            <Button x:Name="AddMaterialButton" Click="AddMaterialButton_Click">Pridat</Button>
                         </StackPanel>
-                        <DataGrid x:Name="OrderMaterialDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid x:Name="OrderMaterialDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Kód" Binding="{Binding Code}"/>
                                 <DataGridTextColumn Header="Název" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Dodavatel" Binding="{Binding Supplier}"/>
                                 <DataGridTextColumn Header="Počet" Binding="{Binding Quantity}"/>
                                 <DataGridTextColumn Header="Jednotka" Binding="{Binding Unit}"/>
                                 <DataGridTextColumn Header="Cena/jednotka" Binding="{Binding Price}"/>
@@ -68,7 +69,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Name="OrderWorkText">Práce:</TextBlock>
-                            <Button>Pridat</Button>
+                            <Button x:Name="AddWorkButton" Click="AddWorkButton_Click">Pridat</Button>
                         </StackPanel>
                         <DataGrid x:Name="OrderWorkDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
