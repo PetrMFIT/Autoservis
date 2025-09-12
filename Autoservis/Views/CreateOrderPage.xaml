@@ -93,7 +93,7 @@
                             <Button x:Name="CustomerSearchButton" Click="CustomerSearchButton_Click">Hledat</Button>
                             <Button x:Name="ClearSelectedCustomerButton" Click="ClearSelectedCustomerButton_Click" Visibility="Collapsed">X</Button>
                         </StackPanel>
-                        <ListBox x:Name="SearchedCustomers" Visibility="Hidden" MouseDoubleClick="SearchedCustomers_MouseDoubleClick">
+                        <ListBox x:Name="SearchedCustomers" Visibility="Hidden" MouseDoubleClick="SearchedCustomer_MouseDoubleClick">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -116,23 +116,35 @@
 
 
                 <!-- Car -->
-                <StackPanel x:Name="CarInformations" Grid.Row="2" HorizontalAlignment="Center">
-                    <TextBlock HorizontalAlignment="Center">Auto</TextBlock>
-                    <StackPanel x:Name="CarSearch" Orientation="Horizontal">
-                        <TextBox x:Name="CarSearchBox" Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
-                        <Button x:Name="CarSearchButton" Click="CarSearchButton_Click">Hledat</Button>
+                <Grid  Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="CarInformations" Grid.Row="0" HorizontalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center">Auto</TextBlock>
+                        <StackPanel x:Name="CarSearch" Orientation="Horizontal">
+                            <TextBox x:Name="CarSearchBox" Width="200" Height="30" VerticalContentAlignment="Center"></TextBox>
+                            <Button x:Name="CarSearchButton" Click="CarSearchButton_Click">Hledat</Button>
+                            <Button x:Name="ClearSelectedCarButton" Click="ClearSelectedCarButton_Click" Visibility="Collapsed">X</Button>
+                        </StackPanel>
+                        <ListBox x:Name="SearchedCars" Visibility="Hidden" MouseDoubleClick="SearchedCar_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding BrandModel}" Margin="0,0,10,0"/>
+                                        <TextBlock Text="{Binding SPZ}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
-                    <ListBox x:Name="SearchedCars" Visibility="Hidden" >
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding BrandModel}" Margin="0,0,10,0"/>
-                                    <TextBlock Text="{Binding SPZ}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </StackPanel>
+                    <StackPanel x:Name="SelectedCarInfo" Grid.Row="1" HorizontalAlignment="Center">
+                        <TextBlock x:Name="CarBrandModelBlock"/>
+                        <TextBlock x:Name="CarSpzBlock"/>
+                        <TextBlock x:Name="CarYearBlock"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

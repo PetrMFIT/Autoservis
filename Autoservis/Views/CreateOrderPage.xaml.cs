@@ -30,6 +30,7 @@ namespace Autoservis.Views
         private readonly CarRepository car_repo;
 
         private Customer? _selectedCustomer;
+        private Car? _selectedCar;
 
         public CreateOrderPage()
         {
@@ -93,6 +94,33 @@ namespace Autoservis.Views
                 c.ZIP.ToLower().Contains(query)
             );
         }
+        private void SearchedCustomer_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            SearchedCustomers.Visibility = Visibility.Collapsed;
+            ClearSelectedCustomerButton.Visibility = Visibility.Visible;
+
+            if (SearchedCustomers.SelectedItem is Customer customer)
+            {
+                _selectedCustomer = customer;
+                CustomerNameBlock.Text = customer.Name;
+                CustomerPhoneBlock.Text = customer.Phone;
+                CustomerEmailBlock.Text = customer.Email;
+                CustomerAddressBlock.Text = customer.Address;
+                CustomerZipBlock.Text = customer.ZIP;
+            }
+
+        }
+        private void ClearSelectedCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+            _selectedCustomer = null;
+
+            ClearSelectedCustomerButton.Visibility = Visibility.Hidden;
+            CustomerNameBlock.Text = "";
+            CustomerPhoneBlock.Text = "";
+            CustomerEmailBlock.Text = "";
+            CustomerAddressBlock.Text = "";
+            CustomerZipBlock.Text = "";
+        }
 
         // Search Cars
         private void CarSearchButton_Click(object sender, RoutedEventArgs e)
@@ -114,64 +142,29 @@ namespace Autoservis.Views
                 c.Year.ToString().Contains(query)
             );
         }
-
-
-        private void SearchedCustomers_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SearchedCar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SearchedCustomers.Visibility = Visibility.Collapsed;
-            ClearSelectedCustomerButton.Visibility = Visibility.Visible;
+            SearchedCars.Visibility = Visibility.Collapsed;
+            ClearSelectedCarButton.Visibility = Visibility.Visible;
 
-            if (SearchedCustomers.SelectedItem is Customer customer)
+            if (SearchedCars.SelectedItem is Car car)
             {
-                _selectedCustomer = customer;
-                CustomerNameBlock.Text = customer.Name;
-                CustomerPhoneBlock.Text = customer.Phone;
-                CustomerEmailBlock.Text = customer.Email;
-                CustomerAddressBlock.Text = customer.Address;
-                CustomerZipBlock.Text = customer.ZIP;
+                _selectedCar = car;
+                CarBrandModelBlock.Text = car.BrandModel;
+                CarSpzBlock.Text = car.SPZ;
+                CarYearBlock.Text = car.Year.ToString();
             }
 
         }
-
-        /*private void SetReadOnly(bool readOnly)
+        private void ClearSelectedCarButton_Click(object sender, RoutedEventArgs e)
         {
-            var boxes = new[]
-            {
-                CustomerNameBox,
-                CustomerPhoneBox,
-                CustomerEmailBox,
-                CustomerAddressBox,
-                CustomerZIPBox,
-                CustomerNotesBox
-            };
+            _selectedCar = null;
 
-            foreach (var box in boxes)
-            {
-                box.IsReadOnly = readOnly;
-                if (readOnly)
-                {
-                    box.BorderThickness = new Thickness(0);
-                    box.Background = Brushes.Transparent;
-                }
-                else
-                {
-                    box.BorderThickness = new Thickness(1);
-                    box.Background = Brushes.White;
-                    box.Text = "";
-                }
-            }
-        }*/
-
-        private void ClearSelectedCustomerButton_Click(object sender, RoutedEventArgs e)
-        {
-            _selectedCustomer = null;
-
-            ClearSelectedCustomerButton.Visibility = Visibility.Hidden;
-            CustomerNameBlock.Text = "";
-            CustomerPhoneBlock.Text = "";
-            CustomerEmailBlock.Text = "";
-            CustomerAddressBlock.Text = "";
-            CustomerZipBlock.Text = "";
+            ClearSelectedCarButton.Visibility = Visibility.Hidden;
+            CarBrandModelBlock.Text = "";
+            CarSpzBlock.Text = "";
+            CarYearBlock.Text = "";
         }
+
     }
 }
