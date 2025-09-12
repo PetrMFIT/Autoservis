@@ -23,6 +23,9 @@ namespace Autoservis
         private readonly CustomerRepository customer_repo;
         private readonly CarRepository car_repo;
         private readonly OrderRepository order_repo;
+        
+        private readonly MaterialRepository material_repo;
+        private readonly WorkRepository work_repo;
 
         public ViewType currentView;
 
@@ -33,6 +36,9 @@ namespace Autoservis
             customer_repo = new CustomerRepository(App.DbContext);
             car_repo = new CarRepository(App.DbContext);
             order_repo = new OrderRepository(App.DbContext);
+
+            material_repo = new MaterialRepository(App.DbContext);
+            work_repo = new WorkRepository(App.DbContext);
 
             LoadCustomers();
         }
@@ -139,13 +145,21 @@ namespace Autoservis
             currentView = ViewType.Orders;
             UpdateUI();
             SetupOrderColumns();
-            DataGrid.ItemsSource = order_repo.GetAll(); ;
+            var orders = order_repo.GetAll();
+
+            foreach(var order in orders)
+            {
+                order.Materials = material_repo.GetAll().Where(m => m.OrderId == order.Id).ToList();
+                order.Works = work_repo.GetAll().Where(w => w.OrderId == order.Id).ToList();
+            }
+
+            DataGrid.ItemsSource = orders;
         }
         private void SetupOrderColumns()
         {
             DataGrid.Columns.Clear();
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Název", Binding = new Binding("Name") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") { StringFormat = "dd.MM.yyyy" } });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Stav", Binding = new Binding("State") });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Celková částka", Binding = new Binding("TotalPrice") });
         }
@@ -265,6 +279,7 @@ namespace Autoservis
         {
             MainFrame.Visibility = Visibility.Visible;
             MainFrame.Navigate(new CreateOrderPage());
+            LoadOrders();
         }
 
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)

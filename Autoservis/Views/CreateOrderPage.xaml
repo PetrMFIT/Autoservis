@@ -33,6 +33,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <!-- Order -->
@@ -150,6 +151,8 @@
                         <TextBlock x:Name="CarYearBlock"/>
                     </StackPanel>
                 </Grid>
+
+                <Button x:Name="AddOrderButton" Grid.Row="3" Click="AddOrderButton_Click">Pridat</Button>
             </Grid>
         </Grid>
     </Grid>

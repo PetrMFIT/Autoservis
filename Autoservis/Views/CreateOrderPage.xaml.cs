@@ -28,6 +28,7 @@ namespace Autoservis.Views
         private readonly WorkRepository work_repo;
         private readonly CustomerRepository customer_repo;
         private readonly CarRepository car_repo;
+        private readonly OrderRepository order_repo;
 
         private Customer? _selectedCustomer;
         private Car? _selectedCar;
@@ -39,12 +40,11 @@ namespace Autoservis.Views
         {
             InitializeComponent();
 
-            OrderMaterialDataGrid.ItemsSource = tempMaterials;
-
             material_repo = new MaterialRepository(App.DbContext);
             work_repo = new WorkRepository(App.DbContext);
             customer_repo = new CustomerRepository(App.DbContext);
             car_repo = new CarRepository(App.DbContext);
+            order_repo = new OrderRepository(App.DbContext);
 
             LoadUI();
         }
@@ -63,10 +63,6 @@ namespace Autoservis.Views
 
             OrderStateComboBox.SelectedIndex = 0;
 
-
-            OrderMaterialDataGrid.ItemsSource = material_repo.GetAll();
-
-            OrderWorkDataGrid.ItemsSource = work_repo.GetAll();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -179,7 +175,7 @@ namespace Autoservis.Views
         }
         private void AddMaterialButton_Click(object sender, RoutedEventArgs e)
         {
-            var addMaterialWindow = new AddMaterialWindow(tempMaterials);
+            var addMaterialWindow = new AddMaterialWindow();
             bool? result = addMaterialWindow.ShowDialog();
 
             if (result == true && addMaterialWindow.material != null)
@@ -196,7 +192,7 @@ namespace Autoservis.Views
         }
         private void AddWorkButton_Click(object sender, RoutedEventArgs e)
         {
-            var addWorkWindow = new AddWorkWindow(tempWorks);
+            var addWorkWindow = new AddWorkWindow();
             bool? result = addWorkWindow.ShowDialog();
 
             if (result == true && addWorkWindow.work != null)
@@ -221,6 +217,38 @@ namespace Autoservis.Views
             }
 
             TotalPriceFillBlock.Text = $"{materialSum} + {workSum} = {materialSum + workSum}";
+        }
+
+        private void AddOrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            var order = new Order
+            {
+                Date = OrderDatePicker.SelectedDate.Value,
+                Name = OrderNameBox.Text,
+                State = (State)OrderStateComboBox.SelectedItem,
+                CustomerId = _selectedCustomer.Id,
+                CarId = _selectedCar.Id
+            };
+            order_repo.Add(order);
+
+            foreach (var material in tempMaterials)
+            {
+                material.OrderId = order.Id;
+                material_repo.Add(material);
+            }
+
+            foreach (var work in tempWorks)
+            {
+                work.OrderId = order.Id;
+                work_repo.Add(work);
+            }
+
+            MessageBox.Show("Zakazka ulozena.");
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.MainFrame.Content = null;
+                mainWindow.MainFrame.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

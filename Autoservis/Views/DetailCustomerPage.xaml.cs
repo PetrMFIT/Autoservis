@@ -24,13 +24,19 @@ namespace Autoservis.Views
     {
         private Customer _customer;
 
-        private CustomerRepository customer_repo; 
+        private CustomerRepository customer_repo;
+        private OrderRepository order_repo;
+        private MaterialRepository material_repo;
+        private WorkRepository work_repo;
         public DetailCustomerPage(Customer customer)
         {
             InitializeComponent();
             _customer = customer;
 
             customer_repo = new CustomerRepository(App.DbContext);
+            order_repo = new OrderRepository(App.DbContext);
+            material_repo = new MaterialRepository(App.DbContext);
+            work_repo = new WorkRepository(App.DbContext);
 
             LoadUI();
 
@@ -65,6 +71,15 @@ namespace Autoservis.Views
         private void LoadOrders()
         {
             OrderList.ItemsSource = _customer.Orders;
+            var orders = order_repo.GetAll().Where(o => o.CustomerId == _customer.Id).ToList();
+
+            foreach (var order in orders)
+            {
+                order.Materials = material_repo.GetAll().Where(m => m.OrderId == order.Id).ToList();
+                order.Works = work_repo.GetAll().Where(w => w.OrderId == order.Id).ToList();
+            }
+
+            OrderList.ItemsSource = orders;
         }
 
         private void SetReadOnly(bool readOnly)

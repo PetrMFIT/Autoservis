@@ -21,13 +21,11 @@ namespace Autoservis.Views
     /// </summary>
     public partial class AddWorkWindow : Window
     {
-        private ObservableCollection<Work> _works;
         public Work work { get; private set; }
-        public AddWorkWindow(ObservableCollection<Work> tempWorks)
+        public AddWorkWindow()
         {
             InitializeComponent();
 
-            _works = tempWorks;
         }
 
         private void AddWorkButton_Click(object sender, RoutedEventArgs e)

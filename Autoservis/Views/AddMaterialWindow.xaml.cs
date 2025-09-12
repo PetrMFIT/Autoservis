@@ -22,15 +22,12 @@ namespace Autoservis.Views
     /// </summary>
     public partial class AddMaterialWindow : Window
     {
-        private ObservableCollection<Material> _materials;
 
         public Material material { get; private set; }
-        public AddMaterialWindow(ObservableCollection<Material> tempMaterials)
+        public AddMaterialWindow()
         {
             InitializeComponent();
             SetupSupplierComboBox();
-
-            _materials = tempMaterials;
 
             LoadUI();
         }
