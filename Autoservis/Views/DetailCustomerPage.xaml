@@ -19,7 +19,7 @@
 
             <!-- Header -->
             <Grid Grid.Row="0">
-                <TextBlock x:Name="AddOrderTitle" HorizontalAlignment="Center">Detail zakaznika</TextBlock>
+                <TextBlock x:Name="DetailCarTitle" HorizontalAlignment="Center">Detail zakaznika</TextBlock>
                 <Button x:Name="CloseButton" Click="CloseButton_Click" 
                         Height="50" Width="50" 
                         HorizontalAlignment="Right" 
