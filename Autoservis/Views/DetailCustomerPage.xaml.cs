@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Autoservis.Models;
+using Autoservis.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,8 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Autoservis.Models;
-using Autoservis.Repositories;
 
 namespace Autoservis.Views
 {
@@ -121,7 +122,7 @@ namespace Autoservis.Views
         private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             SetReadOnly(false);
-            ConfirmUpdateButton.Visibility = Visibility.Visible;
+            UpdateButtons.Visibility = Visibility.Visible;
         }
 
         private void ConfirmUpdateButton_Click(object sender, RoutedEventArgs e)
@@ -135,6 +136,30 @@ namespace Autoservis.Views
 
             customer_repo.Update(_customer);
             CloseDetail();
+        }
+        private void CancelUpdateButton_Click(object sender, RoutedEventArgs e)
+        {
+            SetReadOnly(true);
+            UpdateButtons.Visibility = Visibility.Collapsed;
+        }
+
+        private void CarList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (CarList.SelectedItem is Car car)
+            {
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    mainWindow.MainFrame.Visibility = Visibility.Visible;
+                    mainWindow.MainFrame.Navigate(new DetailCarPage(car));
+                }
+                
+            }
+            
+        }
+
+        private void OrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
