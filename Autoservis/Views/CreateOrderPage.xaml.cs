@@ -248,6 +248,7 @@ namespace Autoservis.Views
             {
                 mainWindow.MainFrame.Content = null;
                 mainWindow.MainFrame.Visibility = Visibility.Collapsed;
+                mainWindow.LoadOrders();
             }
         }
     }

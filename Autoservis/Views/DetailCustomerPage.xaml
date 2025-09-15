@@ -19,7 +19,7 @@
 
             <!-- Header -->
             <Grid Grid.Row="0">
-                <TextBlock x:Name="AddOrderTitle" HorizontalAlignment="Center">Detail zakaznika</TextBlock>
+                <TextBlock x:Name="DetailCarTitle" HorizontalAlignment="Center">Detail zakaznika</TextBlock>
                 <Button x:Name="CloseButton" Click="CloseButton_Click" 
                         Height="50" Width="50" 
                         HorizontalAlignment="Right" 
@@ -61,14 +61,14 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="CarList" Grid.Column="0" AutoGenerateColumns="False">
+                    <DataGrid x:Name="CarList" Grid.Column="0" AutoGenerateColumns="False" MouseDoubleClick="CarList_MouseDoubleClick"> 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Model" Binding="{Binding BrandModel}"/>
                             <DataGridTextColumn Header="SPZ" Binding="{Binding SPZ}"/>
                         </DataGrid.Columns>
                     </DataGrid>
 
-                    <DataGrid x:Name="OrderList" Grid.Column="1" AutoGenerateColumns="False">
+                    <DataGrid x:Name="OrderList" Grid.Column="1" AutoGenerateColumns="False" MouseDoubleClick="OrderList_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nazev" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Cena celkem" Binding="{Binding TotalPrice}"/>
@@ -76,7 +76,10 @@
                     </DataGrid>
                 </Grid>
 
-                <Button x:Name="ConfirmUpdateButton" Click="ConfirmUpdateButton_Click" Grid.Row="2" Visibility="Hidden">Potvrdit</Button>
+                <StackPanel x:Name="UpdateButtons" Grid.Row="2" Orientation="Horizontal" Visibility="Collapsed">
+                    <Button x:Name="ConfirmUpdateButton" Click="ConfirmUpdateButton_Click">Potvrdit</Button>
+                    <Button x:Name="CancelUpdateButton" Click="CancelUpdateButton_Click" >Zrusit</Button>
+                </StackPanel>
             </Grid>
 
             <Grid Grid.Row="2">

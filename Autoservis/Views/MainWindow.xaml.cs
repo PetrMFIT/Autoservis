@@ -53,7 +53,7 @@ namespace Autoservis
                     DataListLabel.Content = "Seznam zákazníků";
                     break;
                 case ViewType.Cars:
-                    CarFilters.Visibility = Visibility.Visible;
+                    CarFilters.Visibility = Visibility.Collapsed;
                     DataListLabel.Content = "Seznam aut";
                     break;
                 case ViewType.Orders:
@@ -90,7 +90,7 @@ namespace Autoservis
             LoadCars();
         }
 
-        private void LoadCars()
+        public void LoadCars()
         {
             currentView = ViewType.Cars;
             UpdateUI();
@@ -140,7 +140,7 @@ namespace Autoservis
             LoadOrders();
         }
 
-        private void LoadOrders()
+        public void LoadOrders()
         {
             currentView = ViewType.Orders;
             UpdateUI();
@@ -279,7 +279,6 @@ namespace Autoservis
         {
             MainFrame.Visibility = Visibility.Visible;
             MainFrame.Navigate(new CreateOrderPage());
-            LoadOrders();
         }
 
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
@@ -312,6 +311,8 @@ namespace Autoservis
                     MainFrame.Navigate(new DetailCustomerPage(customer));
                     break;
                 case Car car:
+                    MainFrame.Visibility = Visibility.Visible;
+                    MainFrame.Navigate(new DetailCarPage(car));
                     break;
                 case Order order:
                     break;
