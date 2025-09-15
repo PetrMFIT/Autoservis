@@ -19,7 +19,6 @@
             <!-- Main header -->
             <Grid Grid.Row="0">
                 <Image x:Name="Logo" 
-                       Source="/Images/Logo.png" 
                        Height="300" 
                        HorizontalAlignment="Left" 
                        Margin="-60"/>
