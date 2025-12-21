@@ -1,4 +1,5 @@
-﻿using Autoservis.Enums;
+﻿using Autoservis.Data;
+using Autoservis.Enums;
 using Autoservis.Migrations;
 using Autoservis.Models;
 using Autoservis.Repositories;
@@ -20,6 +21,8 @@ namespace Autoservis
 {
     public partial class MainWindow : Window
     {
+        private AppDbContext _context;
+
         private readonly CustomerRepository customer_repo;
         private readonly CarRepository car_repo;
         private readonly OrderRepository order_repo;
@@ -33,14 +36,22 @@ namespace Autoservis
         {
             InitializeComponent();
 
-            customer_repo = new CustomerRepository(App.DbContext);
-            car_repo = new CarRepository(App.DbContext);
-            order_repo = new OrderRepository(App.DbContext);
+            _context = new AppDbContext();
 
-            material_repo = new MaterialRepository(App.DbContext);
-            work_repo = new WorkRepository(App.DbContext);
+            customer_repo = new CustomerRepository(_context);
+            car_repo = new CarRepository(_context);
+            order_repo = new OrderRepository(_context);
+
+            material_repo = new MaterialRepository(_context);
+            work_repo = new WorkRepository(_context);
 
             LoadCustomers();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _context.Dispose();
+            base.OnClosed(e);
         }
 
         private void UpdateUI()
@@ -315,6 +326,8 @@ namespace Autoservis
                     MainFrame.Navigate(new DetailCarPage(car));
                     break;
                 case Order order:
+                    MainFrame.Visibility = Visibility.Visible;
+                    MainFrame.Navigate(new DetailOrderPage(order));
                     break;
             }
         }

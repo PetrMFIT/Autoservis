@@ -1,4 +1,5 @@
-﻿using Autoservis.Enums;
+﻿using Autoservis.Data;
+using Autoservis.Enums;
 using Autoservis.Models;
 using Autoservis.Repositories;
 using System;
@@ -24,6 +25,8 @@ namespace Autoservis.Views
     /// </summary>
     public partial class DetailCarPage : Page
     {
+        private AppDbContext _context;
+
         private Car _car;
 
         private CarRepository car_repo;
@@ -33,15 +36,25 @@ namespace Autoservis.Views
         public DetailCarPage(Car car)
         {
             InitializeComponent();
+
+            _context = new AppDbContext();
+
             _car = car;
 
-            car_repo = new CarRepository(App.DbContext);
-            order_repo = new OrderRepository(App.DbContext);
-            material_repo = new MaterialRepository(App.DbContext);
-            work_repo = new WorkRepository(App.DbContext);
+            car_repo = new CarRepository(_context);
+            order_repo = new OrderRepository(_context);
+            material_repo = new MaterialRepository(_context);
+            work_repo = new WorkRepository(_context);
+
+            this.Unloaded += OnUnloaded;
 
             LoadUI();
         }
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _context.Dispose();
+        }
+
 
         private void LoadUI()
         {
@@ -197,6 +210,18 @@ namespace Autoservis.Views
         {
             SetReadOnly(true);
             UpdateButtons.Visibility = Visibility.Collapsed;
+        }
+
+        private void OrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (OrderList.SelectedItem is Order order)
+            {
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    mainWindow.MainFrame.Visibility = Visibility.Visible;
+                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order));
+                }
+            }
         }
     }
 }

@@ -12,6 +12,8 @@ namespace Autoservis.Data
 {
     public class AppDbContext : DbContext
     {
+        public AppDbContext() { }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
@@ -22,6 +24,26 @@ namespace Autoservis.Data
         public DbSet<Material> Materials { get; set; }
         public DbSet<Work> Works { get; set; }
         public DbSet<Photo> Photos { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                string appDataPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "AutoservisApp"
+                );
+
+                if (!Directory.Exists(appDataPath))
+                {
+                    Directory.CreateDirectory(appDataPath);
+                }
+
+                string dbPath = Path.Combine(appDataPath, "autoservis.db");
+
+                optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            }
+        }
 
     }
 }

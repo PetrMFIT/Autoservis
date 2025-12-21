@@ -14,31 +14,17 @@ namespace Autoservis
     /// </summary>
     public partial class App : Application
     {
-        public static string DbPath { get; private set; }
-
-        public static AppDbContext DbContext { get; private set; }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            string appDataPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "AutoservisApp"
-            );
-
-            if (!Directory.Exists(appDataPath))
-                Directory.CreateDirectory(appDataPath);
-
-            DbPath = Path.Combine(appDataPath, "autoservis.db");
-
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlite($"Data source={DbPath}")
-                .Options;
-
-            DbContext = new AppDbContext(options);
-
-            DbContext.Database.Migrate();
+            // Při startu aplikace vytvoříme dočasný kontext, abychom aplikovali migrace (vytvořili DB)
+            using (var context = new AppDbContext())
+            {
+                // Tento příkaz zajistí, že se databáze vytvoří, pokud neexistuje,
+                // a aplikují se všechny čekající změny.
+                context.Database.Migrate();
+            }
         }
     }
 

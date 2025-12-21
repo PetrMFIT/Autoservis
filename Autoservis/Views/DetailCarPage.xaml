@@ -83,7 +83,7 @@
                 </StackPanel>
 
                 <Grid Grid.Row="1">
-                    <DataGrid x:Name="OrderList" Grid.Column="1" AutoGenerateColumns="False">
+                    <DataGrid x:Name="OrderList" Grid.Column="1" AutoGenerateColumns="False" MouseDoubleClick="OrderList_MouseDoubleClick">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nazev" Binding="{Binding Name}"/>
                             <DataGridTextColumn Header="Cena celkem" Binding="{Binding TotalPrice}"/>

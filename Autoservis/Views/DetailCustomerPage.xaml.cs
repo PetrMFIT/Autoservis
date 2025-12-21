@@ -1,5 +1,7 @@
-﻿using Autoservis.Models;
+﻿using Autoservis.Data;
+using Autoservis.Models;
 using Autoservis.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,8 @@ namespace Autoservis.Views
     /// </summary>
     public partial class DetailCustomerPage : Page
     {
+        private AppDbContext _context;
+
         private Customer _customer;
 
         private CustomerRepository customer_repo;
@@ -32,15 +36,25 @@ namespace Autoservis.Views
         public DetailCustomerPage(Customer customer)
         {
             InitializeComponent();
+
+            _context = new AppDbContext();
+
             _customer = customer;
 
-            customer_repo = new CustomerRepository(App.DbContext);
-            order_repo = new OrderRepository(App.DbContext);
-            material_repo = new MaterialRepository(App.DbContext);
-            work_repo = new WorkRepository(App.DbContext);
+            customer_repo = new CustomerRepository(_context);
+            order_repo = new OrderRepository(_context);
+            material_repo = new MaterialRepository(_context);
+            work_repo = new WorkRepository(_context);
+
+            this.Unloaded += OnUnloaded;
 
             LoadUI();
 
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _context.Dispose();
         }
 
         private void LoadUI()
@@ -159,7 +173,14 @@ namespace Autoservis.Views
 
         private void OrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            if (OrderList.SelectedItem is Order order)
+            {
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    mainWindow.MainFrame.Visibility = Visibility.Visible;
+                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order));
+                }
+            }
         }
     }
 }

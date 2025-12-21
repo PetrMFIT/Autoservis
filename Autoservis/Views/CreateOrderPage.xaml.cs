@@ -4,6 +4,7 @@ using Autoservis.Migrations;
 using Autoservis.Models;
 using Autoservis.Repositories;
 using Autoservis.Views;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +25,8 @@ namespace Autoservis.Views
 {
     public partial class CreateOrderPage : Page
     {
+        private readonly AppDbContext _context;
+
         private readonly MaterialRepository material_repo;
         private readonly WorkRepository work_repo;
         private readonly CustomerRepository customer_repo;
@@ -40,13 +43,22 @@ namespace Autoservis.Views
         {
             InitializeComponent();
 
-            material_repo = new MaterialRepository(App.DbContext);
-            work_repo = new WorkRepository(App.DbContext);
-            customer_repo = new CustomerRepository(App.DbContext);
-            car_repo = new CarRepository(App.DbContext);
-            order_repo = new OrderRepository(App.DbContext);
+            _context = new AppDbContext();
+
+            material_repo = new MaterialRepository(_context);
+            work_repo = new WorkRepository(_context);
+            customer_repo = new CustomerRepository(_context);
+            car_repo = new CarRepository(_context);
+            order_repo = new OrderRepository(_context);
+
+            this.Unloaded += OnUnloaded;
 
             LoadUI();
+        }
+
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            _context.Dispose();
         }
 
         private void LoadUI()

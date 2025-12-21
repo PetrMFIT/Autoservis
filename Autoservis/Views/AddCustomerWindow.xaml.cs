@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Autoservis.Views;
+using Autoservis.Data;
 
 namespace Autoservis.Views
 {
@@ -23,6 +24,8 @@ namespace Autoservis.Views
     /// </summary>
     public partial class AddCustomerWindow : Window
     {
+        private AppDbContext _context;
+
         private readonly CustomerRepository customer_repo;
         private readonly CarRepository car_repo;
 
@@ -30,10 +33,18 @@ namespace Autoservis.Views
         {
             InitializeComponent();
 
-            customer_repo = new CustomerRepository(App.DbContext);
-            car_repo = new CarRepository(App.DbContext);
+            _context = new AppDbContext();
+
+            customer_repo = new CustomerRepository(_context);
+            car_repo = new CarRepository(_context);
 
             LoadUI();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _context.Dispose();
+            base.OnClosed(e);
         }
 
         private void LoadUI()
