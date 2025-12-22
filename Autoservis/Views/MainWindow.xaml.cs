@@ -56,20 +56,56 @@ namespace Autoservis
 
         private void UpdateUI()
         {
+            MainFrame.Content = null;
+            MainFrame.Visibility = Visibility.Hidden;
+
+            var activeColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#00AE91"));
+            var inactiveColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D8D8D8"));
+
+            double normalHeight = 35;  // Standardní výška
+            double activeHeight = 45;
+
+            // Zákazníci
+            CustomersButton.Background = inactiveColor;
+            CustomersButton.Height = normalHeight;
+            CustomersButton.FontWeight = FontWeights.Normal;
+
+            // Auta
+            CarsButton.Background = inactiveColor;
+            CarsButton.Height = normalHeight;
+            CarsButton.FontWeight = FontWeights.Normal;
+
+            // Zakázky
+            OrdersButton.Background = inactiveColor;
+            OrdersButton.Height = normalHeight;
+            OrdersButton.FontWeight = FontWeights.Normal;
             //Filter.Visibility = (currentView == ViewType.Cars) ? Visibility.Visible : Visibility.Collapsed;
             switch (currentView)
             {
                 case ViewType.Customers:
                     CarFilters.Visibility = Visibility.Collapsed;
                     DataListLabel.Content = "Seznam zákazníků";
+                    ContextAddButton.Visibility = Visibility.Visible;
+                    CustomersButton.Background = activeColor;
+                    CustomersButton.Height = activeHeight;       // <--- ZMĚNA VELIKOSTI
+                    CustomersButton.FontWeight = FontWeights.Bold;
                     break;
                 case ViewType.Cars:
-                    CarFilters.Visibility = Visibility.Collapsed;
+                    CarFilters.Visibility = Visibility.Visible;
                     DataListLabel.Content = "Seznam aut";
+                    ContextAddButton.Visibility = Visibility.Visible;
+                    CarsButton.Background = activeColor;
+                    CarsButton.Background = activeColor;
+                    CarsButton.Height = activeHeight;
+                    CarsButton.FontWeight = FontWeights.Bold;
                     break;
                 case ViewType.Orders:
                     CarFilters.Visibility = Visibility.Collapsed;
                     DataListLabel.Content = "Seznam zakázek";
+                    ContextAddButton.Visibility = Visibility.Collapsed;
+                    OrdersButton.Background = activeColor;
+                    OrdersButton.Height = activeHeight;
+                    OrdersButton.FontWeight = FontWeights.Bold;
                     break;
             }
         }
@@ -294,27 +330,19 @@ namespace Autoservis
 
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
         {
-            var addCustomerWindow = new AddCustomerWindow();
-            bool? result = addCustomerWindow.ShowDialog();
-
-            if (result == true)
-            {
-                LoadCustomers();
-            }
+            MainFrame.Visibility = Visibility.Visible;
+            MainFrame.Navigate(new AddCustomerWindow());
         }
         private void AddCarButton_Click(object sender, RoutedEventArgs e)
         {
-            var addCarWindow = new AddCarWindow();
-            bool? result = addCarWindow.ShowDialog();
-
-            if (result == true)
-            {
-                LoadCars();
-            }
+            MainFrame.Visibility = Visibility.Visible;
+            MainFrame.Navigate(new AddCarWindow());
         }
 
         private void Datagrid_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
         {
+            if (DataGrid.SelectedItem == null) return;
+            MainFrame.Visibility = Visibility.Visible;
             switch(DataGrid.SelectedItem)
             {
                 case Customer customer:
@@ -328,6 +356,22 @@ namespace Autoservis
                 case Order order:
                     MainFrame.Visibility = Visibility.Visible;
                     MainFrame.Navigate(new DetailOrderPage(order));
+                    break;
+            }
+        }
+
+        private void ContextAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (currentView)
+            {
+                case ViewType.Customers:
+                    AddCustomerButton_Click(sender, e); 
+                    break;
+                case ViewType.Cars:
+                    AddCarButton_Click(sender, e);
+                    break;
+                case ViewType.Orders:
+                    CreateOrderButton_Click(sender, e);
                     break;
             }
         }

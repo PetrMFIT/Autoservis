@@ -4,91 +4,176 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis"
-        xmlns:enums="clr-namespace:Autoservis.Enums"
         mc:Ignorable="d"
-        Title="Autoservis"
-        WindowState="Maximized"
-        ResizeMode="CanResize">
-    <Grid>
-        <Grid x:Name="MainLayout" Margin="10,0,10,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        Title="Autoservis Manager" Height="750" Width="1200"
+        WindowState="Maximized" WindowStartupLocation="CenterScreen"
+        FontFamily="Segoe UI" Background="#B4B4B4">
+    <Window.Resources>
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="#D8D8D8"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0E0E0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            <!-- Main header -->
-            <Grid Grid.Row="0">
-                <Image x:Name="Logo" 
-                       Source="/Images/Logo.png" 
-                       Height="300" 
-                       HorizontalAlignment="Left" 
-                       Margin="-60"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"
-                             Height="40" Width="200" 
-                             TextAlignment="Left" 
-                             VerticalContentAlignment="Center"
-                             Padding="5,0,0,0"></TextBox>
-                    <Button x:Name="SearchButton" Click="SearchButton_Click" 
-                            Height="40" Width="50">Hledat</Button>
-                </StackPanel>
-                <Button x:Name="CreateOrderButton" Click="CreateOrderButton_Click" 
-                        HorizontalAlignment="Right" 
-                        Width="200" Height="50"
-                        Foreground="White" FontSize="20"
-                        Background="ForestGreen"
-                        Content="Vytvořit zakázku"
-                        ></Button>
-            </Grid>
+        <Style x:Key="GreenButton" TargetType="Button">
+            <Setter Property="Background" Value="#4CD964"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5CE074"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-            <!-- Content -->
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- Navigation menu -->
-            <StackPanel Grid.Column="0" Background="Aqua">
-                <Button x:Name="CustomersButton" Click="CustomersButton_Click" 
-                        Height="60" 
-                        Margin="0,0,0,10">Zákazníci</Button>
-                <Button x:Name="CarsButton" Click="CarsButton_Click" 
-                        Height="60" 
-                        Margin="0,0,0,10">Auta</Button>
-                <Button x:Name="OrdersButton" Click="OrdersButton_Click"
-                        Height="60">Zakázky</Button>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-                <Button x:Name="AddCustomerButton" Click="AddCustomerButton_Click">Přidat zákazníka</Button>
-                <Button x:Name="AddCarButton" Click="AddCarButton_Click">Přidat auto</Button>
+            <Image x:Name="Logo" Grid.Column="0" Source="/Images/Logo.png" Height="60" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="CustomersButton" Content="Zákazníci" Click="CustomersButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
+                <Button x:Name="CarsButton" Content="Auta" Click="CarsButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
+                <Button x:Name="OrdersButton" Content="Zakázky" Click="OrdersButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
             </StackPanel>
 
-                <StackPanel Grid.Column="1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Label x:Name="DataListLabel" Grid.Column="0" HorizontalAlignment="Left"></Label>
-                        <StackPanel x:Name="CarFilters" Grid.Column="1" Orientation="Horizontal">
-                            <Label>Palivo</Label>
-                            <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection"></ComboBox>
-                            <Label>Typ auta</Label>
-                            <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection"></ComboBox>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- Data -->
-                    <Grid x:Name="DataPanel">
-                        <DataGrid x:Name="DataGrid" AutoGenerateColumns="False" 
-                                    IsReadOnly="True" MouseDoubleClick="Datagrid_MouseDoubleClick">
-                        </DataGrid>
-                    </Grid>
-                    
-                </StackPanel>
-            </Grid>
+            <Button x:Name="CreateOrderButton" Grid.Column="2" 
+                    Content="Přidat zakázku" 
+                    Click="CreateOrderButton_Click"
+                    Style="{StaticResource GreenButton}"
+                    Padding="20,10" Height="45"/>
         </Grid>
-        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Visibility="Collapsed"></Frame>
+
+        <Border Grid.Row="0" VerticalAlignment="Bottom" BorderBrush="White" BorderThickness="0,0,0,2" Margin="0,0,0,5"/>
+
+
+        <Grid Grid.Row="1" Margin="0,20,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <Label x:Name="DataListLabel" Content="Seznam zákazníků" FontSize="32" FontWeight="Normal" Foreground="Black" VerticalAlignment="Center" Padding="0"/>
+                <Button x:Name="ContextAddButton" 
+                        Content="+" 
+                        Click="ContextAddButton_Click"
+                        Style="{StaticResource GreenButton}"
+                        Width="40" Height="40" Margin="15,0,0,0" FontSize="24" Padding="0,0,0,5"/>
+            </StackPanel>
+            
+
+            <StackPanel x:Name="CarFilters" Grid.Column="1" Orientation="Horizontal" Margin="20,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Label Content="Palivo:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="FuelTypeComboBox" SelectionChanged="FuelFilterSelection" Width="100" Margin="5,0,10,0"/>
+
+                <Label Content="Typ auta:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CarTypeComboBox" SelectionChanged="CarFilterSelection" Width="100" Margin="5,0,0,0"/>
+            </StackPanel>
+
+            <Border Grid.Column="2" Background="#D8D8D8" CornerRadius="2" Width="300" Height="35">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchBox" KeyDown="SearchBox_KeyDown"
+                             Background="Transparent" BorderThickness="0" 
+                             VerticalContentAlignment="Center" Padding="10,0" FontSize="14"/>
+
+                    <Button x:Name="SearchButton" Grid.Column="1" Content="Hledat" Click="SearchButton_Click"
+                            Background="Transparent" BorderThickness="0" FontWeight="Bold"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="600"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Background="White">
+                <DataGrid x:Name="DataGrid" 
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          HeadersVisibility="Column" 
+                          GridLinesVisibility="Horizontal"
+                          BorderThickness="0"
+                          Background="White"
+                          RowHeight="40"
+                          MouseDoubleClick="Datagrid_MouseDoubleClick"
+                          Padding="0">
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Style>
+                    </DataGrid.RowStyle>
+                </DataGrid>
+            </Border>
+
+            <Border Grid.Column="2" Background="#C0C0C0" BorderBrush="#808080" BorderThickness="1">
+                <Grid>
+                    <StackPanel>
+                        <Image Source="/Images/car.png"
+                               Height="500"
+                               Opacity="0.5 "
+                               Margin="0,0,0,20"/>
+                        <TextBlock Text="Vyberte položku ze seznamu pro zobrazení detailu" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   FontSize="20" Foreground="#555" TextWrapping="Wrap"/>
+
+                    </StackPanel>
+                    <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" Background="White" Visibility="Hidden"/>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

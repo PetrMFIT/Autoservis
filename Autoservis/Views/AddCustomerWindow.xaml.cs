@@ -22,7 +22,7 @@ namespace Autoservis.Views
     /// <summary>
     /// Interaction logic for AddCustomerWindow.xaml
     /// </summary>
-    public partial class AddCustomerWindow : Window
+    public partial class AddCustomerWindow : Page
     {
         private AppDbContext _context;
 
@@ -38,13 +38,14 @@ namespace Autoservis.Views
             customer_repo = new CustomerRepository(_context);
             car_repo = new CarRepository(_context);
 
+            this.Unloaded += OnUnloaded;
+
             LoadUI();
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             _context.Dispose();
-            base.OnClosed(e);
         }
 
         private void LoadUI()
@@ -129,8 +130,6 @@ namespace Autoservis.Views
             car_repo.Add(newCar);
 
             MessageBox.Show("Zákazník uložen.");
-            this.DialogResult = true;
-            this.Close();
         }
     }
 }

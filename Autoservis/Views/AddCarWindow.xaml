@@ -1,12 +1,12 @@
-﻿<Window x:Class="Autoservis.Views.AddCarWindow"
+﻿<Page x:Class="Autoservis.Views.AddCarWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autoservis.Views"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Title="AddCarWindow" Height="550" Width="800">
+        d:DesignHeight="600" d:DesignWidth="900"
+        Title="Přidat auto" Background="White">
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <Grid>
@@ -137,4 +137,4 @@
             </Grid>
         </Grid>
     </ScrollViewer>
-</Window>
+</Page>
