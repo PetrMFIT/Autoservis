@@ -57,8 +57,28 @@ namespace Autoservis.Views
             _context.Dispose();
         }
 
+        // Tuto metodu volá DetailCarPage, když se vrátí zpět
+        public void RefreshData()
+        {
+            LoadCars();
+            LoadOrders();
+        }
+
         private void LoadUI()
         {
+            // 1. TLAČÍTKA ZPĚT / ZAVŘÍT
+            if (_previousPage != null)
+            {
+                BtnBack.Visibility = Visibility.Visible;
+                BtnClose.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                BtnBack.Visibility = Visibility.Collapsed;
+                BtnClose.Visibility = Visibility.Visible;
+            }
+
+            // 2. DATA
             if (_customer.Id == 0)
             {
                 TitleNameText.Text = "Nový zákazník";
@@ -80,9 +100,8 @@ namespace Autoservis.Views
                 if (NewCarSection != null) NewCarSection.Visibility = Visibility.Collapsed;
                 if (HistoryTablesSection != null) HistoryTablesSection.Visibility = Visibility.Visible;
 
-                // Zobrazení tlačítek pro přidání
                 if (BtnAddCar != null) BtnAddCar.Visibility = Visibility.Visible;
-                if (BtnAddOrder != null) BtnAddOrder.Visibility = Visibility.Visible; // NOVÉ
+                if (BtnAddOrder != null) BtnAddOrder.Visibility = Visibility.Visible;
 
                 CustomerNameBox.Text = _customer.Name;
                 CustomerPhoneBox.Text = _customer.Phone;
@@ -197,7 +216,7 @@ namespace Autoservis.Views
                 TitleNameText.Text = _customer.Name;
                 BtnDelete.Visibility = Visibility.Visible;
                 if (BtnAddCar != null) BtnAddCar.Visibility = Visibility.Visible;
-                if (BtnAddOrder != null) BtnAddOrder.Visibility = Visibility.Visible; // NOVÉ
+                if (BtnAddOrder != null) BtnAddOrder.Visibility = Visibility.Visible;
 
                 LoadCars();
                 LoadOrders();
@@ -227,20 +246,18 @@ namespace Autoservis.Views
             }
         }
 
-        // NOVÁ METODA PRO PŘIDÁNÍ ZAKÁZKY
         private void BtnAddOrder_Click(object sender, RoutedEventArgs e)
         {
             var newOrder = new Order
             {
                 CustomerId = _customer.Id,
-                Customer = _customer, // Důležité pro zobrazení jména zákazníka v detailu zakázky
-                Date = DateTime.Now,    // Předvyplníme dnešní datum
-                Name = "Nová zakázka"   // Předvyplníme název
+                Customer = _customer,
+                Date = DateTime.Now,
+                Name = "Nová zakázka"
             };
 
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
-                // Předpokládám, že DetailOrderPage má konstruktor, který přijímá Order
                 mainWindow.MainFrame.Navigate(new DetailOrderPage(newOrder, this));
             }
         }
@@ -259,7 +276,6 @@ namespace Autoservis.Views
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            // Navigace zpět na uloženou stránku
             if (Application.Current.MainWindow is MainWindow mainWindow && _previousPage != null)
             {
                 mainWindow.MainFrame.Navigate(_previousPage);
@@ -268,13 +284,7 @@ namespace Autoservis.Views
 
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
-            // Klasické zavření (jako doteď)
-            if (Application.Current.MainWindow is MainWindow mainWindow)
-            {
-                mainWindow.MainFrame.Content = null;
-                mainWindow.MainFrame.Visibility = Visibility.Collapsed;
-                mainWindow.LoadCars(); // Nebo refresh aut
-            }
+            CloseDetail();
         }
 
         private void CloseDetail()

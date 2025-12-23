@@ -19,12 +19,14 @@ namespace Autoservis.Views
         private Order _order;
         private int _orderId;
 
+        private Page _previousPage;
+
         private readonly OrderRepository order_repo;
         private readonly MaterialRepository material_repo;
         private readonly WorkRepository work_repo;
         private readonly PhotoRepository photo_repo;
 
-        public DetailOrderPage(Order order)
+        public DetailOrderPage(Order order, Page previousPage = null)
         {
             InitializeComponent();
             _orderId = order.Id;
@@ -69,6 +71,19 @@ namespace Autoservis.Views
 
             // Tabulky
             RefreshGrids();
+            /*
+            if (_previousPage != null)
+            {
+                // Přišli jsme z detailu zákazníka -> Zobrazit ZPĚT, skrýt ZAVŘÍT
+                BtnBack.Visibility = Visibility.Visible;
+                BtnClose.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                // Přišli jsme z hlavního menu -> Zobrazit ZAVŘÍT, skrýt ZPĚT
+                BtnBack.Visibility = Visibility.Collapsed;
+                BtnClose.Visibility = Visibility.Visible;
+            }*/
         }
 
         private void RefreshGrids()
@@ -230,11 +245,6 @@ namespace Autoservis.Views
             }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            ClosePage();
-        }
-
         private void ClosePage()
         {
             if (Application.Current.MainWindow is MainWindow mw)
@@ -242,6 +252,26 @@ namespace Autoservis.Views
                 mw.MainFrame.Content = null;
                 mw.MainFrame.Visibility = Visibility.Collapsed;
                 mw.LoadOrders(); // Obnovit seznam v hlavním okně
+            }
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigace zpět na uloženou stránku
+            if (Application.Current.MainWindow is MainWindow mainWindow && _previousPage != null)
+            {
+                mainWindow.MainFrame.Navigate(_previousPage);
+            }
+        }
+
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            // Klasické zavření (jako doteď)
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.MainFrame.Content = null;
+                mainWindow.MainFrame.Visibility = Visibility.Collapsed;
+                mainWindow.LoadCars(); // Nebo refresh aut
             }
         }
     }

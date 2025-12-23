@@ -3,106 +3,546 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Autoservis.Views"
+      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="DetailCarPage"
-      Background="White">
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Title="Detail vozidla"
+      Background="White"
+      FontFamily="Segoe UI">
+
+    <Page.Resources>
+        <Style x:Key="MainComboBox" TargetType="ComboBox">
+            <Setter Property="Padding" Value="10,0,0,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#999999"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="MaxDropDownHeight" Value="250"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="None"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton" Grid.Column="2" Focusable="false" ClickMode="Press" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="25"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Path x:Name="Arrow" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,0 L8,0 L4,4 z" Fill="#555" Stretch="Fill" Width="10" Height="6"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="Border" Property="BorderBrush" Value="#444444"/>
+                                                <Setter TargetName="Arrow" Property="Fill" Value="Black"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid x:Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" Background="White" BorderThickness="1" BorderBrush="#999" Margin="0,2,0,0">
+                                        <ScrollViewer Margin="0" SnapsToDevicePixels="True" HorizontalScrollBarVisibility="Disabled" PanningMode="None">
+                                            <StackPanel IsItemsHost="True" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InputBox" TargetType="TextBox">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#D0D0D0"/>
+            <Setter Property="Background" Value="#FAFAFA"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="3">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#333333"/>
+                                <Setter TargetName="border" Property="Background" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsReadOnly" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F5F5F5"/>
+                                <Setter Property="Foreground" Value="#555"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GreenButton" TargetType="Button">
+            <Setter Property="Background" Value="#4CD964"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5CE074"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DeleteButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#D32F2F"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FFE5E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#999"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3" Padding="8,5">
+                            <StackPanel Orientation="Horizontal">
+                                <icon:PackIconMaterial Kind="Close" VerticalAlignment="Center" Width="12" Height="12" Margin="0,0,5,0" Foreground="{TemplateBinding Foreground}"/>
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#D32F2F"/>
+                    <Setter Property="Background" Value="#FFEBEE"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BackButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#555"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="3" Padding="8,5">
+                            <StackPanel Orientation="Horizontal">
+                                <icon:PackIconMaterial Kind="ArrowLeft" VerticalAlignment="Center" Width="12" Height="12" Margin="0,0,5,0"/>
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#000"/>
+                    <Setter Property="Background" Value="#F0F0F0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#444"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="ModeRadioButton" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,15,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="bdr" Background="Transparent" BorderBrush="#CCC" BorderThickness="1" CornerRadius="3" Padding="15,8">
+                            <ContentPresenter HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="bdr" Property="Background" Value="#E0E0E0"/>
+                                <Setter TargetName="bdr" Property="BorderBrush" Value="#999"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#E0E0E0"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderThickness" Value="0,0,1,2"/>
+            <Setter Property="BorderBrush" Value="#A0A0A0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridColumnHeader">
+                        <Grid>
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter VerticalAlignment="Center" SnapsToDevicePixels="True"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F2F2F2"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#D8D8D8"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <Grid x:Name="DetailCarLayout">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="30,30,30,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
-            <Grid Grid.Row="0">
-                <TextBlock x:Name="DetailCarTitle" HorizontalAlignment="Center">Detail auta</TextBlock>
-                <Button x:Name="CloseButton" Click="CloseButton_Click" 
-                Height="50" Width="50" 
-                HorizontalAlignment="Right" 
-                Background="Red"
-                Content="X" Foreground="White" FontSize="20" />
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <Button x:Name="BtnBack" Click="BtnBack_Click" 
+                            Style="{StaticResource BackButtonStyle}" 
+                            Content="Zpět k zákazníkovi"
+                            Visibility="Collapsed" Margin="0,0,10,0"/>
+
+                    <Button x:Name="BtnClose" Click="BtnClose_Click" 
+                            Style="{StaticResource CloseButtonStyle}" 
+                            Content="Zavřít"
+                            Visibility="Visible"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <TextBlock Text="KARTA VOZIDLA" Foreground="#777" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock x:Name="TitleSPZText" Text="SPZ 123" Foreground="#333" FontSize="28" FontWeight="SemiBold"/>
+                        <TextBlock Text=" | " Foreground="#CCC" FontSize="28" FontWeight="Light" Margin="10,0"/>
+                        <TextBlock x:Name="TitleModelText" Text="Audi A4" Foreground="#555" FontSize="28" FontWeight="Light"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
 
-            <!-- Informations -->
-            <Grid x:Name="Informations" Grid.Row="1">
+            <Border x:Name="CustomerSelectionSection" Grid.Row="1" 
+                    Background="#F5F5F5" CornerRadius="5" Padding="20" Margin="0,0,0,30" 
+                    Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                        <icon:PackIconMaterial Kind="Account" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="Přiřazení majitele" Style="{StaticResource SectionHeader}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <RadioButton x:Name="RadioExisting" Content="Vybrat existujícího" IsChecked="True" Checked="RadioMode_Checked" Style="{StaticResource ModeRadioButton}"/>
+                            <RadioButton x:Name="RadioNew" Content="Vytvořit nového" Checked="RadioMode_Checked" Style="{StaticResource ModeRadioButton}"/>
+                        </StackPanel>
+
+                        <Grid x:Name="PanelSearch" Visibility="Visible" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="SearchCustomerBox" Style="{StaticResource InputBox}" KeyDown="SearchCustomerBox_KeyDown" Tag="Zadejte jméno pro hledání..."/>
+                            <Button Grid.Column="1" Content="Hledat" Click="SearchCustomer_Click" Width="80" Margin="10,0,0,0"/>
+
+                            <Popup x:Name="PopupSearchResults" PlacementTarget="{Binding ElementName=SearchCustomerBox}" IsOpen="False" StaysOpen="False" Width="400">
+                                <Border Background="White" BorderBrush="#999" BorderThickness="1">
+                                    <ListBox x:Name="CustomerSearchResults" MaxHeight="200" MouseDoubleClick="CustomerSearchResults_MouseDoubleClick" BorderThickness="0">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="5">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                                    <TextBlock Text=" | " Foreground="Gray" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding Phone}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <Grid x:Name="PanelCustomerForm">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="15"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="15"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <Label Content="JMÉNO A PŘÍJMENÍ *"/>
+                                <TextBox x:Name="CustNameBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <Label Content="TELEFON"/>
+                                <TextBox x:Name="CustPhoneBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="4">
+                                <Label Content="E-MAIL"/>
+                                <TextBox x:Name="CustEmailBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Grid.Column="0">
+                                <Label Content="ADRESA"/>
+                                <TextBox x:Name="CustAddressBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="2">
+                                <Label Content="PSČ"/>
+                                <TextBox x:Name="CustZIPBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="4">
+                                <Label Content="POZNÁMKA K ZÁKAZNÍKOVI"/>
+                                <TextBox x:Name="CustNotesBox" Style="{StaticResource InputBox}"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2" BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,15">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <icon:PackIconMaterial Kind="CarSports" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="Údaje o vozidle" Style="{StaticResource SectionHeader}"/>
+                </StackPanel>
+            </Border>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="15"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="15"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="15"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel x:Name="CarInformations" Grid.Row="0" Margin="10">
-                    <TextBlock x:Name="CarBrandModelText">Znacka/model:*</TextBlock>
-                    <TextBox x:Name="CarBrandModelBox"></TextBox>
-
-                    <TextBlock x:Name="CarSPZText">SPZ:*</TextBlock>
-                    <TextBox x:Name="CarSPZBox"></TextBox>
-
-                    <TextBlock x:Name="CarVINText">VIN:</TextBlock>
-                    <TextBox x:Name="CarVINBox"></TextBox>
-
-                    <TextBlock x:Name="CarOwnerText">Majitel:</TextBlock>
-                    <TextBox x:Name="CarOwnerBox"></TextBox>
-
-                    <!-- Car combobox -->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Orientation="Horizontal" Grid.Column="0">
-                            <TextBlock x:Name="CarYearText" Margin="0,0,5,0">Rok vyroby:</TextBlock>
-                            <ComboBox x:Name="CarYearComboBox" Width="60" Visibility="Collapsed"></ComboBox>
-                            <TextBox x:Name="CarYearBox"></TextBox>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Grid.Column="1">
-                            <TextBlock x:Name="CarFuelText" Margin="0,0,5,0">Palivo:</TextBlock>
-                            <ComboBox x:Name="CarFuelComboBox" Width="70" Visibility="Collapsed"></ComboBox>
-                            <TextBox x:Name="CarFuelBox"></TextBox>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Grid.Column="2">
-                            <TextBlock x:Name="CarTypeText" Margin="0,0,5,0">Typ:</TextBlock>
-                            <ComboBox x:Name="CarTypeComboBox" Width="80" Visibility="Collapsed"></ComboBox>
-                            <TextBox x:Name="CarTypeBox"></TextBox>
-                        </StackPanel>
-                    </Grid>
-
-                    <TextBlock x:Name="CarDisplacementPowerText">Obsah/vykon:</TextBlock>
-                    <TextBox x:Name="CarDisplacementPowerBox"></TextBox>
-
-                    <TextBlock x:Name="CarNotesText">Poznamka:</TextBlock>
-                    <TextBox x:Name="CarNotesBox"></TextBox>
+                <StackPanel Grid.Column="0">
+                    <Label Content="ZNAČKA A MODEL *"/>
+                    <TextBox x:Name="CarBrandModelBox" Style="{StaticResource InputBox}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <Label Content="SPZ *"/>
+                    <TextBox x:Name="CarSPZBox" Style="{StaticResource InputBox}" />
+                </StackPanel>
+                <StackPanel Grid.Column="4">
+                    <Label Content="ROK VÝROBY"/>
+                    <ComboBox x:Name="CarYearComboBox" Style="{StaticResource MainComboBox}" />
                 </StackPanel>
 
-                <Grid Grid.Row="1">
-                    <DataGrid x:Name="OrderList" Grid.Column="1" AutoGenerateColumns="False" MouseDoubleClick="OrderList_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nazev" Binding="{Binding Name}"/>
-                            <DataGridTextColumn Header="Cena celkem" Binding="{Binding TotalPrice}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <StackPanel Grid.Row="2" Grid.Column="0">
+                    <Label Content="VIN"/>
+                    <TextBox x:Name="CarVINBox" Style="{StaticResource InputBox}" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="2">
+                    <Label Content="OBSAH / VÝKON"/>
+                    <TextBox x:Name="CarDisplacementPowerBox" Style="{StaticResource InputBox}" />
+                </StackPanel>
+
+                <Grid Grid.Row="2" Grid.Column="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <Label Content="TYP"/>
+                        <ComboBox x:Name="CarTypeComboBox" Style="{StaticResource MainComboBox}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2">
+                        <Label Content="PALIVO"/>
+                        <ComboBox x:Name="CarFuelComboBox" Style="{StaticResource MainComboBox}" />
+                    </StackPanel>
                 </Grid>
 
-                <StackPanel x:Name="UpdateButtons" Grid.Row="2" Orientation="Horizontal" Visibility="Collapsed">
-                    <Button x:Name="ConfirmUpdateButton" Click="ConfirmUpdateButton_Click">Potvrdit</Button>
-                    <Button x:Name="CancelUpdateButton" Click="CancelUpdateButton_Click" >Zrusit</Button>
+                <StackPanel x:Name="CarOwnerPanel" Grid.Row="4" Grid.Column="0">
+                    <Label Content="MAJITEL (Kliknutím zobrazíte detail)"/>
+
+                    <TextBox x:Name="CarOwnerBox" 
+                             Style="{StaticResource InputBox}" 
+                             IsReadOnly="True" 
+                             Background="#F9F9F9" 
+                             Cursor="Hand" 
+                             Focusable="False" 
+                             Foreground="#007ACC" 
+                             FontWeight="SemiBold"
+                             PreviewMouseLeftButtonDown="CarOwnerBox_Click"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="6" Grid.ColumnSpan="5">
+                    <Label Content="POZNÁMKA K AUTU"/>
+                    <TextBox x:Name="CarNotesBox" Style="{StaticResource InputBox}" Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" Padding="10,8"/>
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="2">
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="UpdateButton_Click">Upravit</Button>
-                    <Button Click="DeleteButton_Click">Odstranit</Button>
-                </StackPanel>
+            <Grid x:Name="OrderHistorySection" Grid.Row="5" Margin="0,30,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5" VerticalAlignment="Center">
+                        <icon:PackIconMaterial Kind="ClipboardText" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock Text="Historie zakázek tohoto vozu" Style="{StaticResource SectionHeader}"/>
+                    </StackPanel>
+                </Border>
+
+                <DataGrid x:Name="OrderList" Grid.Row="1"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#EEEEEE" Background="White" 
+                          BorderThickness="0" RowHeight="35"
+                          MouseDoubleClick="OrderList_MouseDoubleClick">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Datum" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="120"/>
+                        <DataGridTextColumn Header="Cena" Binding="{Binding TotalPrice}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
+
+        <Border Grid.Row="1" Background="White" BorderBrush="#EEEEEE" BorderThickness="0,1,0,0" Padding="30,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="BtnDelete" Click="DeleteButton_Click" Style="{StaticResource DeleteButton}" Padding="15,10">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="TrashCan" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Smazat vozidlo" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Column="2" Click="SaveButton_Click" Style="{StaticResource GreenButton}" Padding="40,10" Height="45">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="ContentSave" Margin="0,0,10,0" VerticalAlignment="Center" Width="18" Height="18"/>
+                        <TextBlock Text="ULOŽIT ZMĚNY" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

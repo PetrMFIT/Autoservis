@@ -2,160 +2,330 @@
 using Autoservis.Enums;
 using Autoservis.Models;
 using Autoservis.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Autoservis.Views
 {
-    /// <summary>
-    /// Interaction logic for DetailCarPage.xaml
-    /// </summary>
     public partial class DetailCarPage : Page
     {
         private AppDbContext _context;
-
         private Car _car;
+        private Page _previousPage;
 
         private CarRepository car_repo;
         private OrderRepository order_repo;
-        private MaterialRepository material_repo;
-        private WorkRepository work_repo;
-        public DetailCarPage(Car car)
+        private CustomerRepository customer_repo;
+
+        private Customer _selectedOwner;
+
+        public DetailCarPage(Car car, Page previousPage = null)
         {
             InitializeComponent();
 
             _context = new AppDbContext();
 
-            _car = car;
+            if (car != null && car.Id != 0)
+            {
+                _car = _context.Cars.Include(c => c.Customer).FirstOrDefault(c => c.Id == car.Id);
+            }
+            else
+            {
+                _car = car ?? new Car();
+                if (_car.CustomerId != 0)
+                {
+                    _car.Customer = _context.Customers.FirstOrDefault(c => c.Id == _car.CustomerId);
+                }
+            }
+
+            _previousPage = previousPage;
 
             car_repo = new CarRepository(_context);
             order_repo = new OrderRepository(_context);
-            material_repo = new MaterialRepository(_context);
-            work_repo = new WorkRepository(_context);
+            customer_repo = new CustomerRepository(_context);
 
             this.Unloaded += OnUnloaded;
-
             LoadUI();
         }
+
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             _context.Dispose();
         }
 
-
         private void LoadUI()
         {
-            LoadCars();
-            LoadOrders();
+            SetupCombos();
+
+            if (_previousPage != null)
+            {
+                BtnBack.Visibility = Visibility.Visible;
+                BtnClose.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                BtnBack.Visibility = Visibility.Collapsed;
+                BtnClose.Visibility = Visibility.Visible;
+            }
+
+            if (_car.Id == 0)
+            {
+                TitleSPZText.Text = "Nové vozidlo";
+                TitleModelText.Text = "";
+                BtnDelete.Visibility = Visibility.Collapsed;
+                if (OrderHistorySection != null) OrderHistorySection.Visibility = Visibility.Collapsed;
+
+                if (_car.CustomerId == 0)
+                {
+                    if (CustomerSelectionSection != null) CustomerSelectionSection.Visibility = Visibility.Visible;
+                    if (CarOwnerPanel != null) CarOwnerPanel.Visibility = Visibility.Collapsed;
+
+                    SetCustomerFormState(isNewMode: false);
+                }
+                else
+                {
+                    if (CustomerSelectionSection != null) CustomerSelectionSection.Visibility = Visibility.Collapsed;
+                    if (CarOwnerPanel != null) CarOwnerPanel.Visibility = Visibility.Visible;
+                    CarOwnerBox.Text = _car.Customer?.Name ?? "Neznámý";
+                }
+            }
+            else
+            {
+                TitleSPZText.Text = _car.SPZ;
+                TitleModelText.Text = _car.BrandModel;
+                BtnDelete.Visibility = Visibility.Visible;
+                if (OrderHistorySection != null) OrderHistorySection.Visibility = Visibility.Visible;
+                if (CustomerSelectionSection != null) CustomerSelectionSection.Visibility = Visibility.Collapsed;
+
+                if (CarOwnerPanel != null) CarOwnerPanel.Visibility = Visibility.Visible;
+                CarOwnerBox.Text = _car.Customer?.Name ?? "Neznámý";
+
+                CarBrandModelBox.Text = _car.BrandModel;
+                CarSPZBox.Text = _car.SPZ;
+                CarVINBox.Text = _car.VIN;
+                CarYearComboBox.SelectedItem = _car.Year > 0 ? _car.Year : DateTime.Now.Year;
+                CarFuelComboBox.SelectedItem = _car.Fuel;
+                CarTypeComboBox.SelectedItem = _car.Type;
+                CarDisplacementPowerBox.Text = _car.DisplacementPower;
+                CarNotesBox.Text = _car.Notes;
+
+                LoadOrders();
+            }
+        }
+
+        private void SetupCombos()
+        {
+            CarYearComboBox.Items.Clear();
             for (int year = DateTime.Now.Year; year >= 1900; year--)
             {
                 CarYearComboBox.Items.Add(year);
             }
-            CarYearComboBox.SelectedIndex = 0;
+            var fuelItems = new List<object>();
+            fuelItems.AddRange(Enum.GetValues(typeof(FuelType)).Cast<object>());
+            fuelItems.Add("Ostatní");
+            CarFuelComboBox.ItemsSource = fuelItems;
 
-            SetupCarFuelComboBox();
-            SetupCarTypeComboBox();
-
-            SetReadOnly(true);
-            OrderList.IsReadOnly = true;
+            var typeItems = new List<object>();
+            typeItems.AddRange(Enum.GetValues(typeof(CarType)).Cast<object>());
+            typeItems.Add("Ostatní");
+            CarTypeComboBox.ItemsSource = typeItems;
         }
 
-        private void LoadCars()
+        private void RadioMode_Checked(object sender, RoutedEventArgs e)
         {
-            CarBrandModelBox.Text = _car.BrandModel;
-            CarSPZBox.Text = _car.SPZ;
-            CarVINBox.Text = _car.VIN;
-            CarOwnerBox.Text = _car.Customer.Name;
-            CarYearBox.Text = _car.Year.ToString();
-            CarFuelBox.Text = _car.Fuel.ToString();
-            CarTypeBox.Text = _car.Type.ToString();
-            CarDisplacementPowerBox.Text = _car.DisplacementPower;
-            CarNotesBox.Text = _car.Notes;
+            if (RadioExisting == null || RadioNew == null) return;
+            SetCustomerFormState(isNewMode: RadioNew.IsChecked == true);
         }
 
-        private void SetupCarFuelComboBox()
+        private void SetCustomerFormState(bool isNewMode)
         {
-            var items = new List<object>();
-            items.AddRange(Enum.GetValues(typeof(FuelType)).Cast<object>());
-            items.Add("Ostatní");
+            if (PanelSearch == null) return;
 
-            CarFuelComboBox.ItemsSource = items;
+            PanelSearch.Visibility = isNewMode ? Visibility.Collapsed : Visibility.Visible;
 
-            CarFuelComboBox.SelectedIndex = 2;
+            bool isReadOnly = !isNewMode;
+
+            CustNameBox.IsReadOnly = isReadOnly;
+            CustPhoneBox.IsReadOnly = isReadOnly;
+            CustEmailBox.IsReadOnly = isReadOnly;
+            CustAddressBox.IsReadOnly = isReadOnly;
+            CustZIPBox.IsReadOnly = isReadOnly;
+            CustNotesBox.IsReadOnly = isReadOnly;
+
+            if (isNewMode)
+            {
+                ClearCustomerForm();
+                _selectedOwner = null;
+            }
         }
 
-        private void SetupCarTypeComboBox()
+        private void ClearCustomerForm()
         {
-            var items = new List<object>();
-            items.AddRange(Enum.GetValues(typeof(CarType)).Cast<object>());
-            items.Add("Ostatní");
+            CustNameBox.Text = "";
+            CustPhoneBox.Text = "";
+            CustEmailBox.Text = "";
+            CustAddressBox.Text = "";
+            CustZIPBox.Text = "";
+            CustNotesBox.Text = "";
+        }
 
-            CarTypeComboBox.ItemsSource = items;
+        private void SearchCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            PerformSearch();
+        }
 
-            CarTypeComboBox.SelectedIndex = 4;
+        private void SearchCustomerBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) PerformSearch();
+        }
+
+        private void PerformSearch()
+        {
+            string query = SearchCustomerBox.Text.ToLower().Trim();
+            if (string.IsNullOrEmpty(query)) return;
+
+            var results = customer_repo.GetAll()
+                .Where(c => c.Name.ToLower().Contains(query) || c.Phone.Contains(query))
+                .ToList();
+
+            CustomerSearchResults.ItemsSource = results;
+            PopupSearchResults.IsOpen = true;
+        }
+
+        private void CustomerSearchResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (CustomerSearchResults.SelectedItem is Customer cust)
+            {
+                _selectedOwner = cust;
+
+                CustNameBox.Text = cust.Name;
+                CustPhoneBox.Text = cust.Phone;
+                CustEmailBox.Text = cust.Email;
+                CustAddressBox.Text = cust.Address;
+                CustZIPBox.Text = cust.ZIP;
+                CustNotesBox.Text = cust.Notes;
+
+                PopupSearchResults.IsOpen = false;
+                SearchCustomerBox.Text = "";
+            }
         }
 
         private void LoadOrders()
         {
-            OrderList.ItemsSource = _car.Orders;
+            if (_car.Id == 0) return;
             var orders = order_repo.GetAll().Where(o => o.CarId == _car.Id).ToList();
-
-            foreach (var order in orders)
-            {
-                order.Materials = material_repo.GetAll().Where(m => m.OrderId == order.Id).ToList();
-                order.Works = work_repo.GetAll().Where(w => w.OrderId == order.Id).ToList();
-            }
-
             OrderList.ItemsSource = orders;
         }
 
-        private void SetReadOnly(bool readOnly)
+        // --- KLIKNUTÍ NA MAJITELE ---
+        private void CarOwnerBox_Click(object sender, MouseButtonEventArgs e)
         {
-            CarBrandModelBox.IsReadOnly = readOnly;
-            CarSPZBox.IsReadOnly = readOnly;
-            CarVINBox.IsReadOnly = readOnly;
-            CarYearBox.IsReadOnly = readOnly;
-            CarFuelBox.IsReadOnly = readOnly;
-            CarTypeBox.IsReadOnly = readOnly;
-
-            if (!readOnly)
+            if (_car != null && _car.Customer != null)
             {
-                CarYearBox.Visibility = Visibility.Collapsed;
-                CarYearComboBox.Visibility = Visibility.Visible;
-
-                CarFuelBox.Visibility = Visibility.Collapsed;
-                CarFuelComboBox.Visibility = Visibility.Visible;
-
-                CarTypeBox.Visibility = Visibility.Collapsed;
-                CarTypeComboBox.Visibility = Visibility.Visible;
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                {
+                    // Přejdeme na detail zákazníka a pošleme 'this' (DetailCarPage) jako předchozí stránku,
+                    // aby se dalo vrátit zpět k autu.
+                    mainWindow.MainFrame.Navigate(new DetailCustomerPage(_car.Customer, this));
+                }
             }
-            else
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(CarSPZBox.Text) || string.IsNullOrWhiteSpace(CarBrandModelBox.Text))
             {
-                CarYearBox.Visibility = Visibility.Visible;
-                CarYearComboBox.Visibility = Visibility.Collapsed;
-
-                CarFuelBox.Visibility = Visibility.Visible;
-                CarFuelComboBox.Visibility = Visibility.Collapsed;
-
-                CarTypeBox.Visibility = Visibility.Visible;
-                CarTypeComboBox.Visibility = Visibility.Collapsed;
+                MessageBox.Show("SPZ a Model jsou povinné údaje.", "Chyba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-                CarDisplacementPowerBox.IsReadOnly = readOnly;
-            CarNotesBox.IsReadOnly = readOnly;
+            try
+            {
+                if (_car.Id == 0 && _car.CustomerId == 0)
+                {
+                    if (RadioExisting.IsChecked == true)
+                    {
+                        if (_selectedOwner == null)
+                        {
+                            MessageBox.Show("Vyberte majitele ze seznamu.", "Chyba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        _car.CustomerId = _selectedOwner.Id;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrWhiteSpace(CustNameBox.Text))
+                        {
+                            MessageBox.Show("Vyplňte jméno zákazníka.", "Chyba", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+
+                        var newCustomer = new Customer
+                        {
+                            Name = CustNameBox.Text,
+                            Phone = CustPhoneBox.Text,
+                            Email = CustEmailBox.Text,
+                            Address = CustAddressBox.Text,
+                            ZIP = CustZIPBox.Text,
+                            Notes = CustNotesBox.Text
+                        };
+                        customer_repo.Add(newCustomer);
+                        _car.CustomerId = newCustomer.Id;
+                    }
+                }
+
+                _car.BrandModel = CarBrandModelBox.Text;
+                _car.SPZ = CarSPZBox.Text;
+                _car.VIN = CarVINBox.Text;
+                _car.Year = CarYearComboBox.SelectedItem is int y ? y : DateTime.Now.Year;
+                _car.Fuel = CarFuelComboBox.SelectedItem is FuelType f ? f : (FuelType?)null;
+                _car.Type = CarTypeComboBox.SelectedItem is CarType t ? t : (CarType?)null;
+                _car.DisplacementPower = CarDisplacementPowerBox.Text;
+                _car.Notes = CarNotesBox.Text;
+
+                if (_car.Id == 0) car_repo.Add(_car);
+                else car_repo.Update(_car);
+
+                MessageBox.Show("Vozidlo uloženo.", "Hotovo", MessageBoxButton.OK, MessageBoxImage.Information);
+                GoBackOrClose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Chyba: " + ex.Message);
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show($"Opravdu smazat vozidlo {_car.SPZ}?", "Smazat", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                car_repo.Delete(_car.Id);
+                GoBackOrClose();
+            }
+        }
+
+        private void BtnBack_Click(object sender, RoutedEventArgs e) { GoBackOrClose(); }
+        private void BtnClose_Click(object sender, RoutedEventArgs e) { CloseDetail(); }
+
+        private void GoBackOrClose()
+        {
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                if (_previousPage != null)
+                {
+                    if (_previousPage is DetailCustomerPage custPage)
+                    {
+                        custPage.RefreshData();
+                    }
+                    mainWindow.MainFrame.Navigate(_previousPage);
+                }
+                else CloseDetail();
+            }
         }
 
         private void CloseDetail()
@@ -167,50 +337,6 @@ namespace Autoservis.Views
                 mainWindow.LoadCars();
             }
         }
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            CloseDetail();
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show($"Opravdu chcete smazat auto s SPZ: {_car.SPZ}?",
-                            "Potvrzení smazání",
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                car_repo.Delete(_car.Id);
-                CloseDetail();
-            }
-        }
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetReadOnly(false);
-            UpdateButtons.Visibility = Visibility.Visible;
-        }
-
-        private void ConfirmUpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            _car.BrandModel = CarBrandModelBox.Text;
-            _car.SPZ = CarSPZBox.Text;
-            _car.VIN = CarVINBox.Text;
-            //_car.Customer.Name = CarOwnerBox.Text;
-            _car.Year = (int)CarYearComboBox.SelectedItem;
-            _car.Fuel = CarFuelComboBox.SelectedItem is FuelType fuel ? fuel : null;
-            _car.Type = CarTypeComboBox.SelectedItem is CarType type ? type : null;
-            _car.DisplacementPower = CarDisplacementPowerBox.Text;
-            _car.Notes = CarNotesBox.Text;
-
-            car_repo.Update(_car);
-            CloseDetail();
-        }
-
-        private void CancelUpdateButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetReadOnly(true);
-            UpdateButtons.Visibility = Visibility.Collapsed;
-        }
 
         private void OrderList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -218,8 +344,7 @@ namespace Autoservis.Views
             {
                 if (Application.Current.MainWindow is MainWindow mainWindow)
                 {
-                    mainWindow.MainFrame.Visibility = Visibility.Visible;
-                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order));
+                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order, this));
                 }
             }
         }

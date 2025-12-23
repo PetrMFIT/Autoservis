@@ -199,7 +199,7 @@
                         Style="{StaticResource NavButton}" 
                         Width="100" Height="35">
                     <StackPanel Orientation="Horizontal">
-                        <icon:PackIconMaterial Kind="TextBox"
+                        <icon:PackIconMaterial Kind="ClipboardText"
                            VerticalAlignment="Center"
                            Height="15" Width="15"
                            Margin="0,0,10,0"/>
@@ -213,9 +213,9 @@
                     Style="{StaticResource GreenButton}"
                     Padding="20,10" Height="45">
                 <StackPanel Orientation="Horizontal">
-                    <icon:PackIconMaterial Kind="PlusThick"
+                    <icon:PackIconMaterial Kind="ClipboardPlus"
                                            VerticalAlignment="Center"
-                                           Height="15" Width="15"
+                                           Height="20" Width="20"
                                            Margin="0,0,10,0"/>
                     <TextBlock Text="Vytvořit zakázku" VerticalAlignment="Center"/>
                 </StackPanel>
