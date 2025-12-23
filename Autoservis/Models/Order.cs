@@ -14,6 +14,7 @@ namespace Autoservis.Models
         public DateTime Date { get; set; }
         public string Name { get; set; } = string.Empty;
         public State State { get; set; }
+        public int Mileage { get; set; }
 
         [Required]
         public int CustomerId { get; set; }

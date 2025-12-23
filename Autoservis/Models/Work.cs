@@ -10,6 +10,7 @@ namespace Autoservis.Models
     public class Work
     {
         public int Id { get; set; }
+        public string Description { get; set; } = "";
         public int Hours { get; set; }
         public int Price { get; set; }
         public int TotalPrice => Hours * Price;

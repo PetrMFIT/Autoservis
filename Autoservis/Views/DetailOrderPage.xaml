@@ -3,127 +3,535 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="900"
-      Title="Detail Zakázky" Background="White">
+      d:DesignHeight="900" d:DesignWidth="1300"
+      Title="Detail Zakázky" 
+      Background="White" 
+      FontFamily="Segoe UI">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="10">
-            <TextBlock Text="Detail Zakázky" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center"/>
-            <Button Click="BtnClose_Click" Content="X" Width="40" Height="40" HorizontalAlignment="Right" Background="#FF5555" Foreground="White" FontSize="18" FontWeight="Bold"/>
-        </Grid>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="30,30,30,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <TabControl Grid.Row="1" Margin="10">
-
-            <TabItem Header="Informace">
-                <StackPanel Margin="10">
-                    <TextBlock Text="Název zakázky:" FontWeight="Bold"/>
-                    <TextBox x:Name="OrderNameBox" Margin="0,0,0,10"/>
-
-                    <TextBlock Text="Datum:" FontWeight="Bold"/>
-                    <DatePicker x:Name="OrderDatePicker" Margin="0,0,0,10"/>
-
-                    <TextBlock Text="Stav:" FontWeight="Bold"/>
-                    <ComboBox x:Name="OrderStateComboBox" Margin="0,0,0,10"/>
-
-                    <TextBlock Text="Zákazník:" FontWeight="Bold" Margin="0,10,0,0"/>
-                    <TextBlock x:Name="CustomerNameText" FontSize="14"/>
-
-                    <TextBlock Text="Auto:" FontWeight="Bold" Margin="0,10,0,0"/>
-                    <TextBlock x:Name="CarNameText" FontSize="14"/>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                        <TextBlock Text="Celková cena:" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TotalPriceText" Text="0 Kč" FontSize="18" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="ForestGreen"/>
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button x:Name="BtnBack" Click="BtnBack_Click" Style="{StaticResource BackButtonStyle}" Content="Zpět" Visibility="Collapsed" Margin="0,0,10,0"/>
+                        <Button x:Name="BtnClose" Click="BtnClose_Click" Style="{StaticResource CloseButtonStyle}" Content="Zavřít"/>
                     </StackPanel>
-                </StackPanel>
-            </TabItem>
 
-            <TabItem Header="Materiál">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Button Content="Přidat materiál" Click="AddMaterial_Click" Width="120" HorizontalAlignment="Left" Margin="5"/>
-                    <DataGrid x:Name="MaterialsGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="*"/>
-                            <DataGridTextColumn Header="Kusů" Binding="{Binding Quantity}"/>
-                            <DataGridTextColumn Header="Cena/ks" Binding="{Binding Price}"/>
-                            <DataGridTextColumn Header="Celkem" Binding="{Binding TotalPrice}"/>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Smazat" Click="DeleteMaterial_Click" Background="Red" Foreground="White"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <Button Grid.Column="1" HorizontalAlignment="Right" Click="BtnExportPDF_Click" Style="{StaticResource GreyButton}" Margin="0,0,20,0" Height="35" Padding="15,0">
+                        <StackPanel Orientation="Horizontal">
+                            <icon:PackIconMaterial Kind="FilePdfBox" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="#D32F2F"/>
+                            <TextBlock Text="Exportovat PDF" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <TextBlock Text="KARTA ZAKÁZKY" Foreground="#777" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="TitleText" Text="Nová zakázka" Foreground="#333" FontSize="28" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </StackPanel>
                 </Grid>
-            </TabItem>
 
-            <TabItem Header="Práce">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Button Content="Přidat práci" Click="AddWork_Click" Width="120" HorizontalAlignment="Left" Margin="5"/>
-                    <DataGrid x:Name="WorksGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Hodiny" Binding="{Binding Hours}" Width="*"/>
-                            <DataGridTextColumn Header="Sazba" Binding="{Binding Price}"/>
-                            <DataGridTextColumn Header="Celkem" Binding="{Binding TotalPrice}"/>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Smazat" Click="DeleteWork_Click" Background="Red" Foreground="White"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <Grid Grid.Row="1" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Label Content="NÁZEV ZAKÁZKY *"/>
+                        <TextBox x:Name="OrderNameBox" Style="{StaticResource InputBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <Label Content="DATUM"/>
+                        <DatePicker x:Name="OrderDatePicker" VerticalContentAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <Label Content="STAV TACHOMETRU (KM)"/>
+                        <TextBox x:Name="CarMileageBox" Style="{StaticResource InputBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="6">
+                        <Label Content="STAV"/>
+                        <ComboBox x:Name="OrderStateComboBox" Style="{StaticResource MainComboBox}"/>
+                    </StackPanel>
                 </Grid>
-            </TabItem>
 
-            <TabItem Header="Fotodokumentace">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Button Content="Nahrát fotku" Click="AddPhoto_Click" Width="120" HorizontalAlignment="Left" Margin="5"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
 
-                    <ListBox x:Name="PhotosList" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Margin="5">
-                                    <Image Source="{Binding FilePath}" Width="150" Height="100" Stretch="UniformToFill"/>
-                                    <Button Content="Smazat" Click="DeletePhoto_Click" Margin="0,5,0,0"/>
+                    <Border Grid.Column="0" Background="#F9F9F9" CornerRadius="5" Padding="15" BorderBrush="#EEE" BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <icon:PackIconMaterial Kind="Account" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="Zákazník" FontWeight="SemiBold" Foreground="#444"/>
+
+                                <Button x:Name="BtnClearCustomer" 
+                                        Click="ClearCustomerSelection_Click" 
+                                        Style="{StaticResource TransparentHoverButtonStyle}" 
+                                        Margin="10,0,0,0" 
+                                        Visibility="Hidden">
+                                    <icon:PackIconMaterial Kind="CloseCircle" Foreground="Red" Width="14" Height="14"/>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel x:Name="CustModePanel" Orientation="Horizontal" Margin="0,0,0,10" Visibility="Collapsed">
+                                <RadioButton x:Name="RadioCustExisting" Content="Vybrat existujícího" IsChecked="True" Checked="RadioCust_Checked" Style="{StaticResource ModeRadioButton}"/>
+                                <RadioButton x:Name="RadioCustNew" Content="Vytvořit nového" Checked="RadioCust_Checked" Style="{StaticResource ModeRadioButton}"/>
+                            </StackPanel>
+
+                            <Grid x:Name="CustomerSearchPanel" Visibility="Visible" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="CustomerSearchBox" Style="{StaticResource InputBox}" KeyDown="CustomerSearchBox_KeyDown" Tag="Jméno, telefon..."/>
+                                <Button Grid.Column="1" Click="CustomerSearchButton_Click" Content="Hledat" Width="70" Margin="10,0,0,0" Style="{StaticResource GreyButton}" Height="35" Padding="0"/>
+                                <Popup x:Name="CustomerPopup" PlacementTarget="{Binding ElementName=CustomerSearchBox}" StaysOpen="False" Width="300">
+                                    <Border Background="White" BorderBrush="#999" BorderThickness="1">
+                                        <ListBox x:Name="SearchedCustomers" MaxHeight="150" MouseDoubleClick="SearchedCustomer_MouseDoubleClick">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="5"/>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+
+                            <Grid x:Name="CustomerDetailPanel">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Margin="0,0,0,5">
+                                    <Label Content="JMÉNO A PŘÍJMENÍ *"/>
+                                    <TextBox x:Name="CustNameBox" Style="{StaticResource InputBox}"/>
                                 </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </TabItem>
-        </TabControl>
+                                <Grid Grid.Row="1" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Label Content="TELEFON"/>
+                                        <TextBox x:Name="CustPhoneBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="EMAIL"/>
+                                        <TextBox x:Name="CustEmailBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="2" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Label Content="ADRESA"/>
+                                        <TextBox x:Name="CustAddressBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="PSČ"/>
+                                        <TextBox x:Name="CustZIPBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <StackPanel Grid.Row="3">
+                                    <Label Content="POZNÁMKA"/>
+                                    <TextBox x:Name="CustNoteBox" Style="{StaticResource InputBox}" Height="50" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Smazat celou zakázku" Click="DeleteOrder_Click" Background="DarkRed" Foreground="White" Margin="0,0,10,0" Width="150" Height="40"/>
-            <Button Content="Uložit změny" Click="SaveChanges_Click" Background="ForestGreen" Foreground="White" Width="150" Height="40"/>
-        </StackPanel>
+                    <Border Grid.Column="2" Background="#F9F9F9" CornerRadius="5" Padding="15" BorderBrush="#EEE" BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="Vozidlo" FontWeight="SemiBold" Foreground="#444"/>
+
+                                <Button x:Name="BtnClearCar" 
+                                        Click="ClearCarSelection_Click" 
+                                        Style="{StaticResource TransparentHoverButtonStyle}" 
+                                        Margin="10,0,0,0" 
+                                        Visibility="Hidden">
+                                    <icon:PackIconMaterial Kind="CloseCircle" Foreground="Red" Width="14" Height="14"/>
+                                </Button>
+                            </StackPanel>
+
+                            <StackPanel x:Name="CarModePanel" Orientation="Horizontal" Margin="0,0,0,10" Visibility="Collapsed">
+                                <RadioButton x:Name="RadioCarExisting" Content="Vybrat existující" IsChecked="True" Checked="RadioCar_Checked" Style="{StaticResource ModeRadioButton}"/>
+                                <RadioButton x:Name="RadioCarNew" Content="Vytvořit nové" Checked="RadioCar_Checked" Style="{StaticResource ModeRadioButton}"/>
+                            </StackPanel>
+
+                            <Grid x:Name="CarSearchPanel" Visibility="Visible" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="CarSearchBox" Style="{StaticResource InputBox}" KeyDown="CarSearchBox_KeyDown" GotFocus="CarSearchBox_GotFocus" Tag="SPZ, Model..."/>
+                                <Button Grid.Column="1" Click="CarSearchButton_Click" Content="Hledat" Width="70" Margin="10,0,0,0" Style="{StaticResource GreyButton}" Height="35" Padding="0"/>
+                                <Popup x:Name="CarPopup" PlacementTarget="{Binding ElementName=CarSearchBox}" StaysOpen="False" Width="300">
+                                    <Border Background="White" BorderBrush="#999" BorderThickness="1">
+                                        <ListBox x:Name="SearchedCars" MaxHeight="150" MouseDoubleClick="SearchedCar_MouseDoubleClick">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding BrandModel}" FontWeight="Bold"/>
+                                                        <TextBlock Text="{Binding SPZ}" Foreground="Gray" FontSize="11"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+
+                            <Grid x:Name="CarDetailPanel">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Label Content="ZNAČKA A MODEL *"/>
+                                        <TextBox x:Name="CarModelBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="SPZ *"/>
+                                        <TextBox x:Name="CarSPZBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="1" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Label Content="ROK VÝROBY"/>
+                                        <ComboBox x:Name="CarYearBox" Style="{StaticResource MainComboBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="VIN"/>
+                                        <TextBox x:Name="CarVINBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="2" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="10"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <Label Content="TYP"/>
+                                        <ComboBox x:Name="CarTypeBox" Style="{StaticResource MainComboBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <Label Content="PALIVO"/>
+                                        <ComboBox x:Name="CarFuelBox" Style="{StaticResource MainComboBox}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <Label Content="VÝKON / OBSAH"/>
+                                        <TextBox x:Name="CarDisplacementPowerBox" Style="{StaticResource InputBox}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <StackPanel Grid.Row="3">
+                                    <Label Content="POZNÁMKA K AUTU"/>
+                                    <TextBox x:Name="CarNoteBox" Style="{StaticResource InputBox}" Height="50" TextWrapping="Wrap" VerticalContentAlignment="Top"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="4" Background="#F9F9F9" CornerRadius="5" Padding="15">
+                        <StackPanel>
+                            <TextBlock Text="Přílohy a fotografie" Style="{StaticResource SectionHeader}" Margin="0,0,0,10"/>
+                            <Button Click="BtnAddPhoto_Click" Style="{StaticResource GreyButton}" Content="Přidat soubory" Width="130" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+
+                            <ItemsControl x:Name="PhotosControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="5">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Button Click="OpenPhotoDetail_Click" Background="Transparent" BorderThickness="0" Cursor="Hand" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <icon:PackIconMaterial Kind="FileImage" Foreground="#555" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Foreground="#333"/>
+                                                    </StackPanel>
+                                                </Button>
+
+                                                <Button Grid.Column="2" Click="DeletePhoto_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                                    <icon:PackIconMaterial Kind="Close" Foreground="Red" Width="14" Height="14"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <icon:PackIconMaterial Kind="Cart" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="Materiál" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#EEE" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,15">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Kód" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="2" Text="Název položky" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="4" Text="Počet" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="6" Text="Jedn." FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="8" Text="Dodavatel" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="10" Text="Cena/ks" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+
+                                <TextBox x:Name="InMatCode" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallInputBox}"/>
+                                <TextBox x:Name="InMatName" Grid.Row="1" Grid.Column="2" Style="{StaticResource SmallInputBox}"/>
+                                <TextBox x:Name="InMatQty" Grid.Row="1" Grid.Column="4" Style="{StaticResource SmallInputBox}"/>
+                                <ComboBox x:Name="InMatUnit" Grid.Row="1" Grid.Column="6" Style="{StaticResource SmallComboBox}" ItemsSource="{Binding UnitOptions}" SelectedIndex="0"/>
+                                <ComboBox x:Name="InMatSupplier" Grid.Row="1" Grid.Column="8" Style="{StaticResource SmallComboBox}" ItemsSource="{Binding SupplierOptions}" SelectedIndex="0"/>
+                                <TextBox x:Name="InMatPrice" Grid.Row="1" Grid.Column="10" Style="{StaticResource SmallInputBox}"/>
+
+                                <Button Grid.Row="1" Grid.Column="12" Click="AddMaterialInline_Click" Style="{StaticResource GreenButton}" Height="30" Width="30" VerticalAlignment="Bottom">
+                                    <icon:PackIconMaterial Kind="Plus" Width="10" Height="10"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="OrderMaterialDataGrid" Grid.Row="2" 
+                                  AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False"
+                                  CellEditEnding="DataGrid_CellEditEnding" VerticalScrollBarVisibility="Disabled"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" 
+                                  HorizontalGridLinesBrush="#EEEEEE" Background="White" BorderThickness="0" RowHeight="35">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Kód" Binding="{Binding Code}" Width="*"/>
+                                <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="2*"/>
+                                <DataGridTextColumn Header="Ks" Binding="{Binding Quantity}" Width="50"/>
+                                <DataGridTemplateColumn Header="Jedn." Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Unit}" VerticalAlignment="Center" Padding="5,0"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.UnitOptions, RelativeSource={RelativeSource AncestorType=Page}}" SelectedItem="{Binding Unit}" Style="{StaticResource SmallComboBox}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Dod." Width="90">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Supplier}" VerticalAlignment="Center" Padding="5,0"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding DataContext.SupplierOptions, RelativeSource={RelativeSource AncestorType=Page}}" SelectedItem="{Binding Supplier}" Style="{StaticResource SmallComboBox}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Cena" Binding="{Binding Price}" Width="70"/>
+                                <DataGridTextColumn Header="Celkem" Binding="{Binding TotalPrice, Mode=OneWay}" Width="70" FontWeight="Bold" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Width="40">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="DeleteMaterial_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                                <icon:PackIconMaterial Kind="Delete" Foreground="Red" Width="15" Height="15"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <icon:PackIconMaterial Kind="Wrench" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <TextBlock Text="Práce" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#EEE" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,0,0,15">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Hod." FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBlock Grid.Column="2" Text="Sazba/h" FontSize="11" Foreground="#888" Margin="0,0,0,2"/>
+
+                                <TextBox x:Name="InWorkHours" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallInputBox}"/>
+                                <TextBox x:Name="InWorkPrice" Grid.Row="1" Grid.Column="2" Style="{StaticResource SmallInputBox}"/>
+
+                                <Button Grid.Row="1" Grid.Column="4" Click="AddWorkInline_Click" Style="{StaticResource GreenButton}" Height="30" Width="30" VerticalAlignment="Bottom">
+                                    <icon:PackIconMaterial Kind="Plus" Width="10" Height="10"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="OrderWorkDataGrid" Grid.Row="2" 
+                                  AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False"
+                                  CellEditEnding="DataGrid_CellEditEnding" VerticalScrollBarVisibility="Disabled"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal" 
+                                  HorizontalGridLinesBrush="#EEEEEE" Background="White" BorderThickness="0" RowHeight="35">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Hod." Binding="{Binding Hours}" Width="50"/>
+                                <DataGridTextColumn Header="Sazba" Binding="{Binding Price}" Width="*"/>
+                                <DataGridTextColumn Header="Celkem" Binding="{Binding TotalPrice, Mode=OneWay}" Width="80" FontWeight="Bold" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Width="40">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Click="DeleteWork_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                                <icon:PackIconMaterial Kind="Delete" Foreground="Red" Width="15" Height="15"/>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" Background="White" BorderBrush="#EEEEEE" BorderThickness="0,1,0,0" Padding="30,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="BtnDelete" Click="DeleteOrder_Click" Style="{StaticResource DeleteButton}" Padding="15,10">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="TrashCan" Width="20" Height="20" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Smazat zakázku" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="CELKEM:" FontWeight="Bold" Foreground="#555" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="TotalPriceFillBlock" Text="0 Kč" FontSize="22" FontWeight="Bold" Foreground="#4CD964"/>
+                </StackPanel>
+
+                <Button Grid.Column="4" Click="SaveButton_Click" Style="{StaticResource GreenButton}" Padding="40,10" Height="45">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="ContentSave" Margin="0,0,10,0" VerticalAlignment="Center" Width="18" Height="18"/>
+                        <TextBlock Text="ULOŽIT ZMĚNY" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

@@ -384,8 +384,21 @@ namespace Autoservis
         // Add customer
         private void CreateOrderButton_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new CreateOrderPage());
+            OverlaySection.Visibility = Visibility.Visible;
+            OverlayFrame.Navigate(new DetailOrderPage(null));
+        }
+
+        private void OverlayBackground_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            CloseOverlay();
+        }
+
+        // Veřejná metoda pro zavření (volaná z CreateOrderPage)
+        public void CloseOverlay()
+        {
+            OverlaySection.Visibility = Visibility.Collapsed;
+            //OverlayFrame.Content = null;
+            //LoadOrders(); // Obnovit seznam zakázek v hlavním okně
         }
 
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
@@ -414,8 +427,8 @@ namespace Autoservis
                     MainFrame.Navigate(new DetailCarPage(car));
                     break;
                 case Order order:
-                    MainFrame.Visibility = Visibility.Visible;
-                    MainFrame.Navigate(new DetailOrderPage(order));
+                    OverlaySection.Visibility = Visibility.Visible;
+                    OverlayFrame.Navigate(new DetailOrderPage(order));
                     break;
             }
         }

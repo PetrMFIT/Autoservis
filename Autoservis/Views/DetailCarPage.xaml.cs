@@ -49,13 +49,7 @@ namespace Autoservis.Views
             order_repo = new OrderRepository(_context);
             customer_repo = new CustomerRepository(_context);
 
-            this.Unloaded += OnUnloaded;
             LoadUI();
-        }
-
-        private void OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            _context.Dispose();
         }
 
         private void LoadUI()
@@ -344,7 +338,8 @@ namespace Autoservis.Views
             {
                 if (Application.Current.MainWindow is MainWindow mainWindow)
                 {
-                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order, this));
+                    mainWindow.OverlaySection.Visibility = Visibility.Visible;
+                    mainWindow.OverlayFrame.Navigate(new DetailOrderPage(order, this));
                 }
             }
         }

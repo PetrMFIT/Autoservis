@@ -48,13 +48,7 @@ namespace Autoservis.Views
             material_repo = new MaterialRepository(_context);
             work_repo = new WorkRepository(_context);
 
-            this.Unloaded += OnUnloaded;
             LoadUI();
-        }
-
-        private void OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            _context.Dispose();
         }
 
         // Tuto metodu volá DetailCarPage, když se vrátí zpět
@@ -314,7 +308,8 @@ namespace Autoservis.Views
             {
                 if (Application.Current.MainWindow is MainWindow mainWindow)
                 {
-                    mainWindow.MainFrame.Navigate(new DetailOrderPage(order, this));
+                    mainWindow.OverlaySection.Visibility = Visibility.Visible;
+                    mainWindow.OverlayFrame.Navigate(new DetailOrderPage(order, this));
                 }
             }
         }
