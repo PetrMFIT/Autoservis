@@ -163,8 +163,9 @@ namespace Autoservis
             });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "SPZ", Binding = new Binding("SPZ"), Width = 120 });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Rok", Binding = new Binding("Year"), Width = 80 });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Majitel", Binding = new Binding("Customer.Name"), Width = 200 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Majitel", Binding = new Binding("Customer.Name"), Width = 120 });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Typ", Binding = new Binding("Type"), Width = 120 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Palivo", Binding = new Binding("Fuel"),Width = 90});
         }
 
         private void SetupFuelTypeComboBox()
