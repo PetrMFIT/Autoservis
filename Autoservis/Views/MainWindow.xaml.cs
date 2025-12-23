@@ -214,7 +214,46 @@ namespace Autoservis
         // SearchBar
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string query = SearchBox.Text.Trim();
+            PerformSearch();
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (SearchBox.Text.Length > 0)
+            {
+                ClearSearchButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                ClearSearchButton.Visibility = Visibility.Collapsed;
+            }
+
+            PerformSearch();
+        }
+
+        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                PerformSearch();
+            }
+        }
+
+        private void PerformSearch()
+        {
+            string query = SearchBox.Text.Trim(); // Vezmeme text z boxu
+
+            // Pokud je prázdno, načteme všechna data (reset)
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                switch (currentView)
+                {
+                    case ViewType.Customers: LoadCustomers(); break;
+                    case ViewType.Cars: LoadCars(); break;
+                    case ViewType.Orders: LoadOrders(); break;
+                }
+                return;
+            }
 
             switch (currentView)
             {
@@ -231,6 +270,12 @@ namespace Autoservis
                     DataGrid.ItemsSource = FilterOrders(allOrders, query);
                     break;
             }
+        }
+
+        private void ClearSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = "";
+            SearchBox.Focus();
         }
 
         private IEnumerable<Customer> FilterCustomers(IEnumerable<Customer> allCustomers, string query)
@@ -270,16 +315,6 @@ namespace Autoservis
                 o.Name.ToLower().Contains(query) ||
                 (o.Customer != null && o.Customer.Name.ToLower().Contains(query))
             );
-        }
-
-        private void SearchBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                SearchButton_Click(sender, new RoutedEventArgs());
-
-                e.Handled = true;
-            }
         }
 
         // Car filters
