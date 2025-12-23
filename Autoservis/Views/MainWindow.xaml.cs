@@ -121,7 +121,16 @@ namespace Autoservis
             currentView = ViewType.Customers;
             UpdateUI();
             SetupCustomerColumns();
-            DataGrid.ItemsSource = customer_repo.GetAll(); ;
+            using (var context = new AppDbContext())
+            {
+                var repository = new CustomerRepository(context);
+
+                // Načteme čerstvý seznam z databáze
+                var customers = repository.GetAll();
+
+                // Nastavíme do tabulky
+                DataGrid.ItemsSource = customers;
+            }
         }
         private void SetupCustomerColumns()
         {
@@ -382,12 +391,12 @@ namespace Autoservis
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new AddCustomerWindow());
+            MainFrame.Navigate(new DetailCustomerPage(null));
         }
         private void AddCarButton_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Visibility = Visibility.Visible;
-            MainFrame.Navigate(new AddCarWindow());
+            MainFrame.Navigate(new DetailCarPage(null));
         }
 
         private void Datagrid_MouseDoubleClick(Object sender, MouseButtonEventArgs e)
