@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:Autoservis"
         mc:Ignorable="d"
         Title="Autoservis Manager" Height="750" Width="1200"
@@ -44,7 +45,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                         </Border>
                     </ControlTemplate>
@@ -76,16 +77,57 @@
 
             <!-- Nav buttons -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button x:Name="CustomersButton" Content="Zákazníci" Click="CustomersButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
-                <Button x:Name="CarsButton" Content="Auta" Click="CarsButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
-                <Button x:Name="OrdersButton" Content="Zakázky" Click="OrdersButton_Click" Style="{StaticResource NavButton}" Width="100" Height="35"/>
+                <Button x:Name="CustomersButton" 
+                        Click="CustomersButton_Click" 
+                        Style="{StaticResource NavButton}"
+                        Width="100" Height="35">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="Account"
+                                               VerticalAlignment="Center"
+                                               Height="15" Width="15"
+                                               Margin="0,0,10,0"/>
+                        <TextBlock Text="Zákazníci" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="CarsButton" 
+                        Click="CarsButton_Click" 
+                        Style="{StaticResource NavButton}"
+                        Width="100" Height="35">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="Car"
+                           VerticalAlignment="Center"
+                           Height="15" Width="15"
+                           Margin="0,0,10,0"/>
+                        <TextBlock Text="Auta" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="OrdersButton" 
+                        Click="OrdersButton_Click" 
+                        Style="{StaticResource NavButton}" 
+                        Width="100" Height="35">
+                    <StackPanel Orientation="Horizontal">
+                        <icon:PackIconMaterial Kind="TextBox"
+                           VerticalAlignment="Center"
+                           Height="15" Width="15"
+                           Margin="0,0,10,0"/>
+                        <TextBlock Text="Zakázky" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
 
             <Button x:Name="CreateOrderButton" Grid.Column="2" 
-                    Content="Vytvořit zakázku" 
                     Click="CreateOrderButton_Click"
                     Style="{StaticResource GreenButton}"
-                    Padding="20,10" Height="45"/>
+                    Padding="20,10" Height="45">
+                <StackPanel Orientation="Horizontal">
+                    <icon:PackIconMaterial Kind="PlusThick"
+                                           VerticalAlignment="Center"
+                                           Height="15" Width="15"
+                                           Margin="0,0,10,0"/>
+                    <TextBlock Text="Vytvořit zakázku" VerticalAlignment="Center"/>
+                </StackPanel>
+                
+            </Button>
         </Grid>
 
         <Border Grid.Row="0" VerticalAlignment="Bottom" BorderBrush="White" BorderThickness="0,0,0,2" Margin="0,0,0,5"/>
@@ -110,10 +152,13 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,10,0,20">
                     <Label x:Name="DataListLabel" Content="Seznam zákazníků" FontSize="32" FontWeight="Normal" Foreground="Black" VerticalAlignment="Center" Padding="0"/>
                     <Button x:Name="ContextAddButton" 
-                            Content="+" 
                             Click="ContextAddButton_Click"
                             Style="{StaticResource GreenButton}"
-                            Width="40" Height="40" Margin="15,0,0,0" FontSize="24" Padding="0,0,0,5"/>
+                            Width="40" Height="40" Margin="15,0,0,0" FontSize="24">
+                        <icon:PackIconMaterial Kind="Plus" 
+                                               VerticalAlignment="Center" 
+                                               Width="20" Height="20"/>
+                    </Button>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
@@ -126,9 +171,12 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="🔍" Grid.Column="0" 
-                                       VerticalAlignment="Center" HorizontalAlignment="Center" 
-                                       Foreground="Gray" FontSize="14"/>
+                            <icon:PackIconMaterial Kind="Magnify" 
+                                                   Grid.Column="0"
+                                                   VerticalAlignment="Center" 
+                                                   HorizontalAlignment="Center" 
+                                                   Foreground="Gray" 
+                                                   Width="20" Height="20"/>
 
                             <TextBox x:Name="SearchBox" 
                                      Grid.Column="1"
@@ -138,13 +186,16 @@
                                      VerticalContentAlignment="Center" Padding="10,0" FontSize="14"/>
 
                             <Button x:Name="ClearSearchButton" Grid.Column="2" 
-                                    Content="✖" 
                                     Click="ClearSearchButton_Click"
                                     Visibility="Collapsed"
                 
                                     Background="Transparent" BorderThickness="0" 
                                     Foreground="#999" FontWeight="Bold" FontSize="12"
-                                    Width="30" Cursor="Hand"/>
+                                    Width="30" Cursor="Hand">
+                                <icon:PackIconMaterial Kind="Close" 
+                                                       Width="15" Height="15" 
+                                                       Foreground="#999"/>
+                            </Button>
                         </Grid>
                     </Border>
 
