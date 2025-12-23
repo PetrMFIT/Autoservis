@@ -126,9 +126,14 @@ namespace Autoservis
         private void SetupCustomerColumns()
         {
             DataGrid.Columns.Clear();
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Jméno", Binding = new Binding("Name") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Telefon", Binding = new Binding("Phone") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "E-mail", Binding = new Binding("Email") });
+            DataGrid.Columns.Add(new DataGridTextColumn 
+            { 
+                Header = "Jméno", 
+                Binding = new Binding("Name"), 
+                Width = new DataGridLength(1, DataGridLengthUnitType.Star) 
+            });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Telefon", Binding = new Binding("Phone"), Width = 200 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "E-mail", Binding = new Binding("Email"), Width = 250 });
         }
 
         // Load car list
@@ -150,11 +155,16 @@ namespace Autoservis
         private void SetupCarColumns()
         {
             DataGrid.Columns.Clear();
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Model", Binding = new Binding("BrandModel") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "SPZ", Binding = new Binding("SPZ") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Rok", Binding = new Binding("Year") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Majitel", Binding = new Binding("Customer.Name") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Typ", Binding = new Binding("Type") });
+            DataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Model",
+                Binding = new Binding("BrandModel"),
+                Width = new DataGridLength(1, DataGridLengthUnitType.Star)
+            });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "SPZ", Binding = new Binding("SPZ"), Width = 120 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Rok", Binding = new Binding("Year"), Width = 80 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Majitel", Binding = new Binding("Customer.Name"), Width = 200 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Typ", Binding = new Binding("Type"), Width = 120 });
         }
 
         private void SetupFuelTypeComboBox()
@@ -205,10 +215,15 @@ namespace Autoservis
         private void SetupOrderColumns()
         {
             DataGrid.Columns.Clear();
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Název", Binding = new Binding("Name") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") { StringFormat = "dd.MM.yyyy" } });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Stav", Binding = new Binding("State") });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Celková částka", Binding = new Binding("TotalPrice") });
+            DataGrid.Columns.Add(new DataGridTextColumn
+            {
+                Header = "Název",
+                Binding = new Binding("Name"),
+                Width = new DataGridLength(1, DataGridLengthUnitType.Star)
+            });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") { StringFormat = "dd.MM.yyyy" }, Width = 120 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Stav", Binding = new Binding("State"), Width = 150 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Cena", Binding = new Binding("TotalPrice"), Width = 120 });
         }
 
         // SearchBar

@@ -57,6 +57,8 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        
     </Window.Resources>
 
     <Grid Margin="20">
@@ -212,20 +214,111 @@
                 <!-- Table -->
                 <Border Grid.Row="2" Background="White">
                     <DataGrid x:Name="DataGrid" 
-                              AutoGenerateColumns="False" IsReadOnly="True"
-                              HeadersVisibility="Column" 
-                              BorderThickness="0"
-                              Background="White"
-                              RowHeight="40"
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True"
                               MouseDoubleClick="Datagrid_MouseDoubleClick"
-                              Padding="0">
+          
+                              Background="White"
+                              BorderThickness="0"
+          
+                              FontSize="16"       
+                              RowHeight="50"      
+          
+                              HeadersVisibility="Column" 
+                              GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="#EEEEEE">
+                        <DataGrid.Resources>
 
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="FontSize" Value="14"/>
-                                <Setter Property="Cursor" Value="Hand"/>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+
+                                <Setter Property="Foreground" Value="#333333"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Height" Value="50"/>
+                                <Setter Property="Padding" Value="10,0"/>
+
+                                <Setter Property="BorderThickness" Value="0,0,1,2"/>
+                                <Setter Property="BorderBrush" Value="#A0A0A0"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridColumnHeader">
+                                            <Grid>
+                                                <Border Background="{TemplateBinding Background}"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <ContentPresenter Grid.Column="0" 
+                                                                          VerticalAlignment="Center" 
+                                                                          SnapsToDevicePixels="True"/>
+
+                                                        <Path x:Name="SortArrow" Grid.Column="1" 
+                                                              Width="10" Height="6" Margin="5,0,0,0" 
+                                                              Fill="#555555" Stretch="Fill" 
+                                                              Visibility="Collapsed" 
+                                                              Data="M0,0 L10,0 L5,5 z" 
+                                                              RenderTransformOrigin="0.5,0.5"/>
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#D0D0D0"/>
+                                                </Trigger>
+
+                                                <Trigger Property="SortDirection" Value="Ascending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                                    <Setter TargetName="SortArrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                                <Trigger Property="SortDirection" Value="Descending">
+                                                    <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
-                        </DataGrid.RowStyle>
+
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F2F2F2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#D8D8D8"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Padding" Value="10,0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridCell">
+                                            <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="0">
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.Resources>
                     </DataGrid>
                 </Border>
             </Grid>
