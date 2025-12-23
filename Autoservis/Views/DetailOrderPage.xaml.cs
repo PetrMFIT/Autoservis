@@ -3,8 +3,12 @@ using Autoservis.Enums;
 using Autoservis.Models;
 using Autoservis.Repositories;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -102,6 +106,7 @@ namespace Autoservis.Views
                 BtnDelete.Visibility = Visibility.Collapsed;
                 CustModePanel.Visibility = Visibility.Visible;
                 CarModePanel.Visibility = Visibility.Visible;
+                BtnExportPDF.Visibility = Visibility.Collapsed;
 
                 if (RadioCustExisting != null) { RadioCustExisting.IsChecked = true; RadioCust_Checked(null, null); }
                 if (RadioCarExisting != null) { RadioCarExisting.IsChecked = true; RadioCar_Checked(null, null); }
@@ -117,6 +122,7 @@ namespace Autoservis.Views
                 CarModePanel.Visibility = Visibility.Collapsed;
                 CustomerSearchPanel.Visibility = Visibility.Collapsed;
                 CarSearchPanel.Visibility = Visibility.Collapsed;
+                BtnExportPDF.Visibility = Visibility.Visible;
 
                 FillCustomerInfo(_order.Customer, readOnly: true);
                 FillCarInfo(_order.Car, readOnly: true);
@@ -390,11 +396,11 @@ namespace Autoservis.Views
             if (string.IsNullOrWhiteSpace(OrderNameBox.Text)) { MessageBox.Show("Chybí název."); return; }
             try
             {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string photosDir = System.IO.Path.Combine(baseDir, "AutoservisPhotos");
+                string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AutoservisApp");
+                string photosDir = Path.Combine(appDataPath, "Photos"); // Fotky budou v podsložce Photos
 
-                if (!System.IO.Directory.Exists(photosDir))
-                    System.IO.Directory.CreateDirectory(photosDir);
+                if (!Directory.Exists(photosDir))
+                    Directory.CreateDirectory(photosDir);
 
                 // 2. Fyzické zkopírování fotek
                 if (_order.Photos != null)
@@ -585,13 +591,108 @@ namespace Autoservis.Views
 
         private void BtnExportPDF_Click(object sender, RoutedEventArgs e)
         {
-            // Příklad logiky pro uložení
-            var dialog = new Microsoft.Win32.SaveFileDialog { Filter = "PDF soubor|*.pdf", FileName = $"Zakazka_{_order.Id}.pdf" };
+            // 1. Dialog pro výběr místa uložení
+            var dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "PDF soubor|*.pdf",
+                FileName = $"Zakazka_{_order.Name}.pdf"
+            };
+
             if (dialog.ShowDialog() == true)
             {
-                // Zde se volá generování PDF (QuestPDF kód je na delší ukázku, 
-                // ale v principu vykreslíte tabulky a info o zakázce do dokumentu)
-                MessageBox.Show("PDF bylo úspěšně vygenerováno.");
+                try
+                {
+                    // Nastavení licence (Community je zdarma pro malé projekty)
+                    QuestPDF.Settings.License = LicenseType.Community;
+
+                    // 2. Definice dokumentu
+                    Document.Create(container =>
+                    {
+                        container.Page(page =>
+                        {
+                            page.Margin(40);
+                            page.Header().Row(row =>
+                            {
+                                row.RelativeItem().Column(col =>
+                                {
+                                    col.Item().Text("ZAKÁZKOVÝ LIST").FontSize(22).SemiBold().FontColor(QuestPDF.Helpers.Colors.Blue.Medium);
+                                    col.Item().Text($"Číslo zakázky: {_order.Id}").FontSize(10);
+                                });
+                                row.RelativeItem().AlignRight().Text(DateTime.Now.ToString("dd.MM.yyyy HH:mm")).FontSize(10);
+                            });
+
+                            page.Content().PaddingVertical(10).Column(col =>
+                            {
+                                // Sekce Zákazník a Auto
+                                col.Item().PaddingTop(10).Row(row =>
+                                {
+                                    row.RelativeItem().Column(c => {
+                                        c.Item().Text("ZÁKAZNÍK").SemiBold().FontSize(12);
+                                        c.Item().Text(_order.Customer?.Name ?? "Neuvedeno");
+                                        c.Item().Text(_order.Customer?.Phone ?? "");
+                                    });
+                                    row.RelativeItem().Column(c => {
+                                        c.Item().Text("VOZIDLO").SemiBold().FontSize(12);
+                                        c.Item().Text($"{_order.Car?.BrandModel} ({_order.Car?.SPZ})");
+                                        c.Item().Text($"Tachometr: {_order.Mileage} KM"); // Zde používáme váš nový údaj 
+                                    });
+                                });
+
+                                // Tabulka Materiálu a Práce 
+                                col.Item().PaddingTop(20).Text("ROZPIS MATERIÁLU A PRÁCE").SemiBold();
+                                col.Item().Table(table =>
+                                {
+                                    table.ColumnsDefinition(c => {
+                                        c.RelativeColumn(3); // Název
+                                        c.RelativeColumn(1); // Množství
+                                        c.RelativeColumn(1); // Cena/j
+                                        c.RelativeColumn(1); // Celkem
+                                    });
+
+                                    table.Header(h => {
+                                        h.Cell().Element(CellStyle).Text("Položka");
+                                        h.Cell().Element(CellStyle).Text("Množství");
+                                        h.Cell().Element(CellStyle).Text("Cena/j");
+                                        h.Cell().Element(CellStyle).Text("Celkem");
+
+                                        static IContainer CellStyle(IContainer container) => container.DefaultTextStyle(x => x.SemiBold()).PaddingVertical(5).BorderBottom(1).BorderColor(QuestPDF.Helpers.Colors.Grey.Lighten2);
+                                    });
+
+                                    foreach (var m in _order.Materials)
+                                    {
+                                        table.Cell().Element(CellContent).Text(m.Name);
+                                        table.Cell().Element(CellContent).Text($"{m.Quantity} {m.Unit}");
+                                        table.Cell().Element(CellContent).Text($"{m.Price} Kč");
+                                        table.Cell().Element(CellContent).Text($"{m.TotalPrice} Kč");
+                                    }
+                                    foreach (var w in _order.Works)
+                                    {
+                                        table.Cell().Element(CellContent).Text(w.Description);
+                                        table.Cell().Element(CellContent).Text($"{w.Hours} h");
+                                        table.Cell().Element(CellContent).Text($"{w.Price} Kč");
+                                        table.Cell().Element(CellContent).Text($"{w.TotalPrice} Kč");
+                                    }
+
+                                    static IContainer CellContent(IContainer container) => container.PaddingVertical(2).BorderBottom(0.5f).BorderColor(QuestPDF.Helpers.Colors.Grey.Lighten4);
+                                });
+
+                                // Celková cena 
+                                col.Item().PaddingTop(10).AlignRight().Text($"CELKEM K ÚHRADĚ: {_order.TotalPrice} Kč").FontSize(16).Bold();
+                            });
+
+                            page.Footer().AlignCenter().Text(x => {
+                                x.Span("Stránka ");
+                                x.CurrentPageNumber();
+                            });
+                        });
+                    }).GeneratePdf(dialog.FileName);
+
+                    MessageBox.Show("PDF dokument byl úspěšně vytvořen.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Chyba při generování PDF: " + ex.Message);
+                }
             }
         }
     }

@@ -147,7 +147,7 @@
 
             <Border Grid.Row="2" BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,15">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <icon:PackIconMaterial Kind="CarSports" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBlock Text="Údaje o vozidle" Style="{StaticResource SectionHeader}"/>
                 </StackPanel>
             </Border>
