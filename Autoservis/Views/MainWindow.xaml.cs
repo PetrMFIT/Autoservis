@@ -45,6 +45,8 @@ namespace Autoservis
             material_repo = new MaterialRepository(_context);
             work_repo = new WorkRepository(_context);
 
+            MainFrame.Navigated += (s, e) => RefreshCurrentView();
+
             LoadCustomers();
         }
 
@@ -141,7 +143,7 @@ namespace Autoservis
                 Binding = new Binding("Name"), 
                 Width = new DataGridLength(1, DataGridLengthUnitType.Star) 
             });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Telefon", Binding = new Binding("Phone"), Width = 200 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Telefon", Binding = new Binding("Phone") { StringFormat = "{0:N0}"}, Width = 200 });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "E-mail", Binding = new Binding("Email"), Width = 250 });
         }
 
@@ -158,7 +160,16 @@ namespace Autoservis
             SetupCarColumns();
             SetupFuelTypeComboBox();
             SetupCarTypeComboBox();
-            DataGrid.ItemsSource = car_repo.GetAll();
+            using (var context = new AppDbContext())
+            {
+                var repository = new CarRepository(context);
+
+                // Načteme čerstvý seznam z databáze
+                var cars = repository.GetAll();
+
+                // Nastavíme do tabulky
+                DataGrid.ItemsSource = cars;
+            }
         }
 
         private void SetupCarColumns()
@@ -212,15 +223,26 @@ namespace Autoservis
             currentView = ViewType.Orders;
             UpdateUI();
             SetupOrderColumns();
-            var orders = order_repo.GetAll();
-
-            foreach(var order in orders)
+            using (var context = new AppDbContext())
             {
-                order.Materials = material_repo.GetAll().Where(m => m.OrderId == order.Id).ToList();
-                order.Works = work_repo.GetAll().Where(w => w.OrderId == order.Id).ToList();
-            }
+                // Vytvoříme čerstvé repozitáře uvnitř bloku
+                var o_repo = new OrderRepository(context);
+                var m_repo = new MaterialRepository(context);
+                var w_repo = new WorkRepository(context);
 
-            DataGrid.ItemsSource = orders;
+                // 1. Načteme zakázky
+                var orders = o_repo.GetAll().ToList();
+
+                // 2. Ke každé zakázce načteme její detaily (aby se správně spočítala TotalPrice)
+                foreach (var order in orders)
+                {
+                    order.Materials = m_repo.GetAll().Where(m => m.OrderId == order.Id).ToList();
+                    order.Works = w_repo.GetAll().Where(w => w.OrderId == order.Id).ToList();
+                }
+
+                // 3. Přiřadíme do tabulky až po kompletním načtení všeho
+                DataGrid.ItemsSource = orders;
+            }
         }
         private void SetupOrderColumns()
         {
@@ -233,7 +255,7 @@ namespace Autoservis
             });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Datum", Binding = new Binding("Date") { StringFormat = "dd.MM.yyyy" }, Width = 120 });
             DataGrid.Columns.Add(new DataGridTextColumn { Header = "Stav", Binding = new Binding("State"), Width = 150 });
-            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Cena", Binding = new Binding("TotalPrice"), Width = 120 });
+            DataGrid.Columns.Add(new DataGridTextColumn { Header = "Cena", Binding = new Binding("TotalPrice") { StringFormat = "{0:N0} Kč" }, Width = 120 });
         }
 
         // SearchBar
@@ -390,15 +412,30 @@ namespace Autoservis
 
         private void OverlayBackground_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            CloseOverlay();
+            CloseDetailAndRefresh();
         }
 
         // Veřejná metoda pro zavření (volaná z CreateOrderPage)
-        public void CloseOverlay()
+        public void CloseOverlayAndRefresh()
         {
             OverlaySection.Visibility = Visibility.Collapsed;
-            //OverlayFrame.Content = null;
-            //LoadOrders(); // Obnovit seznam zakázek v hlavním okně
+            OverlayFrame.Content = null;
+
+            // Klíčový krok: Zavoláme existující metodu pro načtení zakázek
+            LoadOrders();
+        }
+
+        public void CloseDetailAndRefresh()
+        {
+            MainFrame.Visibility = Visibility.Collapsed;
+            MainFrame.Content = null;
+
+            // Podle toho, co zrovna prohlížíme, to refreshneme
+            switch (currentView)
+            {
+                case ViewType.Customers: LoadCustomers(); break;
+                case ViewType.Cars: LoadCars(); break;
+            }
         }
 
         private void AddCustomerButton_Click(object sender, RoutedEventArgs e)
@@ -446,6 +483,20 @@ namespace Autoservis
                 case ViewType.Orders:
                     CreateOrderButton_Click(sender, e);
                     break;
+            }
+        }
+
+        private void RefreshCurrentView()
+        {
+            // Pokud je Frame skrytý, znamená to, že jsme zpět na hlavní tabulce
+            if (MainFrame.Content == null && MainFrame.Visibility == Visibility.Hidden)
+            {
+                switch (currentView)
+                {
+                    case ViewType.Customers: LoadCustomers(); break;
+                    case ViewType.Cars: LoadCars(); break;
+                    case ViewType.Orders: LoadOrders(); break;
+                }
             }
         }
     }

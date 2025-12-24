@@ -71,7 +71,7 @@
                     </StackPanel>
                     <StackPanel Grid.Column="2">
                         <Label Content="TELEFON"/>
-                        <TextBox x:Name="CustomerPhoneBox" Style="{StaticResource InputBox}" />
+                        <TextBox x:Name="CustomerPhoneBox" Style="{StaticResource InputBox}" TextChanged="CustomerPhoneBox_TextChanged"/>
                     </StackPanel>
                     <StackPanel Grid.Column="4">
                         <Label Content="E-MAIL"/>

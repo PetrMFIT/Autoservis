@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -488,8 +489,15 @@ namespace Autoservis.Views
         {
             if (Application.Current.MainWindow is MainWindow mw)
             {
-                if (mw.OverlaySection.Visibility == Visibility.Visible) mw.CloseOverlay();
-                else { mw.MainFrame.Content = null; mw.MainFrame.Visibility = Visibility.Collapsed; mw.LoadOrders(); }
+                // Pokud jsme v overlayi (zakázky), použijeme novou refresh metodu
+                if (mw.OverlaySection.Visibility == Visibility.Visible)
+                {
+                    mw.CloseOverlayAndRefresh();
+                }
+                else
+                {
+                    mw.CloseDetailAndRefresh();
+                }
             }
         }
 
@@ -693,6 +701,37 @@ namespace Autoservis.Views
                 {
                     MessageBox.Show("Chyba při generování PDF: " + ex.Message);
                 }
+            }
+        }
+
+        private void CustPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                // Odpojíme event, abychom nezpůsobili nekonečnou smyčku
+                tb.TextChanged -= CustPhoneBox_TextChanged;
+
+                // 1. Získáme jen číslice a zapamatujeme si pozici kurzoru
+                int cursorPosition = tb.SelectionStart;
+                string raw = new string(tb.Text.Where(char.IsDigit).ToArray());
+
+                // 2. Sestavíme text s mezerami po 3 znacích
+                StringBuilder formatted = new StringBuilder();
+                for (int i = 0; i < raw.Length; i++)
+                {
+                    if (i > 0 && i % 3 == 0) formatted.Append(" ");
+                    formatted.Append(raw[i]);
+                }
+
+                string result = formatted.ToString();
+                int oldLength = tb.Text.Length;
+                tb.Text = result;
+
+                // 3. Korekce kurzoru (aby neodskakoval)
+                int newLength = result.Length;
+                tb.SelectionStart = Math.Max(0, cursorPosition + (newLength - oldLength));
+
+                tb.TextChanged += CustPhoneBox_TextChanged;
             }
         }
     }

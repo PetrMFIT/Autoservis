@@ -1,10 +1,11 @@
 ﻿using Autoservis.Data;
+using Autoservis.Enums;
 using Autoservis.Models;
 using Autoservis.Repositories;
-using Autoservis.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -311,6 +312,37 @@ namespace Autoservis.Views
                     mainWindow.OverlaySection.Visibility = Visibility.Visible;
                     mainWindow.OverlayFrame.Navigate(new DetailOrderPage(order, this));
                 }
+            }
+        }
+
+        private void CustomerPhoneBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox tb)
+            {
+                // Odpojíme event, abychom nezpůsobili nekonečnou smyčku
+                tb.TextChanged -= CustomerPhoneBox_TextChanged;
+
+                // 1. Získáme jen číslice a zapamatujeme si pozici kurzoru
+                int cursorPosition = tb.SelectionStart;
+                string raw = new string(tb.Text.Where(char.IsDigit).ToArray());
+
+                // 2. Sestavíme text s mezerami po 3 znacích
+                StringBuilder formatted = new StringBuilder();
+                for (int i = 0; i < raw.Length; i++)
+                {
+                    if (i > 0 && i % 3 == 0) formatted.Append(" ");
+                    formatted.Append(raw[i]);
+                }
+
+                string result = formatted.ToString();
+                int oldLength = tb.Text.Length;
+                tb.Text = result;
+
+                // 3. Korekce kurzoru (aby neodskakoval)
+                int newLength = result.Length;
+                tb.SelectionStart = Math.Max(0, cursorPosition + (newLength - oldLength));
+
+                tb.TextChanged += CustomerPhoneBox_TextChanged;
             }
         }
     }
