@@ -15,99 +15,39 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="30,30,30,10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0" Margin="0,0,0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Button x:Name="BtnBack" Click="BtnBack_Click" 
-                            Style="{StaticResource BackButtonStyle}" 
-                            Content="Zpět"
-                            Visibility="Collapsed" Margin="0,0,10,0"/>
-
-                    <Button x:Name="BtnClose" Click="BtnClose_Click" 
-                            Style="{StaticResource CloseButtonStyle}" 
-                            Content="Zavřít"
-                            Visibility="Visible"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <TextBlock Text="KARTA ZÁKAZNÍKA" Foreground="#777" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
-                    <TextBlock x:Name="TitleNameText" Text="Nový zákazník" Foreground="#333" FontSize="28" FontWeight="SemiBold" HorizontalAlignment="Right"/>
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="15"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="15"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel Grid.Column="0">
-                    <Label Content="JMÉNO A PŘÍJMENÍ *"/>
-                    <TextBox x:Name="CustomerNameBox" Style="{StaticResource InputBox}" />
-                </StackPanel>
-                <StackPanel Grid.Column="2">
-                    <Label Content="TELEFON"/>
-                    <TextBox x:Name="CustomerPhoneBox" Style="{StaticResource InputBox}" />
-                </StackPanel>
-                <StackPanel Grid.Column="4">
-                    <Label Content="E-MAIL"/>
-                    <TextBox x:Name="CustomerEmailBox" Style="{StaticResource InputBox}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="2" Grid.Column="0">
-                    <Label Content="ADRESA / ULICE"/>
-                    <TextBox x:Name="CustomerAddressBox" Style="{StaticResource InputBox}" />
-                </StackPanel>
-                <StackPanel Grid.Row="2" Grid.Column="2">
-                    <Label Content="PSČ"/>
-                    <TextBox x:Name="CustomerZIPBox" Style="{StaticResource InputBox}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="4" Grid.ColumnSpan="5">
-                    <Label Content="POZNÁMKA K ZÁKAZNÍKOVI"/>
-                    <TextBox x:Name="CustomerNotesBox" Style="{StaticResource InputBox}" Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" Padding="10,8"/>
-                </StackPanel>
-            </Grid>
-
-            <Grid x:Name="NewCarSection" Grid.Row="2" Margin="0,30,0,10" Visibility="Collapsed">
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <Grid  Margin="30,30,30,10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="15"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="15"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,15">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBlock Text="Vozidlo (Povinné pro registraci)" Style="{StaticResource SectionHeader}"/>
+                <Grid Grid.Row="0" Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button x:Name="BtnBack" Click="BtnBack_Click" 
+                                Style="{StaticResource BackButtonStyle}" 
+                                Content="Zpět"
+                                Visibility="Collapsed" Margin="0,0,10,0"/>
+
+                        <Button x:Name="BtnClose" Click="BtnClose_Click" 
+                                Style="{StaticResource CloseButtonStyle}" 
+                                Content="Zavřít"
+                                Visibility="Visible"/>
                     </StackPanel>
-                </Border>
+
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <TextBlock Text="KARTA ZÁKAZNÍKA" Foreground="#777" FontSize="12" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock x:Name="TitleNameText" Text="Nový zákazník" Foreground="#333" FontSize="28" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Grid>
 
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -117,158 +57,220 @@
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <Label Content="ZNAČKA A MODEL *"/>
-                        <TextBox x:Name="NewCarModelBox" Style="{StaticResource InputBox}" />
+                        <Label Content="JMÉNO A PŘÍJMENÍ *"/>
+                        <TextBox x:Name="CustomerNameBox" Style="{StaticResource InputBox}" />
                     </StackPanel>
                     <StackPanel Grid.Column="2">
-                        <Label Content="SPZ *"/>
-                        <TextBox x:Name="NewCarSPZBox" Style="{StaticResource InputBox}" />
+                        <Label Content="TELEFON"/>
+                        <TextBox x:Name="CustomerPhoneBox" Style="{StaticResource InputBox}" />
                     </StackPanel>
                     <StackPanel Grid.Column="4">
-                        <Label Content="ROK VÝROBY"/>
-                        <ComboBox x:Name="NewCarYearComboBox" Style="{StaticResource MainComboBox}" />
+                        <Label Content="E-MAIL"/>
+                        <TextBox x:Name="CustomerEmailBox" Style="{StaticResource InputBox}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0">
+                        <Label Content="ADRESA / ULICE"/>
+                        <TextBox x:Name="CustomerAddressBox" Style="{StaticResource InputBox}" />
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="2">
+                        <Label Content="PSČ"/>
+                        <TextBox x:Name="CustomerZIPBox" Style="{StaticResource InputBox}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.ColumnSpan="5">
+                        <Label Content="POZNÁMKA K ZÁKAZNÍKOVI"/>
+                        <TextBox x:Name="CustomerNotesBox" Style="{StaticResource InputBox}" Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" Padding="10,8"/>
                     </StackPanel>
                 </Grid>
 
-                <Grid Grid.Row="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid x:Name="NewCarSection" Grid.Row="2" Margin="0,30,0,10" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <Label Content="VIN"/>
-                        <TextBox x:Name="NewCarVINBox" Style="{StaticResource InputBox}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="2">
-                        <Label Content="OBSAH / VÝKON"/>
-                        <TextBox x:Name="NewCarPowerBox" Style="{StaticResource InputBox}" />
-                    </StackPanel>
+                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Margin="0,0,0,15">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                            <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBlock Text="Vozidlo (Povinné pro registraci)" Style="{StaticResource SectionHeader}"/>
+                        </StackPanel>
+                    </Border>
 
-                    <Grid Grid.Column="4">
+                    <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
-                            <Label Content="TYP"/>
-                            <ComboBox x:Name="NewCarTypeComboBox" Style="{StaticResource MainComboBox}" />
+                            <Label Content="ZNAČKA A MODEL *"/>
+                            <TextBox x:Name="NewCarModelBox" Style="{StaticResource InputBox}" />
                         </StackPanel>
                         <StackPanel Grid.Column="2">
-                            <Label Content="PALIVO"/>
-                            <ComboBox x:Name="NewCarFuelComboBox" Style="{StaticResource MainComboBox}" />
+                            <Label Content="SPZ *"/>
+                            <TextBox x:Name="NewCarSPZBox" Style="{StaticResource InputBox}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <Label Content="ROK VÝROBY"/>
+                            <ComboBox x:Name="NewCarYearComboBox" Style="{StaticResource MainComboBox}" />
                         </StackPanel>
                     </Grid>
-                </Grid>
 
-                <StackPanel Grid.Row="5">
-                    <Label Content="POZNÁMKA K AUTU"/>
-                    <TextBox x:Name="NewCarNotesBox" Style="{StaticResource InputBox}" Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" Padding="10,8"/>
-                </StackPanel>
-            </Grid>
+                    <Grid Grid.Row="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Grid x:Name="HistoryTablesSection" Grid.Row="4" Margin="0,20,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="40"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="VIN"/>
+                            <TextBox x:Name="NewCarVINBox" Style="{StaticResource InputBox}" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2">
+                            <Label Content="OBSAH / VÝKON"/>
+                            <TextBox x:Name="NewCarPowerBox" Style="{StaticResource InputBox}" />
+                        </StackPanel>
 
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" VerticalAlignment="Top">
-                        <Grid Margin="0,0,0,5">
+                        <Grid Grid.Column="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
-                                <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Vlastněná vozidla" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Grid.Column="0">
+                                <Label Content="TYP"/>
+                                <ComboBox x:Name="NewCarTypeComboBox" Style="{StaticResource MainComboBox}" />
                             </StackPanel>
-
-                            <Button x:Name="BtnAddCar" Click="BtnAddCar_Click" 
-                                    Grid.Column="1" HorizontalAlignment="Right"
-                                    Style="{StaticResource TransparentHoverButtonStyle}"
-                                    Visibility="Collapsed">
-                                <StackPanel Orientation="Horizontal">
-                                    <icon:PackIconMaterial Kind="Plus" Foreground="#4CD964" Width="15" Height="15" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Přidat auto" Foreground="#4CD964" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Button>
+                            <StackPanel Grid.Column="2">
+                                <Label Content="PALIVO"/>
+                                <ComboBox x:Name="NewCarFuelComboBox" Style="{StaticResource MainComboBox}" />
+                            </StackPanel>
                         </Grid>
-                    </Border>
+                    </Grid>
 
-                    <DataGrid x:Name="CarList" Grid.Row="1"
-                              AutoGenerateColumns="False" IsReadOnly="True"
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                              HorizontalGridLinesBrush="#EEEEEE" Background="White" 
-                              BorderThickness="0" RowHeight="35"
-                              MouseDoubleClick="CarList_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Model" Binding="{Binding BrandModel}" Width="*"/>
-                            <DataGridTextColumn Header="SPZ" Binding="{Binding SPZ}" Width="100"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <StackPanel Grid.Row="5">
+                        <Label Content="POZNÁMKA K AUTU"/>
+                        <TextBox x:Name="NewCarNotesBox" Style="{StaticResource InputBox}" Height="60" TextWrapping="Wrap" VerticalContentAlignment="Top" Padding="10,8"/>
+                    </StackPanel>
                 </Grid>
 
-                <Grid Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Grid x:Name="HistoryTablesSection" Grid.Row="4" Margin="0,20,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" VerticalAlignment="Top">
-                        <Grid Margin="0,0,0,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Grid.Column="0" VerticalAlignment="Center">
-                                <icon:PackIconMaterial Kind="ClipboardText" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                <TextBlock Text="Historie zakázek" Style="{StaticResource SectionHeader}"/>
-                            </StackPanel>
+                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" VerticalAlignment="Top">
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button x:Name="BtnAddOrder" Click="BtnAddOrder_Click" 
-                                    Grid.Column="1" HorizontalAlignment="Right"
-                                    Style="{StaticResource TransparentHoverButtonStyle}"
-                                    Visibility="Collapsed">
-                                <StackPanel Orientation="Horizontal">
-                                    <icon:PackIconMaterial Kind="ClipboardPlus" Foreground="#4CD964" Width="15" Height="15" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="Přidat zakázku" Foreground="#4CD964" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" VerticalAlignment="Center">
+                                    <icon:PackIconMaterial Kind="Car" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Vlastněná vozidla" Style="{StaticResource SectionHeader}"/>
                                 </StackPanel>
-                            </Button>
-                        </Grid>
-                    </Border>
 
-                    <DataGrid x:Name="OrderList" Grid.Row="1"
-                              AutoGenerateColumns="False" IsReadOnly="True"
-                              HeadersVisibility="Column" GridLinesVisibility="Horizontal"
-                              HorizontalGridLinesBrush="#EEEEEE" Background="White" 
-                              BorderThickness="0" RowHeight="35"
-                              MouseDoubleClick="OrderList_MouseDoubleClick">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="*"/>
-                            <DataGridTextColumn Header="Datum" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="110"/>
-                            <DataGridTextColumn Header="Cena" Binding="{Binding TotalPrice}" Width="90"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                                <Button x:Name="BtnAddCar" Click="BtnAddCar_Click" 
+                                        Grid.Column="1" HorizontalAlignment="Right"
+                                        Style="{StaticResource TransparentHoverButtonStyle}"
+                                        Visibility="Collapsed">
+                                    <StackPanel Orientation="Horizontal">
+                                        <icon:PackIconMaterial Kind="Plus" Foreground="#4CD964" Width="15" Height="15" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Přidat auto" Foreground="#4CD964" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="CarList" Grid.Row="1"
+                                  AutoGenerateColumns="False" IsReadOnly="True"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="#EEEEEE" Background="White" 
+                                  BorderThickness="0" RowHeight="35"
+                                  MouseDoubleClick="CarList_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Model" Binding="{Binding BrandModel}" Width="*"/>
+                                <DataGridTextColumn Header="SPZ" Binding="{Binding SPZ}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" VerticalAlignment="Top">
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5" Grid.Column="0" VerticalAlignment="Center">
+                                    <icon:PackIconMaterial Kind="ClipboardText" Foreground="#666" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Historie zakázek" Style="{StaticResource SectionHeader}"/>
+                                </StackPanel>
+
+                                <Button x:Name="BtnAddOrder" Click="BtnAddOrder_Click" 
+                                        Grid.Column="1" HorizontalAlignment="Right"
+                                        Style="{StaticResource TransparentHoverButtonStyle}"
+                            Visibility="Collapsed">
+                                    <StackPanel Orientation="Horizontal">
+                                        <icon:PackIconMaterial Kind="ClipboardPlus" Foreground="#4CD964" Width="15" Height="15" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Přidat zakázku" Foreground="#4CD964" FontWeight="SemiBold" FontSize="12" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="OrderList" Grid.Row="1"
+                                  AutoGenerateColumns="False" IsReadOnly="True"
+                                  HeadersVisibility="Column" GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="#EEEEEE" Background="White" 
+                                  BorderThickness="0" RowHeight="35"
+                                  MouseDoubleClick="OrderList_MouseDoubleClick">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Název" Binding="{Binding Name}" Width="*"/>
+                                <DataGridTextColumn Header="Datum" Binding="{Binding Date, StringFormat=dd.MM.yyyy}" Width="110"/>
+                                <DataGridTextColumn Header="Cena" Binding="{Binding TotalPrice}" Width="90"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </ScrollViewer>
 
         <Border Grid.Row="1" Background="White" BorderBrush="#EEEEEE" BorderThickness="0,1,0,0" Padding="30,15">
             <Grid>
