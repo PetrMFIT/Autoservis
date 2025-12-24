@@ -9,11 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\car.ico" />
     <None Remove="Images\car.png" />
     <None Remove="Images\Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\car.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
