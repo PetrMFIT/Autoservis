@@ -1,1 +1,33 @@
 # Autoservis
+
+Aplikace pro komplexní správu autoservisu, vyvinuta v prostøedí .NET WPF. Umoòuje evidenci zákazníkù, jejich vozidel a detailní správu servisních zakázek.
+
+## Ke staení
+Instalaèní soubor naleznete zde: [Stáhnout instalaci Autoservis](https://github.com/PetrMFIT/Autoservis/releases/download/v1.0.0/setup.exe)
+
+## Souèasné funkce
+- Správa zákazníkù: Centrální evidence jména, telefonu, e-mailu, adresy a poznámek.
+- Evidence vozidel: Záznamy o znaèce, modelu, SPZ, VIN, roku vıroby, typu paliva a pøiøazení k majiteli.
+- Servisní zakázky: Tvorba zakázek s detailním rozpisem, sledováním stavu tachometru a statusu zakázky (Rozpracováno, Hotovo, Zaplaceno).
+- Poloky zakázky: Evidence pouitého materiálu (kód, název, mnoství, jednotka, dodavatel) a provedené práce (poèet hodin, sazba).
+- Fotodokumentace: Moznost pøipojení a správy fotografii k jednotlivım zakázkám pro dokumentaci oprav.
+- Export do PDF: Základní generování PDF dokumentu pro pøehled zakázky.
+
+## Budoucí plány (Roadmap)
+- Pøechod na hybridní architekturu: Plánuji pøedìlat aplikaci na webovou technologii zabalenou v desktopovém prostøedí (napø. WebView2 / Blazor Hybrid).
+- Pokroèilá customizace PDF: Nastaveni vzhledu a generování zakázkovıch listù pøímo v aplikaci podle potøeb uivatele.
+- Podpora vlastního loga: Moznost nahrání vlastního loga servisu, které se bude zobrazovat v hlavièce aplikace i na všech exportovanıch dokumentech.
+
+## Technologie
+- Jazyk: C#
+- Framework: .NET WPF
+- Databáze: SQLite s vyuzitim Entity Framework Core
+- PDF Export: QuestPDF
+- UI komponenty: MahApps.Metro.IconPacks
+
+## Instalace a spuštìni
+1. Stáhnìte si instalaèní balíèek z odkazu vıše.
+2. Spuste soubor `.exe`
+3. Aplikace si pøi prvním spuštìní sama vytvoøí databázi a potøebné sloky v: `%AppData%\Roaming\AutoservisApp\`
+
+
